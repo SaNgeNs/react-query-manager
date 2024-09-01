@@ -1,62 +1,8 @@
-# react-query-manager
-
-**react-query-manager** is a library to simplify the work with [@tanstack/react-query](https://tanstack.com/query/latest). It offers custom query hooks, automatically cleanses the cache after mutations, and provides a unified style for keys in the cache to make data management easier.
-
-## Purpose of the library
-When working with projects that use [@tanstack/react-query](https://tanstack.com/query/latest), the following issues often arise:
-- **Different format of cache keys**: Cache keys can be created in different formats, which makes it difficult to find, update, and delete them.
-- **Cache clearing after mutations**: After performing mutations, you must manually clear or update the corresponding cache entries to avoid inconsistent data.
-
-## What problems does the library solve?
-**`react-query-manager`** solves these problems by providing the following functionality:
-- **Unified key style**: Provides a unified style for generating keys in the [@tanstack/react-query](https://tanstack.com/query/latest) cache, making them easier to find, update, and delete.
-- **Automatic cache refresh after mutation**: The data in the cache is automatically updated immediately after a successful mutation, ensuring that the data in your application is instantly up to date.
-- **The ability to cancel a request**: After performing a mutation, it is possible to cancel the last request within a few seconds, returning the cache to its original state. This is especially useful for cases when the user has performed an action by mistake and wants to quickly undo it.
-- **Automatic cache flushing**: After mutations are performed, the corresponding cache entries are automatically cleared to ensure data consistency.
-
-## Install
-
-```
-npm install react-query-manager
-```
-
-### Usage
-
-#### App
-```
-import { RQWrapper } from 'react-query-manager';
-import List from './List';
-
-function App() {
-  return (
-    <RQWrapper
-      isDevTools
-      devToolsOptions={{
-        buttonPosition: 'bottom-left',
-      }}
-      apiUrl="https://jsonplaceholder.typicode.com"
-      apiAuthorization={() => 'Bearer 12345'}
-      apiOnSuccess={(...args) => {
-        console.log('apiOnSuccess: ', args);
-      }}
-      apiOnError={(...args) => {
-        console.log('apiOnError: ', args);
-      }}
-    >
-      <List />
-    </RQWrapper>
-  )
-}
-```
-
-#### List
-```
 import React, { useState } from 'react';
-import  {
-  useGetList, useGetOne, useGetInfiniteList,
-  useUpdateMany, useUpdateOne,
-  useDeleteMany, useDeleteOne,
-} from 'react-query-manager';
+import { useGetList, useGetOne } from '../../src';
+import { useUpdateMany, useUpdateOne } from '../../src/hooks/use-update';
+import { useDeleteMany, useDeleteOne } from '../../src/hooks/use-delete';
+import { useGetInfiniteList } from '../../src/hooks/use-get-infinite-list';
 
 const API_POSTS_RESOURCE_PATH = 'posts';
 
@@ -67,7 +13,7 @@ type TPost = {
   body: string;
 }
 
-function List() {
+export default function List() {
   const [selectedPostId, setSelectedPostId] = useState<string>('');
 
   const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, TPost>({
@@ -289,9 +235,7 @@ function List() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
-```
-
-# [Docs](https://sangens.github.io/react-query-manager-docs/index.html)

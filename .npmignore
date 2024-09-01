@@ -1,0 +1,14 @@
+tsup.config.ts
+tsconfig.json
+package-lock.json
+esbuild.config.js
+.eslintrc.cjs
+.npmignore
+src
+node_modules
+dev
+*.ts
+*.tsx
+*.map
+*.log
+.git

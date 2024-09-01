@@ -1,0 +1,68 @@
+{
+  "name": "react-query-manager",
+  "version": "1.0.0",
+  "description": "react-query-manager",
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "homepage": "https://sangens.github.io/react-query-manager-docs/index.html",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev:tsup": "tsup --watch",
+    "dev:server": "node esbuild.config.js --start",
+    "dev": "npm run dev:server",
+    "docs": "npx typedoc --readme README-docs.md"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-query",
+    "tanstack",
+    "query",
+    "mutation",
+    "cache",
+    "cache-management",
+    "cache-invalidation",
+    "optimistic-update",
+    "query-management",
+    "rollback",
+    "undo",
+    "auto-cache",
+    "react-query-helper"
+  ],
+  "author": "sangens",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "@zamiell/typedoc-plugin-not-exported": "^0.3.0",
+    "dotenv": "^16.4.5",
+    "esbuild": "^0.23.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "tsup": "^8.2.4",
+    "typedoc": "^0.26.6",
+    "typedoc-plugin-rename-defaults": "^0.7.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5",
+    "@tanstack/react-query-devtools": "^5",
+    "eventemitter3": "^5",
+    "react-hot-toast": "^2"
+  },
+  "peerDependencies": {
+    "react": ">= 18",
+    "react-dom": ">= 18"
+  }
+}

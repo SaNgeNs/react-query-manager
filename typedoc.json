@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "out": "./docs",
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "./src/index.ts", "./src/internal/**/*.tsx", "./src/internal/**/*.ts"],
+  "plugin": ["@zamiell/typedoc-plugin-not-exported", "typedoc-plugin-rename-defaults"]
+}

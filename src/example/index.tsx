@@ -1,33 +1,80 @@
-# react-query-manager
+import React from 'react';
 
-**react-query-manager** is a library to simplify the work with [@tanstack/react-query](https://tanstack.com/query/latest). It offers custom query hooks, automatically cleanses the cache after mutations, and provides a unified style for keys in the cache to make data management easier.
-
-## Purpose of the library
-When working with projects that use [@tanstack/react-query](https://tanstack.com/query/latest), the following issues often arise:
-- **Different format of cache keys**: Cache keys can be created in different formats, which makes it difficult to find, update, and delete them.
-- **Cache clearing after mutations**: After performing mutations, you must manually clear or update the corresponding cache entries to avoid inconsistent data.
-
-## What problems does the library solve?
-**`react-query-manager`** solves these problems by providing the following functionality:
-- **Unified key style**: Provides a unified style for generating keys in the [@tanstack/react-query](https://tanstack.com/query/latest) cache, making them easier to find, update, and delete.
-- **Automatic cache refresh after mutation**: The data in the cache is automatically updated immediately after a successful mutation, ensuring that the data in your application is instantly up to date.
-- **The ability to cancel a request**: After performing a mutation, it is possible to cancel the last request within a few seconds, returning the cache to its original state. This is especially useful for cases when the user has performed an action by mistake and wants to quickly undo it.
-- **Automatic cache flushing**: After mutations are performed, the corresponding cache entries are automatically cleared to ensure data consistency.
-
-## Install
-
-```
-npm install react-query-manager
-```
-
-### Usage
-
-#### App
-```
-import { RQWrapper } from 'react-query-manager';
+/**
+ * @example
+import React from 'react';
+import {
+  ToastBar, RQWrapper, ToastCustomWrapper,
+  CustomUndoContent, toast,
+} from 'react-query-manager';
 import List from './List';
 
-function App() {
+const ToastWrapper: ToastCustomWrapper = (toastProps) => {
+  return (
+    <ToastBar toast={toastProps} position={toastProps.position}>
+      {({ icon, message }) => {
+        return (
+          <>
+            {icon}
+            {message}
+
+            <svg
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                cursor: 'pointer',
+              }}
+              viewBox="0 0 24 24"
+              width="15"
+              height="15"
+              onClick={() => {
+                toast.dismiss(toastProps.id);
+              }}
+            >
+              <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </>
+        );
+      }}
+    </ToastBar>
+  );
+};
+
+const customUndoContent: CustomUndoContent = ({ message, type, onUndo }) => {
+  const buttonText = (() => {
+    switch (type) {
+      case 'delete-many': {
+        return 'Cancel delete-many';
+      }
+
+      case 'delete-one': {
+        return 'Cancel delete-one';
+      }
+
+      case 'update-many': {
+        return 'Cancel update-many';
+      }
+
+      case 'update-one': {
+        return 'Cancel update-one';
+      }
+
+      default: {
+        return 'Undo';
+      }
+    }
+  })();
+
+  return (
+    <div>
+      <span>{message}</span>
+      <button type="button" onClick={onUndo}>{buttonText}</button>
+    </div>
+  );
+};
+
+export default function App() {
   return (
     <RQWrapper
       isDevTools
@@ -42,15 +89,20 @@ function App() {
       apiOnError={(...args) => {
         console.log('apiOnError: ', args);
       }}
+      toast={{
+        globalProps: {
+          position: 'bottom-center',
+        },
+        wrapper: ToastWrapper,
+        customUndoContent,
+      }}
     >
       <List />
     </RQWrapper>
-  )
+  );
 }
-```
 
-#### List
-```
+* @example
 import React, { useState } from 'react';
 import  {
   useGetList, useGetOne, useGetInfiniteList,
@@ -67,7 +119,7 @@ type TPost = {
   body: string;
 }
 
-function List() {
+export default function List() {
   const [selectedPostId, setSelectedPostId] = useState<string>('');
 
   const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, TPost>({
@@ -292,6 +344,7 @@ function List() {
     </div>
   );
 }
-```
-
-# [Docs](https://sangens.github.io/react-query-manager-docs/index.html)
+ */
+export const Example = () => {
+  return <div />;
+};

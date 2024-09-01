@@ -293,5 +293,3 @@ function List() {
   );
 }
 ```
-
-# [Docs](https://sangens.github.io/react-query-manager-docs/index.html)
