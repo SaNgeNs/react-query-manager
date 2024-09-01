@@ -10,8 +10,5 @@
 .DS_Store
 .env
 
-# docs
-docs
-
 # build
 build

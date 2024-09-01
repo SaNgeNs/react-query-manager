@@ -13,9 +13,9 @@ import { Renderable, ToastPosition } from 'react-hot-toast/headless';
  *
  * @class
  * @extends {Error}
- * @param {string} message - The error message.
- * @param {number} [status] - The HTTP status code associated with the error.
- * @param {any} [data] - Additional data related to the error.
+ * @param message - The error message.
+ * @param status - The HTTP status code associated with the error.
+ * @param data - Additional data related to the error.
  *
  * @example
  * try {
@@ -171,7 +171,7 @@ type TakeFirstKeys<T extends any[], N extends number, R extends any[] = []> = R[
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {} params The parameters for the hook.
+ * @param params The parameters for the hook.
  * @param params.queryOptions - Additional options to configure the `useQuery`
  * @param params.resource - The resource path and any static parameters for the API request.
  * @param params.params - Dynamic query parameters for the API request.
@@ -223,7 +223,7 @@ declare const useGetList: <TPath extends string, TData = any>({ queryOptions, re
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {} options - The options object for configuring the hook.
+ * @param options - The options object for configuring the hook.
  * @param options.queryOptions - Additional options to configure the `useInfiniteQuery` hook.
  * @param options.resource - The resource path and any static parameters for the API request.
  * @param options.params - Dynamic query parameters for the API request.
@@ -285,7 +285,7 @@ declare const useGetInfiniteList: <TPath extends string, TData = any>({ queryOpt
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {} params The parameters for the hook.
+ * @param params The parameters for the hook.
  * @param params.queryOptions - Additional options to configure the `useQuery`
  * @param params.resource - The resource path and any static parameters for the API request.
  * @param params.params - Dynamic query parameters for the API request.
@@ -305,7 +305,7 @@ declare const useGetOne: <TPath extends string, TData = any>({ resource, id, que
 }) => _tanstack_react_query.UseQueryResult<FetcherResponse<TData>, CustomError>;
 
 /** @notExported */
-type MutateBaseVariables<TPath extends string, TType> = (TType extends 'many' ? {
+type MutateBaseVariables$1<TPath extends string, TType> = (TType extends 'many' ? {
     ids: (string | number)[];
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
@@ -315,14 +315,14 @@ type MutateBaseVariables<TPath extends string, TType> = (TType extends 'many' ? 
     apiClientParams?: Partial<ApiProps>;
 });
 /** @notExported */
-type DeleteBaseVariables<TPath extends string, TType> = (Omit<MutateBaseVariables<TPath, TType>, 'resource'> & {
+type DeleteBaseVariables<TPath extends string, TType> = (Omit<MutateBaseVariables$1<TPath, TType>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
     undoMessage?: string;
 });
 /** @notExported */
 type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 'many'> = {
     resourcePath: Resource<TPath>['path'];
-    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, MutateBaseVariables<TPath, TType>>;
+    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, MutateBaseVariables$1<TPath, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     type: TType;
@@ -357,8 +357,8 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with properties, `delete` and `mutation`.
+ * @param props - The options for the hook.
+ * @returns An object with properties, `delete` and `mutation`.
  *
  * `delete` is a function that takes the ID and params of the resource to delete,
  * and calls the mutation function with the necessary data.
@@ -490,8 +490,8 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with properties, `delete` and `mutation`.
+ * @param props - The options for the hook.
+ * @returns An object with properties, `delete` and `mutation`.
  *
  * `delete` is a function that takes the ID and params of the resource to delete,
  * and calls the mutation function with the necessary data.
@@ -596,7 +596,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
 };
 
 /** @notExported */
-type TMutateBaseVariables<TPath extends string, TFormData, TType> = (TType extends 'many' ? {
+type MutateBaseVariables<TPath extends string, TFormData, TType> = (TType extends 'many' ? {
     ids: (string | number)[];
     data: TFormData;
     resource: Resource<TPath>;
@@ -608,14 +608,14 @@ type TMutateBaseVariables<TPath extends string, TFormData, TType> = (TType exten
     apiClientParams?: Partial<ApiProps>;
 });
 /** @notExported */
-type TUpdateBaseVariables<TPath extends string, TFormData, TType> = (Omit<TMutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
+type UpdateBaseVariables<TPath extends string, TFormData, TType> = (Omit<MutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
     undoMessage?: string;
 });
 /** @notExported */
-type TUpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
+type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
     resourcePath: Resource<TPath>['path'];
-    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, TMutateBaseVariables<TPath, TFormData, TType>>;
+    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, MutateBaseVariables<TPath, TFormData, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     type: TType;
@@ -653,15 +653,15 @@ type TUpdateBase<TPath extends string, TData, TFormData, TType extends MutationM
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with a single properties, `update` and `mutation`.
+ * @param props The options for the hook.
+ * @returns An object with a single properties, `update` and `mutation`.
  *
  * `update` is a function to perform the update operation.
  * Accepts the ID, data, and params of the resource.
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useUpdateOne: <TPath extends string, TData = any, TFormData = OnlyObject>(props: Omit<TUpdateBase<TPath, TData, TFormData, "one">, "type">) => {
+declare const useUpdateOne: <TPath extends string, TData = any, TFormData = OnlyObject>(props: Omit<UpdateBase<TPath, TData, TFormData, "one">, "type">) => {
     mutation: {
         data: undefined;
         variables: undefined;
@@ -762,7 +762,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     };
-    update: ({ resourceParams, undoMessage, ...variables }: TUpdateBaseVariables<TPath, TFormData, "one">) => Promise<void>;
+    update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "one">) => Promise<void>;
 };
 /**
  * A hook that helps you update multiple resources.
@@ -797,14 +797,14 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} props The options for the hook.
+ * @param props The options for the hook.
  *
  * `update` is a function to perform the update operation.
  * Accepts the array of IDs, data, and params of the resources.
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useUpdateMany: <TPath extends string, TData = any, TFormData = OnlyObject>(props: Omit<TUpdateBase<TPath, TData, TFormData, "many">, "type">) => {
+declare const useUpdateMany: <TPath extends string, TData = any, TFormData = OnlyObject>(props: Omit<UpdateBase<TPath, TData, TFormData, "many">, "type">) => {
     mutation: {
         data: undefined;
         variables: undefined;
@@ -905,17 +905,17 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     };
-    update: ({ resourceParams, undoMessage, ...variables }: TUpdateBaseVariables<TPath, TFormData, "many">) => Promise<void>;
+    update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "many">) => Promise<void>;
 };
 
 /** @notExported */
-type TMutateVariables<TPath extends string, TFormData> = {
+type MutateVariables<TPath extends string, TFormData> = {
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
 };
 /** @notExported */
-type TCreateOneVariables<TPath extends string, TFormData> = (Omit<TMutateVariables<TPath, TFormData>, 'resource'> & {
+type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables<TPath, TFormData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
 });
 /**
@@ -958,8 +958,8 @@ type TCreateOneVariables<TPath extends string, TFormData> = (Omit<TMutateVariabl
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} options The options for the hook.
- * @returns {Object} An object with a single properties, `create` and `mutation`.
+ * @param options The options for the hook.
+ * @returns An object with a single properties, `create` and `mutation`.
  *
  * `create` is a function that takes the data and params of the resource to create,
  * and calls the mutation function with the data and the resource.
@@ -968,7 +968,7 @@ type TCreateOneVariables<TPath extends string, TFormData> = (Omit<TMutateVariabl
  */
 declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, }: {
     resourcePath: Resource<TPath>["path"];
-    mutationOptions?: UseMutateProps<FetcherResponse<TData>, TMutateVariables<TPath, TFormData>>;
+    mutationOptions?: UseMutateProps<FetcherResponse<TData>, MutateVariables<TPath, TFormData>>;
     extraResources?: Resource<any>[];
 }) => {
     mutation: {
@@ -986,10 +986,10 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, TMutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
-        variables: TMutateVariables<TPath, TFormData>;
+        variables: MutateVariables<TPath, TFormData>;
         error: null;
         isError: false;
         isIdle: false;
@@ -1002,11 +1002,11 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, TMutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         error: CustomError;
-        variables: TMutateVariables<TPath, TFormData>;
+        variables: MutateVariables<TPath, TFormData>;
         isError: true;
         isIdle: false;
         isPending: false;
@@ -1018,11 +1018,11 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, TMutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
     } | {
         data: FetcherResponse<TData>;
         error: null;
-        variables: TMutateVariables<TPath, TFormData>;
+        variables: MutateVariables<TPath, TFormData>;
         isError: false;
         isIdle: false;
         isPending: false;
@@ -1034,9 +1034,9 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, TMutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
     };
-    create: ({ resourceParams, ...variables }: TCreateOneVariables<TPath, TFormData>) => void;
+    create: ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData>) => void;
 };
 
 /**
@@ -1045,7 +1045,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
  * This hook returns the context for the RQWrapper component, which includes the
  * API URL, API client, and toast undo function.
  *
- * @returns {RQWrapperContextProps} The RQWrapper context.
+ * @returns The RQWrapper context.
  */
 declare const useRQWrapperContext: () => RQWrapperContextProps;
 type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
@@ -1083,7 +1083,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  *   <List />
  * </RQWrapper>
  *
- * @param {} props
+ * @param props
  * @param props.children - The children components to render.
  * @param props.config - The configuration for the underlying QueryClient instance.
  * @param props.apiUrl - The base URL for all API requests.
@@ -1149,9 +1149,9 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiAuthorizati
  *   },
  * });
  *
- * @param {ApiProps} args The request configuration.
+ * @param args The request configuration.
  *
- * @returns {Promise<FetcherResponse>} The response as a promise.
+ * @returns The response as a promise.
  */
 declare const fetcher: ApiClient;
 

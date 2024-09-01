@@ -18,7 +18,7 @@ import { helpersQueryKeys, updateItemsFromQueryCache } from '../utils/queries';
 import { invalidateQueryCacheKeys } from '../internal/utils/queries';
 
 /** @notExported */
-type TMutateBaseVariables<TPath extends string, TFormData, TType> = (
+type MutateBaseVariables<TPath extends string, TFormData, TType> = (
   TType extends 'many' ? {
     ids: (string | number)[];
     data: TFormData;
@@ -33,19 +33,19 @@ type TMutateBaseVariables<TPath extends string, TFormData, TType> = (
 )
 
 /** @notExported */
-type TUpdateBaseVariables<TPath extends string, TFormData, TType> = (
-  Omit<TMutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
+type UpdateBaseVariables<TPath extends string, TFormData, TType> = (
+  Omit<MutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
     undoMessage?: string;
   }
 );
 
 /** @notExported */
-type TUpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
+type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
-    TMutateBaseVariables<TPath, TFormData, TType>
+    MutateBaseVariables<TPath, TFormData, TType>
   >;
   mode?: MutateMode;
   extraResources?: Resource<any>[];
@@ -66,7 +66,7 @@ const useUpdateBase = <
     },
     extraResources = [],
     type = 'many' as TType,
-  }: TUpdateBase<TPath, TData, TFormData, TType>) => {
+  }: UpdateBase<TPath, TData, TFormData, TType>) => {
   const { apiUrl, apiClient, toastUndo } = useRQWrapperContext();
   const queryClient = useQueryClient();
 
@@ -80,7 +80,7 @@ const useUpdateBase = <
   const { mutate, ...mutation } = useMutation<
     TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
     CustomError,
-    TMutateBaseVariables<TPath, TFormData, TType>
+    MutateBaseVariables<TPath, TFormData, TType>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -97,8 +97,8 @@ const useUpdateBase = <
       }
 
       const ids = type === 'many'
-        ? (variables as TMutateBaseVariables<TPath, TFormData, 'many'>).ids
-        : [(variables as TMutateBaseVariables<TPath, TFormData, 'one'>).id];
+        ? (variables as MutateBaseVariables<TPath, TFormData, 'many'>).ids
+        : [(variables as MutateBaseVariables<TPath, TFormData, 'one'>).id];
 
       const actions = await Promise.allSettled(ids.map((id) => apiClient<TData>({
         url: `${url}${id}/`,
@@ -124,8 +124,8 @@ const useUpdateBase = <
 
       if (!mode.optimistic) {
         const ids = type === 'many'
-          ? (variables as TMutateBaseVariables<TPath, TFormData, 'many'>).ids
-          : [(variables as TMutateBaseVariables<TPath, TFormData, 'one'>).id];
+          ? (variables as MutateBaseVariables<TPath, TFormData, 'many'>).ids
+          : [(variables as MutateBaseVariables<TPath, TFormData, 'one'>).id];
 
         const queryKeys = [
           ...helpersQueryKeys.getOneArray(variables.resource, ids),
@@ -155,15 +155,15 @@ const useUpdateBase = <
     },
   });
 
-  const update = async ({ resourceParams, undoMessage, ...variables }: TUpdateBaseVariables<TPath, TFormData, TType>) => {
+  const update = async ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, TType>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,
     };
 
     const ids = type === 'many'
-      ? (variables as any as TUpdateBaseVariables<TPath, TFormData, 'many'>).ids
-      : [(variables as any as TUpdateBaseVariables<TPath, TFormData, 'one'>).id];
+      ? (variables as any as UpdateBaseVariables<TPath, TFormData, 'many'>).ids
+      : [(variables as any as UpdateBaseVariables<TPath, TFormData, 'one'>).id];
 
     if (mode.optimistic) {
       const queryKeysOne = helpersQueryKeys.getOneArray(resource, ids);
@@ -251,8 +251,8 @@ const useUpdateBase = <
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with a single properties, `update` and `mutation`.
+ * @param props The options for the hook.
+ * @returns An object with a single properties, `update` and `mutation`.
  *
  * `update` is a function to perform the update operation.
  * Accepts the ID, data, and params of the resource.
@@ -263,7 +263,7 @@ export const useUpdateOne = <
   TPath extends string,
   TData = any,
   TFormData = OnlyObject
->(props: Omit<TUpdateBase<TPath, TData, TFormData, 'one'>, 'type'>) => {
+>(props: Omit<UpdateBase<TPath, TData, TFormData, 'one'>, 'type'>) => {
   return useUpdateBase({ ...props, type: 'one' });
 };
 
@@ -300,7 +300,7 @@ export const useUpdateOne = <
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} props The options for the hook.
+ * @param props The options for the hook.
  *
  * `update` is a function to perform the update operation.
  * Accepts the array of IDs, data, and params of the resources.
@@ -311,6 +311,6 @@ export const useUpdateMany = <
   TPath extends string,
   TData = any,
   TFormData = OnlyObject
->(props: Omit<TUpdateBase<TPath, TData, TFormData, 'many'>, 'type'>) => {
+>(props: Omit<UpdateBase<TPath, TData, TFormData, 'many'>, 'type'>) => {
   return useUpdateBase({ ...props, type: 'many' });
 };

@@ -238,8 +238,8 @@ const useDeleteBase = <
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with properties, `delete` and `mutation`.
+ * @param props - The options for the hook.
+ * @returns An object with properties, `delete` and `mutation`.
  *
  * `delete` is a function that takes the ID and params of the resource to delete,
  * and calls the mutation function with the necessary data.
@@ -282,8 +282,8 @@ export const useDeleteOne = <
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {Object} props The options for the hook.
- * @returns {Object} An object with properties, `delete` and `mutation`.
+ * @param props - The options for the hook.
+ * @returns An object with properties, `delete` and `mutation`.
  *
  * `delete` is a function that takes the ID and params of the resource to delete,
  * and calls the mutation function with the necessary data.

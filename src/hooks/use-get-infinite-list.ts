@@ -41,7 +41,7 @@ import { getUrlFromResource } from '../utils/get-url-from-resource';
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {} options - The options object for configuring the hook.
+ * @param options - The options object for configuring the hook.
  * @param options.queryOptions - Additional options to configure the `useInfiniteQuery` hook.
  * @param options.resource - The resource path and any static parameters for the API request.
  * @param options.params - Dynamic query parameters for the API request.

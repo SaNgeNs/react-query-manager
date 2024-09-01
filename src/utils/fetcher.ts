@@ -9,9 +9,9 @@ import { CustomError } from './custom-error';
  * It replaces all instances of the characters `:`, `$`, `,`, `+`, `[`, and `]` with their
  * URI encoded counterparts
  *
- * @param {string} value The value to be encoded.
+ * @param value The value to be encoded.
  *
- * @returns {string} The encoded value.
+ * @returns The encoded value.
  */
 function encode(value: string) {
   return encodeURIComponent(value)
@@ -40,9 +40,9 @@ function encode(value: string) {
  *   },
  * });
  *
- * @param {ApiProps} args The request configuration.
+ * @param args The request configuration.
  *
- * @returns {Promise<FetcherResponse>} The response as a promise.
+ * @returns The response as a promise.
  */
 export const fetcher: ApiClient = (args) => {
   const { onSuccess, onError } = args;

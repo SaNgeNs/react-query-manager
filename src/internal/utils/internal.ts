@@ -8,11 +8,11 @@ import { Snapshot } from '../type';
  * and match in type in the target object are merged from the source object.
  *
  * @template TData - The type of the target object.
- * @param {TData} target - The target object that will be merged into.
- * @param {Record<string, any>} source - The source object containing values to merge.
+ * @param target - The target object that will be merged into.
+ * @param source - The source object containing values to merge.
  * Only properties that exist in the target object and have matching types will be merged.
  *
- * @returns {TData} - A new object with the merged values from the target and source objects.
+ * @returns A new object with the merged values from the target and source objects.
  *
  * @example
  * const target = { id: '1', name: 'Test' };
@@ -73,8 +73,8 @@ export const createSnapshot = async (queryClient: QueryClient, keys: any[][]) =>
 /**
  * Removes leading and trailing slashes from the given string.
  *
- * @param {string} path The string to remove slashes from.
- * @return {string} The string with leading and trailing slashes removed.
+ * @param path The string to remove slashes from.
+ * @return The string with leading and trailing slashes removed.
  */
 export function removeFirstAndLastSlash(path: string): string {
   return path

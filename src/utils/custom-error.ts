@@ -3,9 +3,9 @@
  *
  * @class
  * @extends {Error}
- * @param {string} message - The error message.
- * @param {number} [status] - The HTTP status code associated with the error.
- * @param {any} [data] - Additional data related to the error.
+ * @param message - The error message.
+ * @param status - The HTTP status code associated with the error.
+ * @param data - Additional data related to the error.
  *
  * @example
  * try {

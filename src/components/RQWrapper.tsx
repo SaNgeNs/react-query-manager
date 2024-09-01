@@ -25,7 +25,7 @@ const Context = createContext<RQWrapperContextProps>({
  * This hook returns the context for the RQWrapper component, which includes the
  * API URL, API client, and toast undo function.
  *
- * @returns {RQWrapperContextProps} The RQWrapper context.
+ * @returns The RQWrapper context.
  */
 export const useRQWrapperContext = () => {
   return useContext(Context);
@@ -67,7 +67,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  *   <List />
  * </RQWrapper>
  *
- * @param {} props
+ * @param props
  * @param props.children - The children components to render.
  * @param props.config - The configuration for the underlying QueryClient instance.
  * @param props.apiUrl - The base URL for all API requests.

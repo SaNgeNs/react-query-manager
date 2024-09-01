@@ -24,10 +24,79 @@ npm install react-query-manager
 
 #### App
 ```
-import { RQWrapper } from 'react-query-manager';
+import React from 'react';
+import {
+  ToastBar, RQWrapper, ToastCustomWrapper,
+  CustomUndoContent, toast,
+} from 'react-query-manager';
 import List from './List';
 
-function App() {
+const ToastWrapper: ToastCustomWrapper = (toastProps) => {
+  return (
+    <ToastBar toast={toastProps} position={toastProps.position}>
+      {({ icon, message }) => {
+        return (
+          <>
+            {icon}
+            {message}
+
+            <svg
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                cursor: 'pointer',
+              }}
+              viewBox="0 0 24 24"
+              width="15"
+              height="15"
+              onClick={() => {
+                toast.dismiss(toastProps.id);
+              }}
+            >
+              <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </>
+        );
+      }}
+    </ToastBar>
+  );
+};
+
+const customUndoContent: CustomUndoContent = ({ message, type, onUndo }) => {
+  const buttonText = (() => {
+    switch (type) {
+      case 'delete-many': {
+        return 'Cancel delete-many';
+      }
+
+      case 'delete-one': {
+        return 'Cancel delete-one';
+      }
+
+      case 'update-many': {
+        return 'Cancel update-many';
+      }
+
+      case 'update-one': {
+        return 'Cancel update-one';
+      }
+
+      default: {
+        return 'Undo';
+      }
+    }
+  })();
+
+  return (
+    <div>
+      <span>{message}</span>
+      <button type="button" onClick={onUndo}>{buttonText}</button>
+    </div>
+  );
+};
+
+export default function App() {
   return (
     <RQWrapper
       isDevTools
@@ -42,10 +111,17 @@ function App() {
       apiOnError={(...args) => {
         console.log('apiOnError: ', args);
       }}
+      toast={{
+        globalProps: {
+          position: 'bottom-center',
+        },
+        wrapper: ToastWrapper,
+        customUndoContent,
+      }}
     >
       <List />
     </RQWrapper>
-  )
+  );
 }
 ```
 
@@ -60,44 +136,44 @@ import  {
 
 const API_POSTS_RESOURCE_PATH = 'posts';
 
-type TPost = {
+type Post = {
   userId: string;
   id: string;
   title: string;
   body: string;
 }
 
-function List() {
+export default function List() {
   const [selectedPostId, setSelectedPostId] = useState<string>('');
 
-  const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     params: { _page: 1, _limit: 5 },
   });
 
-  const queryPost = useGetOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const queryPost = useGetOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     id: selectedPostId,
     queryOptions: { enabled: !!selectedPostId },
   });
 
-  const updatePost = useUpdateOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const updatePost = useUpdateOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const updatePosts = useUpdateMany<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const updatePosts = useUpdateMany<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const deletePost = useDeleteOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const deletePost = useDeleteOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const deletePosts = useDeleteMany<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const deletePosts = useDeleteMany<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const infiniteQueryPosts = useGetInfiniteList<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const infiniteQueryPosts = useGetInfiniteList<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     pagination: { page: ['_page'], per_page: ['_limit', 10] },
   });
@@ -294,4 +370,4 @@ function List() {
 }
 ```
 
-# [Docs](https://sangens.github.io/react-query-manager-docs/index.html)
+# [Docs](https://sangens.github.io/react-query-manager/index.html)

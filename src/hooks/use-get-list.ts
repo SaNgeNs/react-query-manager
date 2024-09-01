@@ -40,7 +40,7 @@ import { CustomError } from '../utils/custom-error';
  * @template TPath - The API path as a string.
  * @template TData - The expected shape of the data returned by the API.
  *
- * @param {} params The parameters for the hook.
+ * @param params The parameters for the hook.
  * @param params.queryOptions - Additional options to configure the `useQuery`
  * @param params.resource - The resource path and any static parameters for the API request.
  * @param params.params - Dynamic query parameters for the API request.

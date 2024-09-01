@@ -6,7 +6,11 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "homepage": "https://sangens.github.io/react-query-manager-docs/index.html",
+  "homepage": "https://sangens.github.io/react-query-manager/index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SaNgeNs/react-query-manager"
+  },
   "files": [
     "dist"
   ],
@@ -15,7 +19,7 @@
     "dev:tsup": "tsup --watch",
     "dev:server": "node esbuild.config.js --start",
     "dev": "npm run dev:server",
-    "docs": "npx typedoc --readme README-docs.md"
+    "docs": "npx typedoc"
   },
   "keywords": [
     "react",
@@ -34,7 +38,7 @@
     "auto-cache",
     "react-query-helper"
   ],
-  "author": "sangens",
+  "author": "SaNgeNs",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^18.3.4",

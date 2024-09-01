@@ -14,15 +14,15 @@ import { helpersQueryKeys } from '../utils/queries';
 import { invalidateQueryCacheKeys, setQueryCacheData } from '../internal/utils/queries';
 
 /** @notExported */
-type TMutateVariables<TPath extends string, TFormData> = {
+type MutateVariables<TPath extends string, TFormData> = {
   data: TFormData;
   resource: Resource<TPath>;
   apiClientParams?: Partial<ApiProps>;
 }
 
 /** @notExported */
-type TCreateOneVariables<TPath extends string, TFormData> = (
-  Omit<TMutateVariables<TPath, TFormData>, 'resource'> & {
+type CreateOneVariables<TPath extends string, TFormData> = (
+  Omit<MutateVariables<TPath, TFormData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
   }
 );
@@ -67,8 +67,8 @@ type TCreateOneVariables<TPath extends string, TFormData> = (
  * @template TData - The expected shape of the data returned by the API.
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
- * @param {Object} options The options for the hook.
- * @returns {Object} An object with a single properties, `create` and `mutation`.
+ * @param options The options for the hook.
+ * @returns An object with a single properties, `create` and `mutation`.
  *
  * `create` is a function that takes the data and params of the resource to create,
  * and calls the mutation function with the data and the resource.
@@ -87,7 +87,7 @@ export const useCreate = <
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     FetcherResponse<TData>,
-    TMutateVariables<TPath, TFormData>
+    MutateVariables<TPath, TFormData>
   >;
   extraResources?: Resource<any>[];
 }) => {
@@ -97,7 +97,7 @@ export const useCreate = <
   const { mutate, ...mutation } = useMutation<
     FetcherResponse<TData>,
     CustomError,
-    TMutateVariables<TPath, TFormData>
+    MutateVariables<TPath, TFormData>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -155,7 +155,7 @@ export const useCreate = <
     },
   });
 
-  const create = ({ resourceParams, ...variables }: TCreateOneVariables<TPath, TFormData>) => {
+  const create = ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,

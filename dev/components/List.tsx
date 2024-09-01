@@ -6,7 +6,7 @@ import { useGetInfiniteList } from '../../src/hooks/use-get-infinite-list';
 
 const API_POSTS_RESOURCE_PATH = 'posts';
 
-type TPost = {
+type Post = {
   userId: string;
   id: string;
   title: string;
@@ -16,34 +16,34 @@ type TPost = {
 export default function List() {
   const [selectedPostId, setSelectedPostId] = useState<string>('');
 
-  const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const queryPosts = useGetList<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     params: { _page: 1, _limit: 5 },
   });
 
-  const queryPost = useGetOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const queryPost = useGetOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     id: selectedPostId,
     queryOptions: { enabled: !!selectedPostId },
   });
 
-  const updatePost = useUpdateOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const updatePost = useUpdateOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const updatePosts = useUpdateMany<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const updatePosts = useUpdateMany<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const deletePost = useDeleteOne<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const deletePost = useDeleteOne<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const deletePosts = useDeleteMany<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const deletePosts = useDeleteMany<typeof API_POSTS_RESOURCE_PATH, Post>({
     resourcePath: API_POSTS_RESOURCE_PATH,
   });
 
-  const infiniteQueryPosts = useGetInfiniteList<typeof API_POSTS_RESOURCE_PATH, TPost>({
+  const infiniteQueryPosts = useGetInfiniteList<typeof API_POSTS_RESOURCE_PATH, Post>({
     resource: { path: API_POSTS_RESOURCE_PATH, params: {} },
     pagination: { page: ['_page'], per_page: ['_limit', 10] },
   });
