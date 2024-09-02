@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable import/no-extraneous-dependencies */
-import dotenv from 'dotenv';
-import esbuild from 'esbuild';
-import process from 'node:process';
+
+const dotenv = require('dotenv');
+const esbuild = require('esbuild');
+const process = require('node:process');
 
 dotenv.config();
 const args = process.argv;

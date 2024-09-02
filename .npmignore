@@ -1,7 +1,7 @@
 tsup.config.ts
 tsconfig.json
 package-lock.json
-esbuild.config.js
+esbuild.config.cjs
 .eslintrc.cjs
 .npmignore
 src

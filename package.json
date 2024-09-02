@@ -1,25 +1,16 @@
 {
   "name": "react-query-manager",
+  "author": "SaNgeNs",
   "version": "1.0.1",
   "description": "react-query-manager",
-  "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "homepage": "https://sangens.github.io/react-query-manager/index.html",
   "repository": {
     "type": "git",
     "url": "https://github.com/SaNgeNs/react-query-manager"
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "dev:tsup": "tsup --watch",
-    "dev:server": "node esbuild.config.js --start",
-    "dev": "npm run dev:server",
-    "docs": "npx typedoc"
   },
   "keywords": [
     "react",
@@ -38,7 +29,16 @@
     "auto-cache",
     "react-query-helper"
   ],
-  "author": "SaNgeNs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev:tsup": "tsup --watch",
+    "dev:server": "node esbuild.config.cjs --start",
+    "dev": "npm run dev:server",
+    "docs": "npx typedoc"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^18.3.4",
