@@ -91,7 +91,7 @@ const useUpdateBase = <
       ...(mutationOptions?.mutationKey ? mutationOptions.mutationKey : []),
     ] as MutateKey<TPath>,
     mutationFn: async (variables) => {
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
 
       if (mutationOptions?.mutationFn) {
         const results = await mutationOptions?.mutationFn({ apiClient, variables, url });
@@ -103,7 +103,7 @@ const useUpdateBase = <
         : [(variables as MutateBaseVariables<TPath, TFormData, 'one'>).id];
 
       const actions = await Promise.allSettled(ids.map((id) => apiClient<TData>({
-        url: `${url}${id}/`,
+        url: `${url}${id}${apiEnsureTrailingSlash ? '/' : ''}`,
         method: 'PATCH',
         data: variables.data,
         ...variables.apiClientParams,

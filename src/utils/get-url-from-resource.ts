@@ -22,7 +22,7 @@ import { removeFirstAndLastSlash } from '../internal/utils/internal';
  * getUrlFromResource(resource, false); // 'users/1/messages'
  * getUrlFromResource(resource, true);  // 'users/1/messages/'
  */
-export const getUrlFromResource = <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash: boolean) => {
+export const getUrlFromResource = <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash?: boolean) => {
   const url = removeFirstAndLastSlash(resource.path.replace(/{(\w+)}/g, (_, key: keyof Resource<TPath>['params']) => {
     return resource.params[key]!.toString();
   }));

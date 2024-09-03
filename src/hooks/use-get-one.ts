@@ -92,7 +92,7 @@ export const useGetOne = <TPath extends string, TData = any>({
         id, resource, params, queryKey,
       };
 
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
 
       if (queryOptions?.queryFn) {
         const results = await queryOptions?.queryFn({ apiClient, variables, url });
@@ -100,7 +100,10 @@ export const useGetOne = <TPath extends string, TData = any>({
       }
 
       const result = await apiClient({
-        url: `${url}${variables.id}/`, method: 'GET', params, ...apiClientParams,
+        url: `${url}${variables.id}${apiEnsureTrailingSlash ? '/' : ''}`,
+        method: 'GET',
+        params,
+        ...apiClientParams,
       });
 
       return result;

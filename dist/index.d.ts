@@ -1227,7 +1227,7 @@ declare const resolveToastValue: <TValue, TArg>(valOrFunction: react_hot_toast.V
  * getUrlFromResource(resource, false); // 'users/1/messages'
  * getUrlFromResource(resource, true);  // 'users/1/messages/'
  */
-declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash: boolean) => string;
+declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash?: boolean) => string;
 
 /**
  * Deletes items from the query cache based on provided IDs.
