@@ -91,7 +91,7 @@ export const useCreate = <
   >;
   extraResources?: Resource<any>[];
 }) => {
-  const { apiUrl, apiClient } = useRQWrapperContext();
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
   const queryClient = useQueryClient();
 
   const { mutate, ...mutation } = useMutation<
@@ -106,7 +106,7 @@ export const useCreate = <
       ...(mutationOptions?.mutationKey ? mutationOptions.mutationKey : []),
     ] as MutateKey<TPath>,
     mutationFn: async (variables) => {
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource)}/`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (mutationOptions?.mutationFn) {
         const results = await mutationOptions?.mutationFn({ apiClient, variables, url });

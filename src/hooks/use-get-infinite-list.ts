@@ -79,7 +79,7 @@ export const useGetInfiniteList = <TPath extends string, TData = any>({
   apiClientParams?: Partial<ApiProps>;
   pagination: QueryInfinitePagination;
 }) => {
-  const { apiUrl, apiClient } = useRQWrapperContext();
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useInfiniteQuery<
     FetcherResponse<TData[]>,
@@ -127,7 +127,7 @@ export const useGetInfiniteList = <TPath extends string, TData = any>({
         queryKey,
       };
 
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource)}/`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (queryOptions?.queryFn) {
         const results = await queryOptions?.queryFn({ apiClient, variables, url });

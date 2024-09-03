@@ -70,7 +70,7 @@ export const useGetOne = <TPath extends string, TData = any>({
   params?: QueryOneKey<TPath>['4'];
   apiClientParams?: Partial<ApiProps>;
 }) => {
-  const { apiUrl, apiClient } = useRQWrapperContext();
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useQuery<
     FetcherResponse<TData>,
@@ -92,7 +92,7 @@ export const useGetOne = <TPath extends string, TData = any>({
         id, resource, params, queryKey,
       };
 
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource)}/`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (queryOptions?.queryFn) {
         const results = await queryOptions?.queryFn({ apiClient, variables, url });

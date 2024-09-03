@@ -67,7 +67,9 @@ const useDeleteBase = <
     extraResources = [],
     type = 'many' as TType,
   }: DeleteBase<TPath, TData, TType>) => {
-  const { apiUrl, apiClient, toastUndo } = useRQWrapperContext();
+  const {
+    apiUrl, apiClient, apiEnsureTrailingSlash, toastUndo,
+  } = useRQWrapperContext();
   const queryClient = useQueryClient();
 
   const snapshot = useRef<Snapshot>([]);
@@ -89,7 +91,7 @@ const useDeleteBase = <
       ...(mutationOptions?.mutationKey ? mutationOptions.mutationKey : []),
     ] as MutateKey<TPath>,
     mutationFn: async (variables) => {
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource)}/`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (mutationOptions?.mutationFn) {
         const results = await mutationOptions?.mutationFn({ apiClient, variables, url });

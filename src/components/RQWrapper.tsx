@@ -15,6 +15,7 @@ import { removeFirstAndLastSlash, undoEventEmitter } from '../internal/utils/int
 
 const Context = createContext<RQWrapperContextProps>({
   apiUrl: '',
+  apiEnsureTrailingSlash: false,
   apiClient: fetcher,
   toastUndo: () => {},
 });
@@ -73,6 +74,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  * @param props.apiUrl - The base URL for all API requests.
  * @param props.apiClient - The function to use for making API requests.
  *   Defaults to `fetcher` from `react-query-manager`.
+ * @param props.apiEnsureTrailingSlash - If `true`, the returned URL will have a trailing slash.
  * @param props.apiAuthorization - A function to get the authorization
  *   token for API requests. If not provided, or if the function returns an empty
  *   string, no authorization token will be used.
@@ -103,6 +105,7 @@ export function RQWrapper({
   config = {},
   apiUrl,
   apiClient = fetcher,
+  apiEnsureTrailingSlash = false,
   apiAuthorization,
   apiHeaders,
   apiOnSuccess,
@@ -119,6 +122,7 @@ export function RQWrapper({
   apiHeaders?: () => ApiProps['headers'];
   apiOnSuccess?: ApiProps['onSuccess'];
   apiOnError?: ApiProps['onError'];
+  apiEnsureTrailingSlash?: boolean;
   isDevTools?: boolean;
   devToolsOptions?: ReactQueryDevtoolsProps;
   toast?: {
@@ -229,8 +233,9 @@ export function RQWrapper({
   const contextValue = useMemo<RQWrapperContextProps>(() => ({
     apiUrl: removeFirstAndLastSlash(apiUrl),
     apiClient: fetch,
+    apiEnsureTrailingSlash,
     toastUndo,
-  }), [apiUrl, fetch, toastUndo]);
+  }), [apiUrl, fetch, toastUndo, apiEnsureTrailingSlash]);
 
   return (
     <QueryClientProvider client={queryClient}>

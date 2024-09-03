@@ -59,16 +59,20 @@ export type ApiClient = <TData = any>(args: ApiProps) => Promise<FetcherResponse
 export type RQWrapperContextProps = {
   apiUrl: string;
   apiClient: ApiClient;
+  apiEnsureTrailingSlash: boolean;
   toastUndo: (data: {
     message: string;
     type: UndoTypes;
   }) => void;
 };
 
-export type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Omit<
-  UseQueryOptions<TData, Error, TData, TQueryKey>,
-  'queryKey' | 'queryFn'
->) & {
+export type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (
+  Partial<
+    Omit<
+    UseQueryOptions<TData, Error, TData, TQueryKey>,
+    'queryKey' | 'queryFn'
+  >>
+) & {
   queryKey?: any[];
   queryFn?: (data: {
     apiClient: ApiClient;
@@ -77,10 +81,12 @@ export type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[]
   }) => Promise<FetcherResponse> | FetcherResponse;
 };
 
-export type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Omit<
-  UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>,
-  'queryKey' | 'queryFn'
->) & {
+export type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (
+  Partial<Omit<
+    UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>,
+    'queryKey' | 'queryFn'
+  >>
+) & {
   queryKey?: any[];
   queryFn?: (data: {
     apiClient: ApiClient;
@@ -89,10 +95,12 @@ export type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey exten
   }) => Promise<FetcherResponse> | FetcherResponse;
 };
 
-export type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (Omit<
-  UseMutationOptions<TData, Error, TVariables, any>,
-  'mutationKey' | 'mutationFn'
->) & {
+export type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (
+  Partial<Omit<
+    UseMutationOptions<TData, Error, TVariables, any>,
+    'mutationKey' | 'mutationFn'
+  >>
+) & {
   mutationKey?: any[];
   mutationFn?: (data: {
     apiClient: ApiClient;

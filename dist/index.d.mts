@@ -65,12 +65,13 @@ type ApiClient = <TData = any>(args: ApiProps) => Promise<FetcherResponse<TData>
 type RQWrapperContextProps = {
     apiUrl: string;
     apiClient: ApiClient;
+    apiEnsureTrailingSlash: boolean;
     toastUndo: (data: {
         message: string;
         type: UndoTypes;
     }) => void;
 };
-type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Omit<UseQueryOptions<TData, Error, TData, TQueryKey>, 'queryKey' | 'queryFn'>) & {
+type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseQueryOptions<TData, Error, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
@@ -78,7 +79,7 @@ type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVari
         variables: TVariables;
     }) => Promise<FetcherResponse> | FetcherResponse;
 };
-type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Omit<UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>, 'queryKey' | 'queryFn'>) & {
+type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
@@ -86,7 +87,7 @@ type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[
         variables: TVariables;
     }) => Promise<FetcherResponse> | FetcherResponse;
 };
-type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (Omit<UseMutationOptions<TData, Error, TVariables, any>, 'mutationKey' | 'mutationFn'>) & {
+type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (Partial<Omit<UseMutationOptions<TData, Error, TVariables, any>, 'mutationKey' | 'mutationFn'>>) & {
     mutationKey?: any[];
     mutationFn?: (data: {
         apiClient: ApiClient;
@@ -1089,6 +1090,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  * @param props.apiUrl - The base URL for all API requests.
  * @param props.apiClient - The function to use for making API requests.
  *   Defaults to `fetcher` from `react-query-manager`.
+ * @param props.apiEnsureTrailingSlash - If `true`, the returned URL will have a trailing slash.
  * @param props.apiAuthorization - A function to get the authorization
  *   token for API requests. If not provided, or if the function returns an empty
  *   string, no authorization token will be used.
@@ -1114,7 +1116,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  *   The `customUndoContent` property can be used to customize the content of the toast when the user
  *   clicks the "UNDO" button.
  */
-declare function RQWrapper({ children, config, apiUrl, apiClient, apiAuthorization, apiHeaders, apiOnSuccess, apiOnError, isDevTools, devToolsOptions, toast: toastProps, }: {
+declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrailingSlash, apiAuthorization, apiHeaders, apiOnSuccess, apiOnError, isDevTools, devToolsOptions, toast: toastProps, }: {
     children: ReactNode;
     config?: QueryClientConfig;
     apiUrl: string;
@@ -1123,6 +1125,7 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiAuthorizati
     apiHeaders?: () => ApiProps['headers'];
     apiOnSuccess?: ApiProps['onSuccess'];
     apiOnError?: ApiProps['onError'];
+    apiEnsureTrailingSlash?: boolean;
     isDevTools?: boolean;
     devToolsOptions?: ReactQueryDevtoolsProps;
     toast?: {
@@ -1206,6 +1209,14 @@ declare const resolveToastValue: <TValue, TArg>(valOrFunction: react_hot_toast.V
 /**
  * Takes a `Resource` object and returns its path as a string,
  * with any path parameters replaced with their corresponding values.
+ * Optionally, it can ensure that the returned URL has a trailing slash.
+ *
+ * @template TPath - A string literal representing the path template with placeholders.
+ *
+ * @param {Resource<TPath>} resource - The `Resource` object containing the path and parameters.
+ * @param {boolean} ensureTrailingSlash - If `true`, the returned URL will have a trailing slash.
+ *
+ * @returns {string} The URL with all placeholders replaced by the corresponding values from `params`.
  *
  * @example
  * const resource = {
@@ -1213,9 +1224,10 @@ declare const resolveToastValue: <TValue, TArg>(valOrFunction: react_hot_toast.V
  *   params: { id: 1 },
  * };
  *
- * getUrlFromResource(resource); // 'users/1/messages'
+ * getUrlFromResource(resource, false); // 'users/1/messages'
+ * getUrlFromResource(resource, true);  // 'users/1/messages/'
  */
-declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPath>) => string;
+declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash: boolean) => string;
 
 /**
  * Deletes items from the query cache based on provided IDs.

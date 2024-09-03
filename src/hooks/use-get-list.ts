@@ -67,7 +67,7 @@ export const useGetList = <TPath extends string, TData = any>({
   params?: QueryListKey<TPath>['3'];
   apiClientParams?: Partial<ApiProps>;
 }) => {
-  const { apiUrl, apiClient } = useRQWrapperContext();
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useQuery<
     FetcherResponse<TData[]>,
@@ -86,7 +86,7 @@ export const useGetList = <TPath extends string, TData = any>({
     queryFn: async ({ queryKey }) => {
       const variables = { resource, params, queryKey };
 
-      const url = `${apiUrl}/${getUrlFromResource(variables.resource)}/`;
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (queryOptions?.queryFn) {
         const results = await queryOptions?.queryFn({ apiClient, variables, url });
