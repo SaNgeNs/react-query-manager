@@ -10,7 +10,7 @@
   "homepage": "https://sangens.github.io/react-query-manager/index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SaNgeNs/react-query-manager"
+    "url": "git+https://github.com/SaNgeNs/react-query-manager.git"
   },
   "keywords": [
     "react",
