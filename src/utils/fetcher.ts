@@ -6,21 +6,20 @@ import { ApiClient } from '../type';
 import { CustomError } from './custom-error';
 
 /**
- * Deletes empty parameters from the given object.
- * @param {any} params The object to process.
- * @returns {Record<string, unknown>} The new object with all empty parameters removed.
+ * Filters out null, undefined, and empty string values from the provided parameters object,
+ * while keeping boolean and numeric values intact. The function returns a new object containing
+ * only the non-empty parameters.
+ *
+ * @param {Record<string, any>} params - The object containing the parameters to be filtered.
+ * @returns {Record<string, unknown>} A new object with only the non-empty parameters.
  */
-const deleteEmptyParams = (params: any) => {
+const filterEmptyParams = (params: any) => {
   if (params !== null && typeof params === 'object') {
     const optionParams: Record<string, unknown> = {};
     const entries = Object.entries(params);
 
     entries.forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        if (value.length > 0) { optionParams[key] = value; }
-      } else if (value instanceof Object) {
-        if (value && Object.keys(value).length > 0) { optionParams[key] = value; }
-      } else if (value || typeof value === 'boolean') {
+      if (value || typeof value === 'boolean' || typeof value === 'number') {
         optionParams[key] = value;
       }
     });
@@ -79,7 +78,7 @@ export const fetcher: ApiClient = (args) => {
     let URL = args.url;
 
     if (args.params) {
-      const queryParams = deleteEmptyParams(args.params);
+      const queryParams = filterEmptyParams(args.params);
 
       if (args.queryParamsSerializer) {
         URL += `?${args.queryParamsSerializer(args.params)}`;
