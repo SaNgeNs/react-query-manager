@@ -13,9 +13,6 @@ const config = {
   entryPoints: ['dev/index.tsx'],
   outfile: 'dev/public/build/bundle.js',
   bundle: true,
-  define: {
-    NODE_ENV: 'development',
-  },
 };
 
 if (args.includes('--start')) {

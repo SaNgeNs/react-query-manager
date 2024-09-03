@@ -105,10 +105,6 @@ export const fetcher: ApiClient = (args) => {
 
     const [startUrl, endUrl] = URL.split('?');
 
-    if (startUrl.charAt(startUrl.length - 1) !== '/' && !endUrl) {
-      return `${startUrl}/${`${endUrl ? `?${endUrl}` : ''}`}`;
-    }
-
     return `${startUrl}${endUrl ? `?${endUrl}` : ''}`;
   })();
 
