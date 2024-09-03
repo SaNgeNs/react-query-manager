@@ -6,6 +6,32 @@ import { ApiClient } from '../type';
 import { CustomError } from './custom-error';
 
 /**
+ * Deletes empty parameters from the given object.
+ * @param {any} params The object to process.
+ * @returns {Record<string, unknown>} The new object with all empty parameters removed.
+ */
+const deleteEmptyParams = (params: any) => {
+  if (params !== null && typeof params === 'object') {
+    const optionParams: Record<string, unknown> = {};
+    const entries = Object.entries(params);
+
+    entries.forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        if (value.length > 0) { optionParams[key] = value; }
+      } else if (value instanceof Object) {
+        if (value && Object.keys(value).length > 0) { optionParams[key] = value; }
+      } else if (value || typeof value === 'boolean') {
+        optionParams[key] = value;
+      }
+    });
+
+    return optionParams;
+  }
+
+  return {};
+};
+
+/**
  * It replaces all instances of the characters `:`, `$`, `,`, `+`, `[`, and `]` with their
  * URI encoded counterparts
  *
@@ -53,20 +79,22 @@ export const fetcher: ApiClient = (args) => {
     let URL = args.url;
 
     if (args.params) {
+      const queryParams = deleteEmptyParams(args.params);
+
       if (args.queryParamsSerializer) {
         URL += `?${args.queryParamsSerializer(args.params)}`;
-      } else if (Object.keys(args.params).length > 0) {
+      } else if (Object.keys(queryParams).length > 0) {
         const str = [];
 
-        for (const p in args.params) {
-          if (args.params.hasOwnProperty(p)) {
-            if (Array.isArray(args.params[p])) {
-              args.params[p].forEach((value) => {
+        for (const p in queryParams) {
+          if (queryParams.hasOwnProperty(p)) {
+            if (Array.isArray(queryParams[p])) {
+              queryParams[p].forEach((value) => {
                 str.push(`${encode(p)}${args.queryArrayParamStyle === 'indexedArray' ? '[]' : ''}=${encode(value)}`);
               });
             } else {
               str.push(
-                `${encode(p)}=${encode((args.params as any)[p])}`,
+                `${encode(p)}=${encode((queryParams as any)[p])}`,
               );
             }
           }
