@@ -213,7 +213,7 @@ const useDeleteBase = <
 /**
  * A hook that helps you delete a single resource.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by removing the resource from the cache before
  * the deletion request is sent. If the deletion fails, the resource is restored in the cache.
  *
@@ -258,7 +258,7 @@ export const useDeleteOne = <
 /**
  * A hook that helps you delete multiple resources at once.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by removing the resources from the cache before
  * the deletion requests are sent. If any deletion fails, the resources are restored in the cache.
  *

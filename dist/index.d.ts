@@ -122,6 +122,8 @@ type QueryInfiniteListKey<TPath extends string> = ['get-infinite-list', Resource
 type QueryOneKey<TPath extends string> = ['get-one', Resource<TPath>['path'], Resource<TPath>['params'], string, Record<string, any>, ...any[]];
 type MutateTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-many' | 'create';
 type MutateKey<TPath extends string> = [MutateTypes, Resource<TPath>['path'], ...any[]];
+type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
+type MutateDataKey<TPath extends string> = ['mutate-data', Resource<TPath>['path'], ...any[]];
 /**
  * A utility type that extracts the first `N` elements from a tuple type `T`.
  * If the tuple `T` has fewer than `N` elements, it returns the entire tuple.
@@ -331,7 +333,7 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
 /**
  * A hook that helps you delete a single resource.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by removing the resource from the cache before
  * the deletion request is sent. If the deletion fails, the resource is restored in the cache.
  *
@@ -465,7 +467,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
 /**
  * A hook that helps you delete multiple resources at once.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by removing the resources from the cache before
  * the deletion requests are sent. If any deletion fails, the resources are restored in the cache.
  *
@@ -624,7 +626,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
 /**
  * A hook that helps you update a single resource.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.
@@ -768,7 +770,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
 /**
  * A hook that helps you update multiple resources.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.
@@ -922,7 +924,7 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
 /**
  * A hook that helps you create a new resource.
  *
- * The hook uses `useMutation` under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
  *
  * The hook returns an object with a single property, `create`, which is a function
  * that takes the data and params of the resource to create, and calls the mutation
@@ -1341,4 +1343,4 @@ declare const helpersQueryKeys: {
     getInfiniteList: (itemResource: Resource<any>) => TakeFirstKeys<QueryInfiniteListKey<any>, 3>;
 };
 
-export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

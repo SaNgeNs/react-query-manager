@@ -149,6 +149,10 @@ export type MutateTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-
 
 export type MutateKey<TPath extends string> = [MutateTypes, Resource<TPath>['path'], ...any[]];
 
+export type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
+
+export type MutateDataKey<TPath extends string> = ['mutate-data', Resource<TPath>['path'], ...any[]];
+
 /**
  * A utility type that extracts the first `N` elements from a tuple type `T`.
  * If the tuple `T` has fewer than `N` elements, it returns the entire tuple.
