@@ -120,9 +120,9 @@ type QueryInfinitePagination = {
 };
 type QueryInfiniteListKey<TPath extends string> = ['get-infinite-list', Resource<TPath>['path'], Resource<TPath>['params'], QueryInfinitePagination, Record<string, any>, ...any[]];
 type QueryOneKey<TPath extends string> = ['get-one', Resource<TPath>['path'], Resource<TPath>['params'], string, Record<string, any>, ...any[]];
+type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
 type MutateTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-many' | 'create';
 type MutateKey<TPath extends string> = [MutateTypes, Resource<TPath>['path'], ...any[]];
-type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
 type MutateDataKey<TPath extends string> = ['mutate-data', Resource<TPath>['path'], ...any[]];
 /**
  * A utility type that extracts the first `N` elements from a tuple type `T`.
@@ -1405,6 +1405,34 @@ declare const resolveToastValue: <TValue, TArg>(valOrFunction: react_hot_toast.V
 declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPath>, ensureTrailingSlash?: boolean) => string;
 
 /**
+ * Adds an item to the query cache based on provided data and cache keys.
+ *
+ * @template TData - The type of data stored in the cache.
+ * @param params - The parameters for the function.
+ * @param params.queryClient - The QueryClient instance for interacting with the cache.
+ * @param params.data - The new data to add to the corresponding items.
+ * @param params.queryKeysOne - Cache keys for single queries that should be updated.
+ * @param params.queryKeysList - Cache keys for list queries that should be updated.
+ * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ *
+ * @example
+ * addItemFromQueryCache({
+ *   queryClient,
+ *   data: { name: 'New Item' },
+ *   queryKeysOne: [['get-one', 'posts', {}, '1']],
+ *   queryKeysList: [['get-list', 'posts', {}]],
+ *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
+ * });
+ */
+declare const addItemFromQueryCache: <TData = any>({ queryClient, data, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
+    queryClient: QueryClient;
+    data: OnlyObject;
+    queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
+    queryKeysList?: [QueryListKey<"">[0], ...any[]][];
+    queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
+}) => void;
+
+/**
  * Deletes items from the query cache based on provided IDs.
  *
  * @template TData - The type of data stored in the cache.
@@ -1431,36 +1459,7 @@ declare const deleteItemsFromQueryCache: <TData = any>({ queryClient, ids, query
     queryKeysList?: [QueryListKey<"">[0], ...any[]][];
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
 }) => void;
-/**
- * Updates items in the query cache based on provided IDs and new data.
- *
- * @template TData - The type of data stored in the cache.
- * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
- * @param params.data - The new data to update the corresponding items.
- * @param params.ids - The array of item IDs to update.
- * @param params.queryKeysOne - Cache keys for single queries that should be updated.
- * @param params.queryKeysList - Cache keys for list queries that should be updated.
- * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
- *
- * @example
- * updateItemsFromQueryCache({
- *   queryClient,
- *   data: { name: 'Updated Name' },
- *   ids: [1, 2, 3],
- *   queryKeysOne: [['get-one', 'posts', {}, '1']],
- *   queryKeysList: [['get-list', 'posts', {}]],
- *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
- * });
- */
-declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
-    queryClient: QueryClient;
-    data: OnlyObject;
-    ids: (string | number)[];
-    queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
-    queryKeysList?: [QueryListKey<"">[0], ...any[]][];
-    queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
-}) => void;
+
 /**
  * A utility object for generating query keys used in React Query.
  */
@@ -1514,6 +1513,108 @@ declare const helpersQueryKeys: {
      * // key: ['get-infinite-list', 'posts', {}]
      */
     getInfiniteList: (itemResource: Resource<any>) => TakeFirstKeys<QueryInfiniteListKey<any>, 3>;
+    /**
+     * Generates a data query key.
+     *
+     * @param itemResource - The resource object containing the path and parameters for the query.
+     * @returns The data query key.
+     *
+     * @example
+     * const key = helpersQueryKeys.getDataQuery(resource);
+     * // key: ['query-data', 'posts', {}]
+     */
+    getDataQuery: (itemResource: Resource<any>) => TakeFirstKeys<QueryDataKey<any>, 3>;
 };
 
-export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+/**
+ * Invalidates queries in the cache that match any of the specified key groups.
+ *
+ * This function uses the `predicate` option to filter queries whose keys match any of the key groups provided.
+ * A query's key is considered a match if it contains all the keys from at least one of the key groups.
+ * The function then invalidates all such matching queries using `queryClient.invalidateQueries`.
+ *
+ * @example
+ * import { invalidateMatchingQueries } from 'react-query-manager';
+ *
+ * // Define key groups where each group is an array of keys that must all be present in the queryKey to be considered a match.
+ * const keyGroups = [
+ *   ['path', 'get-list'],    // Key group 1
+ *   ['path', 'get-one'],  // Key group 2
+ * ];
+ *
+ * // Invalidate queries with keys matching any of the key groups
+ * invalidateMatchingQueries(queryClient, keyGroups);
+ *
+ * @param params
+ * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
+ * @param params.queryKeys - An array of arrays, where each inner array represents a group of keys that must all be present
+ *                           in a query's key for that query to be invalidated.
+ *                           Example: `[['path', 'get-list'], ['path', 'get-one']]`.
+ *
+ * This function:
+ * - Retrieves all cached queries.
+ * - Checks if the key of each query matches any of the provided key groups.
+ * - Invalidates the queries whose keys match any of the specified key groups.
+ *
+ * @returns {void} - This function does not return a value.
+ */
+declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
+    queryClient: QueryClient;
+    queryKeys: any[][];
+}) => void;
+
+/**
+ * Invalidates queries in the cache that have a key matching any of the specified `queryKeys`.
+ *
+ * @param params
+ * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
+ * @param params.queryKeys - An array of arrays of keys for which the corresponding queries should be invalidated.
+ *
+ * @example
+ * invalidateQueries({
+ *   queryClient,
+ *   queryKeys: [
+ *     ['get-list', 'path'],
+ *     ['get-one', 'path', '1'],
+ *   ],
+ * });
+ *
+ * @returns {void} - This function does not return a value.
+ */
+declare const invalidateQueries: ({ queryClient, queryKeys, }: {
+    queryClient: QueryClient;
+    queryKeys: any[][];
+}) => void;
+
+/**
+ * Updates items in the query cache based on provided IDs and new data.
+ *
+ * @template TData - The type of data stored in the cache.
+ * @param params - The parameters for the function.
+ * @param params.queryClient - The QueryClient instance for interacting with the cache.
+ * @param params.data - The new data to update the corresponding items.
+ * @param params.ids - The array of item IDs to update.
+ * @param params.queryKeysOne - Cache keys for single queries that should be updated.
+ * @param params.queryKeysList - Cache keys for list queries that should be updated.
+ * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ *
+ * @example
+ * updateItemsFromQueryCache({
+ *   queryClient,
+ *   data: { name: 'Updated Name' },
+ *   ids: [1, 2, 3],
+ *   queryKeysOne: [['get-one', 'posts', {}, '1']],
+ *   queryKeysList: [['get-list', 'posts', {}]],
+ *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
+ * });
+ */
+declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
+    queryClient: QueryClient;
+    data: OnlyObject;
+    ids: (string | number)[];
+    queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
+    queryKeysList?: [QueryListKey<"">[0], ...any[]][];
+    queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
+}) => void;
+
+export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

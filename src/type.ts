@@ -145,11 +145,11 @@ export type QueryInfiniteListKey<TPath extends string> = ['get-infinite-list', R
 
 export type QueryOneKey<TPath extends string> = ['get-one', Resource<TPath>['path'], Resource<TPath>['params'], string, Record<string, any>, ...any[]];
 
+export type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
+
 export type MutateTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-many' | 'create';
 
 export type MutateKey<TPath extends string> = [MutateTypes, Resource<TPath>['path'], ...any[]];
-
-export type QueryDataKey<TPath extends string> = ['query-data', Resource<TPath>['path'], Resource<TPath>['params'], Record<string, any>, ...any[]];
 
 export type MutateDataKey<TPath extends string> = ['mutate-data', Resource<TPath>['path'], ...any[]];
 

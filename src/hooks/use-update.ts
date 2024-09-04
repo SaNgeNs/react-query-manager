@@ -14,8 +14,7 @@ import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
 import { createSnapshot, undoEventEmitter } from '../internal/utils/internal';
 import { Snapshot } from '../internal/type';
-import { helpersQueryKeys, updateItemsFromQueryCache } from '../utils/queries';
-import { invalidateQueryCacheKeys } from '../internal/utils/queries';
+import { helpersQueryKeys, invalidateQueries, updateItemsFromQueryCache } from '../utils/queries';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TFormData, TType> = (
@@ -141,7 +140,7 @@ const useUpdateBase = <
           queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
         });
 
-        invalidateQueryCacheKeys({ queryClient, queryKeys });
+        invalidateQueries({ queryClient, queryKeys });
       }
 
       if (mutationOptions?.onSuccess) {

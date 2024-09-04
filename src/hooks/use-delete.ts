@@ -13,8 +13,7 @@ import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
 import { createSnapshot, undoEventEmitter } from '../internal/utils/internal';
 import { Snapshot } from '../internal/type';
-import { deleteItemsFromQueryCache, helpersQueryKeys } from '../utils/queries';
-import { invalidateQueryCacheKeys } from '../internal/utils/queries';
+import { deleteItemsFromQueryCache, helpersQueryKeys, invalidateQueries } from '../utils/queries';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TType> = (
@@ -133,7 +132,7 @@ const useDeleteBase = <
         queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
       });
 
-      invalidateQueryCacheKeys({ queryClient, queryKeys });
+      invalidateQueries({ queryClient, queryKeys });
 
       if (mutationOptions?.onSuccess) {
         mutationOptions.onSuccess(...rest);
