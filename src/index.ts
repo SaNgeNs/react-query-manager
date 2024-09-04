@@ -6,6 +6,8 @@ export * from './hooks/use-get-one';
 export * from './hooks/use-delete';
 export * from './hooks/use-update';
 export * from './hooks/use-create';
+export * from './hooks/use-data-query';
+export * from './hooks/use-data-mutate';
 
 export * from './components/RQWrapper';
 

@@ -912,13 +912,13 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
 };
 
 /** @notExported */
-type MutateVariables<TPath extends string, TFormData> = {
+type MutateVariables$1<TPath extends string, TFormData> = {
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
 };
 /** @notExported */
-type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables<TPath, TFormData>, 'resource'> & {
+type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables$1<TPath, TFormData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
 });
 /**
@@ -971,7 +971,7 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
  */
 declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, }: {
     resourcePath: Resource<TPath>["path"];
-    mutationOptions?: UseMutateProps<FetcherResponse<TData>, MutateVariables<TPath, TFormData>>;
+    mutationOptions?: UseMutateProps<FetcherResponse<TData>, MutateVariables$1<TPath, TFormData>>;
     extraResources?: Resource<any>[];
 }) => {
     mutation: {
@@ -989,10 +989,10 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
-        variables: MutateVariables<TPath, TFormData>;
+        variables: MutateVariables$1<TPath, TFormData>;
         error: null;
         isError: false;
         isIdle: false;
@@ -1005,11 +1005,11 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         error: CustomError;
-        variables: MutateVariables<TPath, TFormData>;
+        variables: MutateVariables$1<TPath, TFormData>;
         isError: true;
         isIdle: false;
         isPending: false;
@@ -1021,11 +1021,11 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
         data: FetcherResponse<TData>;
         error: null;
-        variables: MutateVariables<TPath, TFormData>;
+        variables: MutateVariables$1<TPath, TFormData>;
         isError: false;
         isIdle: false;
         isPending: false;
@@ -1037,9 +1037,182 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     };
     create: ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData>) => void;
+};
+
+/**
+ * A hook that helps you fetch a resource.
+ *
+ * The hook uses `useQuery` from `@tanstack/react-query` to fetch data and cache it.
+ * It accepts various query options and performs an API request to fetch a list of resources
+ * based on the provided `resource` and `params`. The hook supports additional query parameters
+ * and custom API client parameters.
+ *
+ * If a custom `queryFn` is provided, it will be used to perform the query; otherwise,
+ * the default API client method will be used. The `queryKey` is constructed based on
+ * the resource path and additional parameters to ensure proper caching and refetching.
+ *
+ * @example
+ * import { useDataQuery } from 'react-query-manager';
+ *
+ * type TData = { id: 1, name: 'Test' };
+ * const PATH = 'users/{id}/messages';
+ *
+ * const queryList = useDataQuery<typeof PATH, TData>({
+ *   resource: { path: PATH, params: { id: 1 } },
+ *   queryOptions: {
+ *     onSuccess: (data) => {
+ *       console.log('Data fetched successfully:', data);
+ *     },
+ *   },
+ *   params: { sortBy: 'date', order: 'asc' },
+ * });
+ *
+ * @template TPath - The API path as a string.
+ * @template TData - The expected shape of the data returned by the API.
+ *
+ * @param params The parameters for the hook.
+ * @param params.queryOptions - Additional options to configure the `useQuery`
+ * @param params.resource - The resource path and any static parameters for the API request.
+ * @param params.params - Dynamic query parameters for the API request.
+ * @param params.apiClientParams - Additional options to pass to the API client.
+ *
+ * @returns The result of the `useQuery` hook.
+ */
+declare const useDataQuery: <TPath extends string, TData = any>({ queryOptions, resource, params, apiClientParams, }: {
+    queryOptions?: UseQueryProps<FetcherResponse<TData>, QueryDataKey<TPath>, {
+        resource: Resource<TPath>;
+        params: QueryDataKey<TPath>["3"];
+        queryKey: QueryDataKey<TPath>;
+    }>;
+    resource: Resource<TPath>;
+    params?: QueryDataKey<TPath>["3"];
+    apiClientParams?: Partial<ApiProps>;
+}) => _tanstack_react_query.UseQueryResult<FetcherResponse<TData>, CustomError>;
+
+/** @notExported */
+type Variables<TPath extends string, TFormData> = {
+    data: TFormData;
+    resource: Resource<TPath>;
+    apiClientParams: Partial<ApiProps> & {
+        method: ApiProps['method'];
+    };
+};
+/** @notExported */
+type MutateVariables<TPath extends string, TFormData> = (Omit<Variables<TPath, TFormData>, 'resource'> & {
+    resourceParams: Resource<TPath>['params'];
+});
+/**
+ * A hook that helps you mutate a resource.
+ *
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
+ *
+ * @example
+ * import { useDataMutate } from 'react-query-manager';
+ *
+ * type TData = { id: 1, name: 'Test' };
+ * type TFormData = { name: string; email: string };
+ * const PATH = 'users/{id}/messages';
+ *
+ * const { mutate } = useDataMutate<typeof PATH, TData, TFormData>({
+ *   resourcePath: PATH,
+ * });
+ *
+ * mutate({
+ *   data: {
+ *     name: 'John Doe',
+ *     email: 'john@example.com',
+ *   },
+ *   resourceParams: {
+ *     id: 10,
+ *   },
+ * });
+ *
+ * @template TPath - The API path as a string.
+ * @template TData - The expected shape of the data returned by the API.
+ * @template TFormData - The shape of the data that will be sent to the API during the mutation.
+ *
+ * @param props The options for the hook.
+ *
+ * @returns An object with `mutate` and `mutation`.
+ *
+ * `mutate` is a function to perform the update operation.
+ * Accepts the data and params of the resource.
+ *
+ * `mutation` is result `useMutation` without propery `mutate`
+ */
+declare const useDataMutate: <TPath extends string, TData = any, TFormData = any>({ resourcePath, mutationOptions, }: {
+    resourcePath: Resource<TPath>["path"];
+    mutationOptions?: UseMutateProps<FetcherResponse<TData>, Variables<TPath, TFormData>>;
+}) => {
+    mutation: {
+        data: undefined;
+        variables: undefined;
+        error: null;
+        isError: false;
+        isIdle: true;
+        isPending: false;
+        isSuccess: false;
+        status: "idle";
+        reset: () => void;
+        context: unknown;
+        failureCount: number;
+        failureReason: CustomError | null;
+        isPaused: boolean;
+        submittedAt: number;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+    } | {
+        data: undefined;
+        variables: Variables<TPath, TFormData>;
+        error: null;
+        isError: false;
+        isIdle: false;
+        isPending: true;
+        isSuccess: false;
+        status: "pending";
+        reset: () => void;
+        context: unknown;
+        failureCount: number;
+        failureReason: CustomError | null;
+        isPaused: boolean;
+        submittedAt: number;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+    } | {
+        data: undefined;
+        error: CustomError;
+        variables: Variables<TPath, TFormData>;
+        isError: true;
+        isIdle: false;
+        isPending: false;
+        isSuccess: false;
+        status: "error";
+        reset: () => void;
+        context: unknown;
+        failureCount: number;
+        failureReason: CustomError | null;
+        isPaused: boolean;
+        submittedAt: number;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+    } | {
+        data: FetcherResponse<TData>;
+        error: null;
+        variables: Variables<TPath, TFormData>;
+        isError: false;
+        isIdle: false;
+        isPending: false;
+        isSuccess: true;
+        status: "success";
+        reset: () => void;
+        context: unknown;
+        failureCount: number;
+        failureReason: CustomError | null;
+        isPaused: boolean;
+        submittedAt: number;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+    };
+    mutate: ({ resourceParams, ...variables }: MutateVariables<TPath, TFormData>) => Promise<void>;
 };
 
 /**
@@ -1343,4 +1516,4 @@ declare const helpersQueryKeys: {
     getInfiniteList: (itemResource: Resource<any>) => TakeFirstKeys<QueryInfiniteListKey<any>, 3>;
 };
 
-export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
