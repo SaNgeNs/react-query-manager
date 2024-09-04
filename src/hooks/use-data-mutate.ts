@@ -29,7 +29,7 @@ type MutateVariables<TPath extends string, TFormData> = (
 /**
  * A hook that helps you mutate a resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  *
  * @example
  * import { useDataMutate } from 'react-query-manager';
@@ -57,6 +57,8 @@ type MutateVariables<TPath extends string, TFormData> = (
  * @template TFormData - The shape of the data that will be sent to the API during the mutation.
  *
  * @param props The options for the hook.
+ *
+ * @returns An object with `mutate` and `mutation`.
  *
  * `mutate` is a function to perform the update operation.
  * Accepts the data and params of the resource.

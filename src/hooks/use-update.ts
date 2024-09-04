@@ -223,7 +223,7 @@ const useUpdateBase = <
 /**
  * A hook that helps you update a single resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.
@@ -272,7 +272,7 @@ export const useUpdateOne = <
 /**
  * A hook that helps you update multiple resources.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.

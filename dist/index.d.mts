@@ -333,7 +333,7 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
 /**
  * A hook that helps you delete a single resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  * It performs an optimistic update by removing the resource from the cache before
  * the deletion request is sent. If the deletion fails, the resource is restored in the cache.
  *
@@ -626,7 +626,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
 /**
  * A hook that helps you update a single resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.
@@ -770,7 +770,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
 /**
  * A hook that helps you update multiple resources.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  * It performs an optimistic update by immediately applying the update to the cache before
  * the update request is sent. If the update request fails, the previous state is restored
  * in the cache.
@@ -924,7 +924,7 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
 /**
  * A hook that helps you create a new resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  *
  * The hook returns an object with a single property, `create`, which is a function
  * that takes the data and params of the resource to create, and calls the mutation

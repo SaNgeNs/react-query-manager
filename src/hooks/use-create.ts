@@ -30,7 +30,7 @@ type CreateOneVariables<TPath extends string, TFormData> = (
 /**
  * A hook that helps you create a new resource.
  *
- * The hook uses `useMutation` from `@tanstack/react-query under the hood, so it accepts all the same options.
+ * The hook uses `useMutation` from `@tanstack/react-query` under the hood, so it accepts all the same options.
  *
  * The hook returns an object with a single property, `create`, which is a function
  * that takes the data and params of the resource to create, and calls the mutation
