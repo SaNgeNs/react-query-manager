@@ -71,23 +71,24 @@ type RQWrapperContextProps = {
         type: UndoTypes;
     }) => void;
 };
-type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseQueryOptions<TData, Error, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
+type QueryResponse<TData = any> = FetcherResponse<TData> | undefined;
+type UseQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseQueryOptions<TData, Error, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
         url: string;
         variables: TVariables;
-    }) => Promise<FetcherResponse> | FetcherResponse;
+    }) => Promise<QueryResponse> | QueryResponse;
 };
-type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
+type UseInfiniteQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
         url: string;
         variables: TVariables;
-    }) => Promise<FetcherResponse> | FetcherResponse;
+    }) => Promise<QueryResponse> | QueryResponse;
 };
-type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (Partial<Omit<UseMutationOptions<TData, Error, TVariables, any>, 'mutationKey' | 'mutationFn'>>) & {
+type UseMutateProps<TData extends QueryResponse | QueryResponse[], TVariables = {}> = (Partial<Omit<UseMutationOptions<TData, Error, TVariables, any>, 'mutationKey' | 'mutationFn'>>) & {
     mutationKey?: any[];
     mutationFn?: (data: {
         apiClient: ApiClient;
@@ -183,7 +184,7 @@ type TakeFirstKeys<T extends any[], N extends number, R extends any[] = []> = R[
  * @returns The result of the `useQuery` hook.
  */
 declare const useGetList: <TPath extends string, TData = any>({ queryOptions, resource, params, apiClientParams, }: {
-    queryOptions?: UseQueryProps<FetcherResponse<TData[]>, QueryListKey<TPath>, {
+    queryOptions?: UseQueryProps<QueryResponse<TData[]>, QueryListKey<TPath>, {
         resource: Resource<TPath>;
         params: QueryListKey<TPath>["3"];
         queryKey: QueryListKey<TPath>;
@@ -191,7 +192,7 @@ declare const useGetList: <TPath extends string, TData = any>({ queryOptions, re
     resource: Resource<TPath>;
     params?: QueryListKey<TPath>["3"];
     apiClientParams?: Partial<ApiProps>;
-}) => _tanstack_react_query.UseQueryResult<FetcherResponse<TData[]>, CustomError>;
+}) => _tanstack_react_query.UseQueryResult<QueryResponse<TData[]>, CustomError>;
 
 /**
  * A hook that helps you fetch a infinite list of resources.
@@ -244,7 +245,7 @@ declare const useGetList: <TPath extends string, TData = any>({ queryOptions, re
  * @returns The result of the `useInfiniteQuery` hook.
  */
 declare const useGetInfiniteList: <TPath extends string, TData = any>({ queryOptions, resource, params, apiClientParams, pagination, }: {
-    queryOptions?: UseInfiniteQueryProps<FetcherResponse<TData[]>, QueryInfiniteListKey<TPath>, {
+    queryOptions?: UseInfiniteQueryProps<QueryResponse<TData[]>, QueryInfiniteListKey<TPath>, {
         resource: Resource<TPath>;
         params: QueryInfiniteListKey<TPath>["4"];
         queryKey: QueryInfiniteListKey<TPath>;
@@ -253,7 +254,7 @@ declare const useGetInfiniteList: <TPath extends string, TData = any>({ queryOpt
     params?: QueryInfiniteListKey<TPath>["4"];
     apiClientParams?: Partial<ApiProps>;
     pagination: QueryInfinitePagination;
-}) => _tanstack_react_query.UseInfiniteQueryResult<InfiniteData<FetcherResponse<TData[]>, unknown>, CustomError>;
+}) => _tanstack_react_query.UseInfiniteQueryResult<InfiniteData<QueryResponse<TData[]>, unknown>, CustomError>;
 
 /**
  * A hook that helps you fetch a single resource.
@@ -297,7 +298,7 @@ declare const useGetInfiniteList: <TPath extends string, TData = any>({ queryOpt
 declare const useGetOne: <TPath extends string, TData = any>({ resource, id, queryOptions, params, apiClientParams, }: {
     resource: Resource<TPath>;
     id: string | number;
-    queryOptions?: UseQueryProps<FetcherResponse<TData>, QueryOneKey<TPath>, {
+    queryOptions?: UseQueryProps<QueryResponse<TData>, QueryOneKey<TPath>, {
         resource: Resource<TPath>;
         id: string | number;
         params: QueryOneKey<TPath>["4"];
@@ -305,7 +306,7 @@ declare const useGetOne: <TPath extends string, TData = any>({ resource, id, que
     }>;
     params?: QueryOneKey<TPath>["4"];
     apiClientParams?: Partial<ApiProps>;
-}) => _tanstack_react_query.UseQueryResult<FetcherResponse<TData>, CustomError>;
+}) => _tanstack_react_query.UseQueryResult<QueryResponse<TData>, CustomError>;
 
 /** @notExported */
 type MutateBaseVariables$1<TPath extends string, TType> = (TType extends 'many' ? {
@@ -325,7 +326,7 @@ type DeleteBaseVariables<TPath extends string, TType> = (Omit<MutateBaseVariable
 /** @notExported */
 type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 'many'> = {
     resourcePath: Resource<TPath>['path'];
-    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, MutateBaseVariables$1<TPath, TType>>;
+    mutationOptions?: UseMutateProps<TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>, MutateBaseVariables$1<TPath, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     type: TType;
@@ -384,7 +385,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -408,7 +409,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -432,13 +433,13 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     } | {
-        data: FetcherResponse<TData>;
+        data: QueryResponse<TData>;
         error: null;
         variables: {
             id: string | number;
@@ -456,7 +457,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -517,7 +518,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -541,7 +542,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -565,13 +566,13 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     } | {
-        data: FetcherResponse<TData>[];
+        data: QueryResponse<TData>[];
         error: null;
         variables: {
             ids: (string | number)[];
@@ -589,7 +590,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
@@ -618,7 +619,7 @@ type UpdateBaseVariables<TPath extends string, TFormData, TType> = (Omit<MutateB
 /** @notExported */
 type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
     resourcePath: Resource<TPath>['path'];
-    mutationOptions?: UseMutateProps<TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>, MutateBaseVariables<TPath, TFormData, TType>>;
+    mutationOptions?: UseMutateProps<TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>, MutateBaseVariables<TPath, TFormData, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     type: TType;
@@ -680,7 +681,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             data: TFormData;
             resource: Resource<TPath>;
@@ -706,7 +707,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             data: TFormData;
             resource: Resource<TPath>;
@@ -732,14 +733,14 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     } | {
-        data: FetcherResponse<TData>;
+        data: QueryResponse<TData>;
         error: null;
         variables: {
             id: string | number;
@@ -758,7 +759,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, {
             id: string | number;
             data: TFormData;
             resource: Resource<TPath>;
@@ -823,7 +824,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             data: TFormData;
             resource: Resource<TPath>;
@@ -849,7 +850,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             data: TFormData;
             resource: Resource<TPath>;
@@ -875,14 +876,14 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
         }, unknown>;
     } | {
-        data: FetcherResponse<TData>[];
+        data: QueryResponse<TData>[];
         error: null;
         variables: {
             ids: (string | number)[];
@@ -901,7 +902,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>[], CustomError, {
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>[], CustomError, {
             ids: (string | number)[];
             data: TFormData;
             resource: Resource<TPath>;
@@ -971,7 +972,7 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
  */
 declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, }: {
     resourcePath: Resource<TPath>["path"];
-    mutationOptions?: UseMutateProps<FetcherResponse<TData>, MutateVariables$1<TPath, TFormData>>;
+    mutationOptions?: UseMutateProps<QueryResponse<TData>, MutateVariables$1<TPath, TFormData>>;
     extraResources?: Resource<any>[];
 }) => {
     mutation: {
@@ -989,7 +990,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         variables: MutateVariables$1<TPath, TFormData>;
@@ -1005,7 +1006,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         error: CustomError;
@@ -1021,9 +1022,9 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     } | {
-        data: FetcherResponse<TData>;
+        data: QueryResponse<TData>;
         error: null;
         variables: MutateVariables$1<TPath, TFormData>;
         isError: false;
@@ -1037,7 +1038,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData>, unknown>;
     };
     create: ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData>) => void;
 };
@@ -1082,7 +1083,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
  * @returns The result of the `useQuery` hook.
  */
 declare const useDataQuery: <TPath extends string, TData = any>({ queryOptions, resource, params, apiClientParams, }: {
-    queryOptions?: UseQueryProps<FetcherResponse<TData>, QueryDataKey<TPath>, {
+    queryOptions?: UseQueryProps<QueryResponse<TData>, QueryDataKey<TPath>, {
         resource: Resource<TPath>;
         params: QueryDataKey<TPath>["3"];
         queryKey: QueryDataKey<TPath>;
@@ -1090,7 +1091,7 @@ declare const useDataQuery: <TPath extends string, TData = any>({ queryOptions, 
     resource: Resource<TPath>;
     params?: QueryDataKey<TPath>["3"];
     apiClientParams?: Partial<ApiProps>;
-}) => _tanstack_react_query.UseQueryResult<FetcherResponse<TData>, CustomError>;
+}) => _tanstack_react_query.UseQueryResult<QueryResponse<TData>, CustomError>;
 
 /** @notExported */
 type Variables<TPath extends string, TFormData> = {
@@ -1128,6 +1129,7 @@ type MutateVariables<TPath extends string, TFormData> = (Omit<Variables<TPath, T
  *   resourceParams: {
  *     id: 10,
  *   },
+ *   apiClientParams: { method: 'POST' },
  * });
  *
  * @template TPath - The API path as a string.
@@ -1145,7 +1147,7 @@ type MutateVariables<TPath extends string, TFormData> = (Omit<Variables<TPath, T
  */
 declare const useDataMutate: <TPath extends string, TData = any, TFormData = any>({ resourcePath, mutationOptions, }: {
     resourcePath: Resource<TPath>["path"];
-    mutationOptions?: UseMutateProps<FetcherResponse<TData>, Variables<TPath, TFormData>>;
+    mutationOptions?: UseMutateProps<QueryResponse<TData>, Variables<TPath, TFormData>>;
 }) => {
     mutation: {
         data: undefined;
@@ -1162,7 +1164,7 @@ declare const useDataMutate: <TPath extends string, TData = any, TFormData = any
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         variables: Variables<TPath, TFormData>;
@@ -1178,7 +1180,7 @@ declare const useDataMutate: <TPath extends string, TData = any, TFormData = any
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
     } | {
         data: undefined;
         error: CustomError;
@@ -1194,9 +1196,9 @@ declare const useDataMutate: <TPath extends string, TData = any, TFormData = any
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
     } | {
-        data: FetcherResponse<TData>;
+        data: QueryResponse<TData>;
         error: null;
         variables: Variables<TPath, TFormData>;
         isError: false;
@@ -1210,7 +1212,7 @@ declare const useDataMutate: <TPath extends string, TData = any, TFormData = any
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<FetcherResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, Variables<TPath, TFormData>, unknown>;
     };
     mutate: ({ resourceParams, ...variables }: MutateVariables<TPath, TFormData>) => Promise<void>;
 };
@@ -1617,4 +1619,4 @@ declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids,
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
 }) => void;
 
-export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

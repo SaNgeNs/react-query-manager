@@ -198,7 +198,7 @@ export default function List() {
             }}
           >
             {infiniteQueryPosts?.data?.pages.map((page) => (
-              page.data.map((post) => (
+              page?.data.map((post) => (
                 <div
                   key={post.id}
                   style={{

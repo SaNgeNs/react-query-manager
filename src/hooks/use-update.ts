@@ -3,7 +3,8 @@ import { useRef } from 'react';
 import {
   MutateMode,
   Resource,
-  UseMutateProps, FetcherResponse,
+  UseMutateProps,
+  QueryResponse,
   OnlyObject,
   MutationMode,
   MutateKey,
@@ -43,7 +44,7 @@ type UpdateBaseVariables<TPath extends string, TFormData, TType> = (
 type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
-    TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
+    TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     MutateBaseVariables<TPath, TFormData, TType>
   >;
   mode?: MutateMode;
@@ -79,7 +80,7 @@ const useUpdateBase = <
   };
 
   const { mutate, ...mutation } = useMutation<
-    TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
+    TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     CustomError,
     MutateBaseVariables<TPath, TFormData, TType>
   >({
@@ -108,7 +109,7 @@ const useUpdateBase = <
         ...variables.apiClientParams,
       })));
 
-      const result: FetcherResponse<TData>[] = [];
+      const result: QueryResponse<TData>[] = [];
 
       actions.forEach((response) => {
         if (response.status === 'fulfilled') {

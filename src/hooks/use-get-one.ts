@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   Resource,
-  UseQueryProps, FetcherResponse,
+  UseQueryProps,
+  QueryResponse,
   QueryOneKey,
   ApiProps,
 } from '../type';
@@ -58,7 +59,7 @@ export const useGetOne = <TPath extends string, TData = any>({
   resource: Resource<TPath>;
   id: string | number;
   queryOptions?: UseQueryProps<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     QueryOneKey<TPath>,
     {
       resource: Resource<TPath>;
@@ -73,9 +74,9 @@ export const useGetOne = <TPath extends string, TData = any>({
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useQuery<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     CustomError,
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     QueryOneKey<TPath>
   >({
     ...queryOptions,

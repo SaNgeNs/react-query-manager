@@ -1,7 +1,7 @@
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useRQWrapperContext } from '../components/RQWrapper';
 import {
-  ApiProps, FetcherResponse, QueryInfiniteListKey,
+  ApiProps, QueryResponse, QueryInfiniteListKey,
   QueryInfinitePagination,
   Resource, UseInfiniteQueryProps,
 } from '../type';
@@ -66,7 +66,7 @@ export const useGetInfiniteList = <TPath extends string, TData = any>({
   pagination,
 }: {
   queryOptions?: UseInfiniteQueryProps<
-    FetcherResponse<TData[]>,
+    QueryResponse<TData[]>,
     QueryInfiniteListKey<TPath>,
     {
       resource: Resource<TPath>;
@@ -82,9 +82,9 @@ export const useGetInfiniteList = <TPath extends string, TData = any>({
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useInfiniteQuery<
-    FetcherResponse<TData[]>,
+    QueryResponse<TData[]>,
     CustomError,
-    InfiniteData<FetcherResponse<TData[]>>,
+    InfiniteData<QueryResponse<TData[]>>,
     QueryInfiniteListKey<TPath>
   >({
     initialPageParam: 1,

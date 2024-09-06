@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Resource,
   UseMutateProps,
-  FetcherResponse,
+  QueryResponse,
   OnlyObject,
   MutateKey,
   ApiProps,
@@ -85,7 +85,7 @@ export const useCreate = <
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     MutateVariables<TPath, TFormData>
   >;
   extraResources?: Resource<any>[];
@@ -94,7 +94,7 @@ export const useCreate = <
   const queryClient = useQueryClient();
 
   const { mutate, ...mutation } = useMutation<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     CustomError,
     MutateVariables<TPath, TFormData>
   >({
@@ -123,32 +123,35 @@ export const useCreate = <
     },
     onSuccess: (...rest) => {
       const data = rest[0];
-      const variables = rest[1];
 
-      const { id } = data.data as any;
+      if (data) {
+        const variables = rest[1];
 
-      const queryKeysOne = [helpersQueryKeys.getOne(variables.resource, id)];
-      const queryKeysList = [helpersQueryKeys.getList(variables.resource)];
-      const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(variables.resource)];
+        const { id } = data.data as any;
 
-      extraResources.forEach((extResource) => {
-        queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
-        queryKeysList.push(helpersQueryKeys.getList(extResource));
-        queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
-      });
+        const queryKeysOne = [helpersQueryKeys.getOne(variables.resource, id)];
+        const queryKeysList = [helpersQueryKeys.getList(variables.resource)];
+        const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(variables.resource)];
 
-      addItemFromQueryCache({
-        queryClient,
-        data: rest[0],
-        queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
-        queryKeysList,
-        queryKeysInfiniteList,
-      });
+        extraResources.forEach((extResource) => {
+          queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
+          queryKeysList.push(helpersQueryKeys.getList(extResource));
+          queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
+        });
 
-      invalidateQueries({
-        queryClient,
-        queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
-      });
+        addItemFromQueryCache({
+          queryClient,
+          data,
+          queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
+          queryKeysList,
+          queryKeysInfiniteList,
+        });
+
+        invalidateQueries({
+          queryClient,
+          queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
+        });
+      }
 
       if (mutationOptions?.onSuccess) {
         mutationOptions.onSuccess(...rest);

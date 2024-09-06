@@ -3,7 +3,8 @@ import { useRef } from 'react';
 import {
   MutateMode,
   Resource,
-  UseMutateProps, FetcherResponse,
+  UseMutateProps,
+  QueryResponse,
   MutationMode,
   MutateKey,
   ApiProps,
@@ -44,7 +45,7 @@ type DeleteBase<
 > = {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
-    TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
+    TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     MutateBaseVariables<TPath, TType>
   >;
   mode?: MutateMode;
@@ -79,7 +80,7 @@ const useDeleteBase = <
   };
 
   const { mutate, ...mutation } = useMutation<
-    TType extends 'many' ? FetcherResponse<TData>[] : FetcherResponse<TData>,
+    TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     CustomError,
     MutateBaseVariables<TPath, TType>
   >({
@@ -107,7 +108,7 @@ const useDeleteBase = <
         ...variables.apiClientParams,
       })));
 
-      const result: FetcherResponse<TData>[] = [];
+      const result: QueryResponse<TData>[] = [];
 
       actions.forEach((response) => {
         if (response.status === 'fulfilled') {

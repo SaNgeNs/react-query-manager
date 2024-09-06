@@ -33,11 +33,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "npm run lint && npm run docs && tsup",
     "dev:tsup": "tsup --watch",
     "dev:server": "node esbuild.config.cjs --start",
     "dev": "npm run dev:server",
-    "docs": "npx typedoc"
+    "docs": "npx typedoc",
+    "lint": "npx tsc --noEmit && eslint ./src/**/*.{ts,tsx}"
   },
   "license": "ISC",
   "devDependencies": {

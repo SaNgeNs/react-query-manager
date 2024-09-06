@@ -66,7 +66,9 @@ export type RQWrapperContextProps = {
   }) => void;
 };
 
-export type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (
+export type QueryResponse<TData = any> = FetcherResponse<TData> | undefined;
+
+export type UseQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (
   Partial<
     Omit<
     UseQueryOptions<TData, Error, TData, TQueryKey>,
@@ -78,10 +80,10 @@ export type UseQueryProps<TData extends FetcherResponse, TQueryKey extends any[]
     apiClient: ApiClient;
     url: string;
     variables: TVariables;
-  }) => Promise<FetcherResponse> | FetcherResponse;
+  }) => Promise<QueryResponse> | QueryResponse;
 };
 
-export type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey extends any[], TVariables extends {}> = (
+export type UseInfiniteQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (
   Partial<Omit<
     UseInfiniteQueryOptions<TData, Error, InfiniteData<TData>, TData, TQueryKey>,
     'queryKey' | 'queryFn'
@@ -92,10 +94,10 @@ export type UseInfiniteQueryProps<TData extends FetcherResponse, TQueryKey exten
     apiClient: ApiClient;
     url: string;
     variables: TVariables;
-  }) => Promise<FetcherResponse> | FetcherResponse;
+  }) => Promise<QueryResponse> | QueryResponse;
 };
 
-export type UseMutateProps<TData extends FetcherResponse | FetcherResponse[], TVariables = {}> = (
+export type UseMutateProps<TData extends QueryResponse | QueryResponse[], TVariables = {}> = (
   Partial<Omit<
     UseMutationOptions<TData, Error, TVariables, any>,
     'mutationKey' | 'mutationFn'

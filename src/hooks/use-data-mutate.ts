@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import {
   Resource,
   UseMutateProps,
-  FetcherResponse,
+  QueryResponse,
   MutateDataKey,
   ApiProps,
 } from '../type';
@@ -50,6 +50,7 @@ type MutateVariables<TPath extends string, TFormData> = (
  *   resourceParams: {
  *     id: 10,
  *   },
+ *   apiClientParams: { method: 'POST' },
  * });
  *
  * @template TPath - The API path as a string.
@@ -71,7 +72,7 @@ export const useDataMutate = <TPath extends string, TData = any, TFormData = any
 }: {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     Variables<TPath, TFormData>
   >;
 }) => {
@@ -80,7 +81,7 @@ export const useDataMutate = <TPath extends string, TData = any, TFormData = any
   } = useRQWrapperContext();
 
   const { mutate: onMutate, ...mutation } = useMutation<
-    FetcherResponse<TData>,
+    QueryResponse<TData>,
     CustomError,
     Variables<TPath, TFormData>
   >({

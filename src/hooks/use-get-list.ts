@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   Resource,
-  UseQueryProps, FetcherResponse,
+  UseQueryProps,
+  QueryResponse,
   QueryListKey,
   ApiProps,
 } from '../type';
@@ -55,7 +56,7 @@ export const useGetList = <TPath extends string, TData = any>({
   apiClientParams,
 }: {
   queryOptions?: UseQueryProps<
-    FetcherResponse<TData[]>,
+    QueryResponse<TData[]>,
     QueryListKey<TPath>,
     {
       resource: Resource<TPath>;
@@ -70,9 +71,9 @@ export const useGetList = <TPath extends string, TData = any>({
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
   const query = useQuery<
-    FetcherResponse<TData[]>,
+    QueryResponse<TData[]>,
     CustomError,
-    FetcherResponse<TData[]>,
+    QueryResponse<TData[]>,
     QueryListKey<TPath>
   >({
     ...queryOptions,

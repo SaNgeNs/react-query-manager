@@ -1,6 +1,6 @@
 import { InfiniteData, QueryClient } from '@tanstack/react-query';
 import {
-  FetcherResponse,
+  QueryResponse,
   QueryInfiniteListKey,
   QueryListKey,
   QueryOneKey,
@@ -39,7 +39,7 @@ export const deleteItemsFromQueryCache = <TData = any>({
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
 }) => {
-  const updateListData = (page: FetcherResponse<TData[]> | undefined) => {
+  const updateListData = (page: QueryResponse<TData[]>) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 
     return {
@@ -58,7 +58,7 @@ export const deleteItemsFromQueryCache = <TData = any>({
 
   if (queryKeysList) {
     queryKeysList.forEach((queryKey) => {
-      queryClient.setQueriesData<FetcherResponse<TData[]>>(
+      queryClient.setQueriesData<QueryResponse<TData[]>>(
         { queryKey },
         updateListData,
       );
@@ -67,14 +67,14 @@ export const deleteItemsFromQueryCache = <TData = any>({
 
   if (queryKeysInfiniteList) {
     queryKeysInfiniteList.forEach((queryKey) => {
-      queryClient.setQueriesData<InfiniteData<FetcherResponse<TData[]>>>(
+      queryClient.setQueriesData<InfiniteData<QueryResponse<TData[]>>>(
         { queryKey },
         (old) => {
           if (!old) { return old; }
 
           return {
             ...old,
-            pages: old.pages.map(updateListData) as FetcherResponse<TData[]>[],
+            pages: old.pages.map(updateListData),
           };
         },
       );
