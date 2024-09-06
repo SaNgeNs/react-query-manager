@@ -40,7 +40,7 @@ export const addItemFromQueryCache = <TData = any>({
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
 }) => {
-  const updateListData = (page: QueryResponse<TData[]>) => {
+  const updateListData = (page: QueryResponse<TData[]> | undefined) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 
     return {
@@ -69,7 +69,7 @@ export const addItemFromQueryCache = <TData = any>({
 
   if (queryKeysInfiniteList) {
     queryKeysInfiniteList.forEach((queryKey) => {
-      queryClient.setQueriesData<InfiniteData<QueryResponse<TData[]>>>(
+      queryClient.setQueriesData<InfiniteData<QueryResponse<TData[]> | undefined>>(
         { queryKey },
         (old) => {
           if (!old) { return old; }

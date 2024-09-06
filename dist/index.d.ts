@@ -71,7 +71,7 @@ type RQWrapperContextProps = {
         type: UndoTypes;
     }) => void;
 };
-type QueryResponse<TData = any> = FetcherResponse<TData> | undefined;
+type QueryResponse<TData = any> = FetcherResponse<TData> | null;
 type UseQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (Partial<Omit<UseQueryOptions<TData, Error, TData, TQueryKey>, 'queryKey' | 'queryFn'>>) & {
     queryKey?: any[];
     queryFn?: (data: {

@@ -66,7 +66,7 @@ export type RQWrapperContextProps = {
   }) => void;
 };
 
-export type QueryResponse<TData = any> = FetcherResponse<TData> | undefined;
+export type QueryResponse<TData = any> = FetcherResponse<TData> | null;
 
 export type UseQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariables extends {}> = (
   Partial<
