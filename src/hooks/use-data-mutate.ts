@@ -11,18 +11,18 @@ import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
 
 /** @notExported */
-type Variables<TPath extends string, TFormData> = {
+type Variables<TPath extends string, TFormData, TExtraData> = {
   data: TFormData;
   resource: Resource<TPath>;
   apiClientParams: Partial<ApiProps> & {
     method: ApiProps['method']
   };
-  extraData?: any;
+  extraData?: TExtraData;
 }
 
 /** @notExported */
-type MutateVariables<TPath extends string, TFormData> = (
-  Omit<Variables<TPath, TFormData>, 'resource'> & {
+type MutateVariables<TPath extends string, TFormData, TExtraData> = (
+  Omit<Variables<TPath, TFormData, TExtraData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
   }
 );
@@ -67,14 +67,14 @@ type MutateVariables<TPath extends string, TFormData> = (
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-export const useDataMutate = <TPath extends string, TData = any, TFormData = any>({
+export const useDataMutate = <TPath extends string, TData = any, TFormData = any, TExtraData = any>({
   resourcePath,
   mutationOptions,
 }: {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     QueryResponse<TData>,
-    Variables<TPath, TFormData>
+    Variables<TPath, TFormData, TExtraData>
   >;
 }) => {
   const {
@@ -84,7 +84,7 @@ export const useDataMutate = <TPath extends string, TData = any, TFormData = any
   const { mutate: onMutate, ...mutation } = useMutation<
     QueryResponse<TData>,
     CustomError,
-    Variables<TPath, TFormData>
+    Variables<TPath, TFormData, TExtraData>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -112,7 +112,7 @@ export const useDataMutate = <TPath extends string, TData = any, TFormData = any
     },
   });
 
-  const mutate = async ({ resourceParams, ...variables }: MutateVariables<TPath, TFormData>) => {
+  const mutate = async ({ resourceParams, ...variables }: MutateVariables<TPath, TFormData, TExtraData>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,

@@ -18,23 +18,23 @@ import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 import { createSnapshot } from '../internal/utils/create-snapshot';
 
 /** @notExported */
-type MutateBaseVariables<TPath extends string, TType> = (
+type MutateBaseVariables<TPath extends string, TType, TExtraData> = (
   TType extends 'many' ? {
     ids: (string | number)[];
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
-    extraData?: any;
+    extraData?: TExtraData;
   } : {
     id: string | number;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
-    extraData?: any;
+    extraData?: TExtraData;
   }
 );
 
 /** @notExported */
-type DeleteBaseVariables<TPath extends string, TType> = (
-  Omit<MutateBaseVariables<TPath, TType>, 'resource'> & {
+type DeleteBaseVariables<TPath extends string, TType, TExtraData> = (
+  Omit<MutateBaseVariables<TPath, TType, TExtraData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
     undoMessage?: string;
   }
@@ -44,12 +44,13 @@ type DeleteBaseVariables<TPath extends string, TType> = (
 type DeleteBase<
   TPath extends string,
   TData = any,
-  TType extends MutationMode = 'many'
+  TType extends MutationMode = 'many',
+  TExtraData = any,
 > = {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
-    MutateBaseVariables<TPath, TType>
+    MutateBaseVariables<TPath, TType, TExtraData>
   >;
   mode?: MutateMode;
   extraResources?: Resource<any>[];
@@ -61,7 +62,8 @@ type DeleteBase<
 const useDeleteBase = <
   TPath extends string,
   TData = any,
-  TType extends MutationMode = 'many'
+  TType extends MutationMode = 'many',
+  TExtraData = any,
 >({
     resourcePath,
     mutationOptions,
@@ -73,7 +75,7 @@ const useDeleteBase = <
     shouldUpdateCurrentResource = true,
     isInvalidateCache = true,
     type = 'many' as TType,
-  }: DeleteBase<TPath, TData, TType>) => {
+  }: DeleteBase<TPath, TData, TType, TExtraData>) => {
   const {
     apiUrl, apiClient, apiEnsureTrailingSlash, toastUndo,
   } = useRQWrapperContext();
@@ -89,7 +91,7 @@ const useDeleteBase = <
   const { mutate, ...mutation } = useMutation<
     TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     CustomError,
-    MutateBaseVariables<TPath, TType>
+    MutateBaseVariables<TPath, TType, TExtraData>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -108,8 +110,8 @@ const useDeleteBase = <
       }
 
       const ids = type === 'many'
-        ? (variables as MutateBaseVariables<TPath, 'many'>).ids
-        : [(variables as MutateBaseVariables<TPath, 'one'>).id];
+        ? (variables as MutateBaseVariables<TPath, 'many', TExtraData>).ids
+        : [(variables as MutateBaseVariables<TPath, 'one', TExtraData>).id];
 
       const actions = await Promise.allSettled(ids.map((id) => apiClient<TData>({
         url: `${url}${id}${apiEnsureTrailingSlash ? '/' : ''}`,
@@ -159,15 +161,15 @@ const useDeleteBase = <
     },
   });
 
-  const deleteBase = async ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, TType>) => {
+  const deleteBase = async ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, TType, TExtraData>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,
     };
 
     const ids = type === 'many'
-      ? (variables as any as DeleteBaseVariables<TPath, 'many'>).ids
-      : [(variables as any as DeleteBaseVariables<TPath, 'one'>).id];
+      ? (variables as any as DeleteBaseVariables<TPath, 'many', TExtraData>).ids
+      : [(variables as any as DeleteBaseVariables<TPath, 'one', TExtraData>).id];
 
     if (mode.optimistic) {
       const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
@@ -262,7 +264,8 @@ const useDeleteBase = <
 export const useDeleteOne = <
   TPath extends string,
   TData = any,
->(props: Omit<DeleteBase<TPath, TData, 'one'>, 'type'>) => {
+  TExtraData = any,
+>(props: Omit<DeleteBase<TPath, TData, 'one', TExtraData>, 'type'>) => {
   return useDeleteBase({ ...props, type: 'one' });
 };
 
@@ -306,6 +309,7 @@ export const useDeleteOne = <
 export const useDeleteMany = <
   TPath extends string,
   TData = any,
->(props: Omit<DeleteBase<TPath, TData, 'many'>, 'type'>) => {
+  TExtraData = any,
+>(props: Omit<DeleteBase<TPath, TData, 'many', TExtraData>, 'type'>) => {
   return useDeleteBase({ ...props, type: 'many' });
 };

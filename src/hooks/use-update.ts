@@ -19,36 +19,36 @@ import { createSnapshot } from '../internal/utils/create-snapshot';
 import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 
 /** @notExported */
-type MutateBaseVariables<TPath extends string, TFormData, TType> = (
+type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
   TType extends 'many' ? {
     ids: (string | number)[];
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
-    extraData?: any;
+    extraData?: TExtraData;
   } : {
     id: string | number;
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
-    extraData?: any;
+    extraData?: TExtraData;
   }
 )
 
 /** @notExported */
-type UpdateBaseVariables<TPath extends string, TFormData, TType> = (
-  Omit<MutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
+type UpdateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
+  Omit<MutateBaseVariables<TPath, TFormData, TType, TExtraData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
     undoMessage?: string;
   }
 );
 
 /** @notExported */
-type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode> = {
+type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMode, TExtraData> = {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
-    MutateBaseVariables<TPath, TFormData, TType>
+    MutateBaseVariables<TPath, TFormData, TType, TExtraData>
   >;
   mode?: MutateMode;
   extraResources?: Resource<any>[];
@@ -60,7 +60,8 @@ const useUpdateBase = <
   TPath extends string,
   TData = any,
   TFormData = OnlyObject,
-  TType extends MutationMode = 'many'
+  TType extends MutationMode = 'many',
+  TExtraData = any,
 >({
     resourcePath,
     mutationOptions,
@@ -71,7 +72,7 @@ const useUpdateBase = <
     extraResources = [],
     shouldUpdateCurrentResource = true,
     type = 'many' as TType,
-  }: UpdateBase<TPath, TData, TFormData, TType>) => {
+  }: UpdateBase<TPath, TData, TFormData, TType, TExtraData>) => {
   const {
     apiUrl, apiClient, apiEnsureTrailingSlash, toastUndo,
   } = useRQWrapperContext();
@@ -87,7 +88,7 @@ const useUpdateBase = <
   const { mutate, ...mutation } = useMutation<
     TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>,
     CustomError,
-    MutateBaseVariables<TPath, TFormData, TType>
+    MutateBaseVariables<TPath, TFormData, TType, TExtraData>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -106,8 +107,8 @@ const useUpdateBase = <
       }
 
       const ids = type === 'many'
-        ? (variables as MutateBaseVariables<TPath, TFormData, 'many'>).ids
-        : [(variables as MutateBaseVariables<TPath, TFormData, 'one'>).id];
+        ? (variables as MutateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
+        : [(variables as MutateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
 
       const actions = await Promise.allSettled(ids.map((id) => apiClient<TData>({
         url: `${url}${id}${apiEnsureTrailingSlash ? '/' : ''}`,
@@ -133,8 +134,8 @@ const useUpdateBase = <
 
       if (!mode.optimistic) {
         const ids = type === 'many'
-          ? (variables as MutateBaseVariables<TPath, TFormData, 'many'>).ids
-          : [(variables as MutateBaseVariables<TPath, TFormData, 'one'>).id];
+          ? (variables as MutateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
+          : [(variables as MutateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
 
         const queryKeys = [
           ...helpersQueryKeys.getOneArray(variables.resource, ids),
@@ -164,15 +165,15 @@ const useUpdateBase = <
     },
   });
 
-  const update = async ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, TType>) => {
+  const update = async ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, TType, TExtraData>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,
     };
 
     const ids = type === 'many'
-      ? (variables as any as UpdateBaseVariables<TPath, TFormData, 'many'>).ids
-      : [(variables as any as UpdateBaseVariables<TPath, TFormData, 'one'>).id];
+      ? (variables as any as UpdateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
+      : [(variables as any as UpdateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
 
     if (mode.optimistic) {
       const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
@@ -271,8 +272,9 @@ const useUpdateBase = <
 export const useUpdateOne = <
   TPath extends string,
   TData = any,
-  TFormData = OnlyObject
->(props: Omit<UpdateBase<TPath, TData, TFormData, 'one'>, 'type'>) => {
+  TFormData = OnlyObject,
+  TExtraData = any,
+>(props: Omit<UpdateBase<TPath, TData, TFormData, 'one', TExtraData>, 'type'>) => {
   return useUpdateBase({ ...props, type: 'one' });
 };
 
@@ -319,7 +321,8 @@ export const useUpdateOne = <
 export const useUpdateMany = <
   TPath extends string,
   TData = any,
-  TFormData = OnlyObject
->(props: Omit<UpdateBase<TPath, TData, TFormData, 'many'>, 'type'>) => {
+  TFormData = OnlyObject,
+  TExtraData = any,
+>(props: Omit<UpdateBase<TPath, TData, TFormData, 'many', TExtraData>, 'type'>) => {
   return useUpdateBase({ ...props, type: 'many' });
 };

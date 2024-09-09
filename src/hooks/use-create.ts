@@ -13,16 +13,16 @@ import { CustomError } from '../utils/custom-error';
 import { addItemFromQueryCache, helpersQueryKeys, invalidateQueries } from '../utils/queries';
 
 /** @notExported */
-type MutateVariables<TPath extends string, TFormData> = {
+type MutateVariables<TPath extends string, TFormData, TExtraData> = {
   data: TFormData;
   resource: Resource<TPath>;
   apiClientParams?: Partial<ApiProps>;
-  extraData?: any;
+  extraData?: TExtraData;
 }
 
 /** @notExported */
-type CreateOneVariables<TPath extends string, TFormData> = (
-  Omit<MutateVariables<TPath, TFormData>, 'resource'> & {
+type CreateOneVariables<TPath extends string, TFormData, TExtraData> = (
+  Omit<MutateVariables<TPath, TFormData, TExtraData>, 'resource'> & {
     resourceParams: Resource<TPath>['params'];
   }
 );
@@ -78,7 +78,8 @@ type CreateOneVariables<TPath extends string, TFormData> = (
 export const useCreate = <
   TPath extends string,
   TData = any,
-  TFormData = OnlyObject
+  TFormData = OnlyObject,
+  TExtraData = any
 >({
     resourcePath,
     mutationOptions,
@@ -90,7 +91,7 @@ export const useCreate = <
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
     QueryResponse<TData>,
-    MutateVariables<TPath, TFormData>
+    MutateVariables<TPath, TFormData, TExtraData>
   >;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
@@ -103,7 +104,7 @@ export const useCreate = <
   const { mutate, ...mutation } = useMutation<
     QueryResponse<TData>,
     CustomError,
-    MutateVariables<TPath, TFormData>
+    MutateVariables<TPath, TFormData, TExtraData>
   >({
     ...mutationOptions,
     mutationKey: [
@@ -171,7 +172,7 @@ export const useCreate = <
     },
   });
 
-  const create = ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData>) => {
+  const create = ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData, TExtraData>) => {
     const resource: Resource<TPath> = {
       path: resourcePath,
       params: resourceParams,
