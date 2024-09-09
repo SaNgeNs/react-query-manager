@@ -196,11 +196,7 @@ export function RQWrapper({
       toast.dismiss();
     };
 
-    const customContent = toastProps?.customUndoContent ? toastProps?.customUndoContent({
-      message: data.message,
-      onUndo,
-      type: data.type,
-    }) : null;
+    const CustomContent = toastProps?.customUndoContent;
 
     toast.success(
       (t) => {
@@ -209,7 +205,7 @@ export function RQWrapper({
           undoEventEmitter.emit('end', false);
         }
 
-        return customContent || (
+        return CustomContent ? <CustomContent message={data.message} onUndo={onUndo} type={data.type} /> : (
           <>
             {data.message}
 
