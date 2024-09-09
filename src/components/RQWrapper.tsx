@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import { fetcher } from '../utils/fetcher';
 import {
-  ApiProps, ApiClient, ToastProps, ToastCustomWrapper,
-  CustomUndoContent,
+  ApiProps, ApiClient, ToastProps, ToastCustomContent,
+  ToastCustomUndoContent,
   RQWrapperContextProps,
 } from '../type';
 import { Toaster } from '../internal/components/Toaster';
@@ -40,9 +40,9 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  * for the hooks to work.
  *
  * @example
- * import { RQWrapper, ToastCustomWrapper, ToastBar } from 'react-query-manager';
+ * import { RQWrapper, ToastCustomContent, ToastBar } from 'react-query-manager';
  *
- * const ToastWrapper: ToastCustomWrapper = (props) => {
+ * const ToastWrapper: ToastCustomContent = (props) => {
  *  return <ToastBar toast={props} position={props.position} />;
  * };
  *
@@ -98,7 +98,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  *
  *   The `globalProps` property can be used to customize the default props for the toast component.
  *
- *   The `customUndoContent` property can be used to customize the content of the toast when the user
+ *   The `ToastCustomUndoContent` property can be used to customize the content of the toast when the user
  *   clicks the "UNDO" button.
  */
 export function RQWrapper({
@@ -127,9 +127,9 @@ export function RQWrapper({
   isDevTools?: boolean;
   devToolsOptions?: ReactQueryDevtoolsProps;
   toast?: {
-    wrapper?: ToastCustomWrapper;
     globalProps?: ToastProps;
-    customUndoContent?: CustomUndoContent;
+    CustomContent?: ToastCustomContent;
+    CustomUndoContent?: ToastCustomUndoContent;
   };
 }) {
   const queryClient = useMemo(() => {
@@ -196,31 +196,33 @@ export function RQWrapper({
       toast.dismiss();
     };
 
-    const CustomContent = toastProps?.customUndoContent;
-
     toast.success(
       (t) => {
+        const CustomContent = toastProps?.CustomUndoContent;
+
         if (!t.visible && !isSuccess) {
           isSuccess = true;
           undoEventEmitter.emit('end', false);
         }
 
-        return CustomContent ? <CustomContent message={data.message} onUndo={onUndo} type={data.type} /> : (
-          <>
-            {data.message}
+        return CustomContent
+          ? <CustomContent message={data.message} onUndo={onUndo} type={data.type} />
+          : (
+            <>
+              {data.message}
 
-            <span
-              style={{ marginLeft: '10px', cursor: 'pointer' }}
-              onClick={onUndo}
-              role="button"
-              tabIndex={0}
-              aria-label="Undo"
-              title="Undo"
-            >
-              UNDO
-            </span>
-          </>
-        );
+              <span
+                style={{ marginLeft: '10px', cursor: 'pointer' }}
+                onClick={onUndo}
+                role="button"
+                tabIndex={0}
+                aria-label="Undo"
+                title="Undo"
+              >
+                UNDO
+              </span>
+            </>
+          );
       },
       {
         duration: toastProps?.globalProps?.toastOptions?.duration || 5000,
@@ -240,7 +242,7 @@ export function RQWrapper({
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster {...toastProps?.globalProps}>
-        {toastProps?.wrapper}
+        {toastProps?.CustomContent}
       </Toaster>
 
       <Context.Provider value={contextValue}>

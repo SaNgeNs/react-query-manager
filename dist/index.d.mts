@@ -33,9 +33,9 @@ declare class CustomError extends Error {
 
 type UndoTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-many';
 type ToastProps = Omit<ToasterProps, 'children'>;
-type ToastCustomWrapper = ToasterProps['children'];
+type ToastCustomContent = ToasterProps['children'];
 type Headers = Record<string, string>;
-type CustomUndoContent = (data: {
+type ToastCustomUndoContent = (data: {
     message: string;
     type: UndoTypes;
     onUndo: () => void;
@@ -1275,9 +1275,9 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  * for the hooks to work.
  *
  * @example
- * import { RQWrapper, ToastCustomWrapper, ToastBar } from 'react-query-manager';
+ * import { RQWrapper, ToastCustomContent, ToastBar } from 'react-query-manager';
  *
- * const ToastWrapper: ToastCustomWrapper = (props) => {
+ * const ToastWrapper: ToastCustomContent = (props) => {
  *  return <ToastBar toast={props} position={props.position} />;
  * };
  *
@@ -1333,7 +1333,7 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  *
  *   The `globalProps` property can be used to customize the default props for the toast component.
  *
- *   The `customUndoContent` property can be used to customize the content of the toast when the user
+ *   The `ToastCustomUndoContent` property can be used to customize the content of the toast when the user
  *   clicks the "UNDO" button.
  */
 declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrailingSlash, apiAuthorization, apiHeaders, apiOnSuccess, apiOnError, isDevTools, devToolsOptions, toast: toastProps, }: {
@@ -1349,9 +1349,9 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrail
     isDevTools?: boolean;
     devToolsOptions?: ReactQueryDevtoolsProps;
     toast?: {
-        wrapper?: ToastCustomWrapper;
         globalProps?: ToastProps;
-        customUndoContent?: CustomUndoContent;
+        CustomContent?: ToastCustomContent;
+        CustomUndoContent?: ToastCustomUndoContent;
     };
 }): React.JSX.Element;
 
@@ -1666,4 +1666,4 @@ declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids,
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
 }) => void;
 
-export { type ApiClient, type ApiProps, CustomError, type CustomUndoContent, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomWrapper, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

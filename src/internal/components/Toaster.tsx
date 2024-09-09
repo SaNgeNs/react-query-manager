@@ -150,6 +150,8 @@ export function Toaster({
         });
         const positionStyle = getPositionStyle(toastPosition, offset);
 
+        const Component = children;
+
         return (
           <ToastWrapper
             id={toast.id}
@@ -164,8 +166,8 @@ export function Toaster({
           >
             {toast.type === 'custom' ? (
               resolveValue(t.message, toast)
-            ) : children ? (
-              children(toast)
+            ) : Component ? (
+              <Component {...toast} />
             ) : (
               <div style={{ display: t.visible ? 'flex' : 'none' }}>
                 {resolveValue(toast.message, toast)}

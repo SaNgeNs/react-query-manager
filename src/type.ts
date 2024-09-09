@@ -9,11 +9,11 @@ export type UndoTypes = 'update-one' | 'update-many' | 'delete-one' | 'delete-ma
 
 export type ToastProps = Omit<ToasterProps, 'children'>;
 
-export type ToastCustomWrapper = ToasterProps['children'];
+export type ToastCustomContent = ToasterProps['children'];
 
 export type Headers = Record<string, string>;
 
-export type CustomUndoContent = (data: {
+export type ToastCustomUndoContent = (data: {
   message: string;
   type: UndoTypes;
   onUndo: () => void;

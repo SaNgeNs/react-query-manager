@@ -1,12 +1,18 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ToastBar } from 'react-hot-toast';
 import { RQWrapper } from '../src/components/RQWrapper';
 import List from './components/List';
-import { CustomUndoContent, toast, ToastCustomWrapper } from '../src';
+import { ToastCustomUndoContent, toast, ToastCustomContent } from '../src';
 
-const ToastWrapper: ToastCustomWrapper = (toastProps) => {
+const CustomContent: ToastCustomContent = (toastProps) => {
+  useEffect(() => {
+    return () => {
+      console.log('unmount ToastWrapper');
+    };
+  }, []);
+
   return (
     <ToastBar toast={toastProps} position={toastProps.position}>
       {({ icon, message }) => {
@@ -38,7 +44,13 @@ const ToastWrapper: ToastCustomWrapper = (toastProps) => {
   );
 };
 
-const customUndoContent: CustomUndoContent = ({ message, type, onUndo }) => {
+const CustomUndoContent: ToastCustomUndoContent = ({ message, type, onUndo }) => {
+  useEffect(() => {
+    return () => {
+      console.log('unmount ToastCustomUndoContent');
+    };
+  }, []);
+
   const buttonText = (() => {
     switch (type) {
       case 'delete-many': {
@@ -90,8 +102,8 @@ export default function App() {
         globalProps: {
           position: 'bottom-center',
         },
-        wrapper: ToastWrapper,
-        customUndoContent,
+        CustomContent,
+        CustomUndoContent,
       }}
     >
       <List />

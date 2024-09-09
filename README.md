@@ -26,12 +26,12 @@ npm install react-query-manager
 ```
 import React from 'react';
 import {
-  ToastBar, RQWrapper, ToastCustomWrapper,
-  CustomUndoContent, toast,
+  ToastBar, RQWrapper, ToastCustomContent,
+  ToastCustomUndoContent, toast,
 } from 'react-query-manager';
 import List from './List';
 
-const ToastWrapper: ToastCustomWrapper = (toastProps) => {
+const CustomContent: ToastCustomContent = (toastProps) => {
   return (
     <ToastBar toast={toastProps} position={toastProps.position}>
       {({ icon, message }) => {
@@ -63,7 +63,7 @@ const ToastWrapper: ToastCustomWrapper = (toastProps) => {
   );
 };
 
-const customUndoContent: CustomUndoContent = ({ message, type, onUndo }) => {
+const CustomUndoContent: ToastCustomUndoContent = ({ message, type, onUndo }) => {
   const buttonText = (() => {
     switch (type) {
       case 'delete-many': {
@@ -115,8 +115,8 @@ export default function App() {
         globalProps: {
           position: 'bottom-center',
         },
-        wrapper: ToastWrapper,
-        customUndoContent,
+        CustomContent,
+        CustomUndoContent,
       }}
     >
       <List />
