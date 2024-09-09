@@ -1,7 +1,7 @@
 {
   "name": "react-query-manager",
   "author": "SaNgeNs",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "react-query-manager",
   "source": "src/index.ts",
   "main": "dist/index.js",
