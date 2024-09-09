@@ -17,6 +17,9 @@ import {
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
  * @param params.queryKeysList - Cache keys for list queries that should be updated.
  * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ * @param params.cacheAddItemTo - Specifies the position to add a new item in the cache.
+ * - `'start'`: Adds the new item to the beginning of the cache list.
+ * - `'end'`: Adds the new item to the end of the cache list.
  *
  * @example
  * addItemFromQueryCache({
@@ -33,22 +36,23 @@ export const addItemFromQueryCache = <TData = any>({
   queryKeysOne,
   queryKeysList,
   queryKeysInfiniteList,
+  cacheAddItemTo = 'start',
 }: {
   queryClient: QueryClient;
   data: OnlyObject;
   queryKeysOne?: [QueryOneKey<''>[0], ...any[]][];
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
+  cacheAddItemTo?: 'end' | 'start';
 }) => {
   const updateListData = (page: QueryResponse<TData[]> | undefined) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 
     return {
       ...page,
-      data: [
-        (data as TData),
-        ...page.data,
-      ],
+      data: cacheAddItemTo === 'start'
+        ? [(data as TData), ...page.data]
+        : [...page.data, (data as TData)],
     };
   };
 

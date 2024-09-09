@@ -83,6 +83,7 @@ export const useCreate = <
     mutationOptions,
     extraResources = [],
     shouldUpdateCurrentResource = true,
+    cacheAddItemTo = 'start',
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
@@ -91,6 +92,7 @@ export const useCreate = <
   >;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
+  cacheAddItemTo?: 'start' | 'end';
 }) => {
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
   const queryClient = useQueryClient();
@@ -147,6 +149,7 @@ export const useCreate = <
           queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
           queryKeysList,
           queryKeysInfiniteList,
+          cacheAddItemTo,
         });
 
         invalidateQueries({

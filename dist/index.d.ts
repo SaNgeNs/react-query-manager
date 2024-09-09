@@ -972,11 +972,12 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, }: {
+declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, cacheAddItemTo, }: {
     resourcePath: Resource<TPath>["path"];
     mutationOptions?: UseMutateProps<QueryResponse<TData>, MutateVariables$1<TPath, TFormData>>;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
+    cacheAddItemTo?: "start" | "end";
 }) => {
     mutation: {
         data: undefined;
@@ -1419,6 +1420,9 @@ declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPat
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
  * @param params.queryKeysList - Cache keys for list queries that should be updated.
  * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ * @param params.cacheAddItemTo - Specifies the position to add a new item in the cache.
+ * - `'start'`: Adds the new item to the beginning of the cache list.
+ * - `'end'`: Adds the new item to the end of the cache list.
  *
  * @example
  * addItemFromQueryCache({
@@ -1429,12 +1433,13 @@ declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPat
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
  * });
  */
-declare const addItemFromQueryCache: <TData = any>({ queryClient, data, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
+declare const addItemFromQueryCache: <TData = any>({ queryClient, data, queryKeysOne, queryKeysList, queryKeysInfiniteList, cacheAddItemTo, }: {
     queryClient: QueryClient;
     data: OnlyObject;
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
     queryKeysList?: [QueryListKey<"">[0], ...any[]][];
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
+    cacheAddItemTo?: "end" | "start";
 }) => void;
 
 /**
