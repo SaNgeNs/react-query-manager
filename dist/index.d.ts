@@ -329,6 +329,7 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
     mutationOptions?: UseMutateProps<TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>, MutateBaseVariables$1<TPath, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
+    shouldUpdateCurrentResource?: boolean;
     type: TType;
 };
 /**
@@ -622,6 +623,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
     mutationOptions?: UseMutateProps<TType extends 'many' ? QueryResponse<TData>[] : QueryResponse<TData>, MutateBaseVariables<TPath, TFormData, TType>>;
     mode?: MutateMode;
     extraResources?: Resource<any>[];
+    shouldUpdateCurrentResource?: boolean;
     type: TType;
 };
 /**
@@ -970,10 +972,11 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, }: {
+declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, }: {
     resourcePath: Resource<TPath>["path"];
     mutationOptions?: UseMutateProps<QueryResponse<TData>, MutateVariables$1<TPath, TFormData>>;
     extraResources?: Resource<any>[];
+    shouldUpdateCurrentResource?: boolean;
 }) => {
     mutation: {
         data: undefined;

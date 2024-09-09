@@ -11,7 +11,8 @@ import {
 } from '../type';
 import { Toaster } from '../internal/components/Toaster';
 import { toast } from '../utils/toast';
-import { removeFirstAndLastSlash, undoEventEmitter } from '../internal/utils/internal';
+import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
+import { removeFirstAndLastSlash } from '../internal/utils/remove-first-and-last-slash';
 
 const Context = createContext<RQWrapperContextProps>({
   apiUrl: '',

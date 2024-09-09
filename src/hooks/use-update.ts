@@ -13,9 +13,10 @@ import {
 import { useRQWrapperContext } from '../components/RQWrapper';
 import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
-import { createSnapshot, undoEventEmitter } from '../internal/utils/internal';
 import { Snapshot } from '../internal/type';
 import { helpersQueryKeys, invalidateQueries, updateItemsFromQueryCache } from '../utils/queries';
+import { createSnapshot } from '../internal/utils/create-snapshot';
+import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TFormData, TType> = (
@@ -49,6 +50,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
   >;
   mode?: MutateMode;
   extraResources?: Resource<any>[];
+  shouldUpdateCurrentResource?: boolean;
   type: TType;
 }
 
@@ -65,6 +67,7 @@ const useUpdateBase = <
       undoable: true,
     },
     extraResources = [],
+    shouldUpdateCurrentResource = true,
     type = 'many' as TType,
   }: UpdateBase<TPath, TData, TFormData, TType>) => {
   const {
@@ -168,9 +171,9 @@ const useUpdateBase = <
       : [(variables as any as UpdateBaseVariables<TPath, TFormData, 'one'>).id];
 
     if (mode.optimistic) {
-      const queryKeysOne = helpersQueryKeys.getOneArray(resource, ids);
-      const queryKeysList = [helpersQueryKeys.getList(resource)];
-      const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(resource)];
+      const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
+      const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
+      const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];
 
       extraResources.forEach((extResource) => {
         queryKeysOne.push(...helpersQueryKeys.getOneArray(extResource, ids));

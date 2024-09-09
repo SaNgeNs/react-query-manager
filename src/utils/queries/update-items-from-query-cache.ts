@@ -6,7 +6,7 @@ import {
   QueryListKey,
   QueryOneKey,
 } from '../../type';
-import { mergeObjects } from '../../internal/utils/internal';
+import { mergeObjects } from '../../internal/utils/merge-objects';
 
 /**
  * Updates items in the query cache based on provided IDs and new data.

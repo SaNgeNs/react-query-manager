@@ -82,6 +82,7 @@ export const useCreate = <
     resourcePath,
     mutationOptions,
     extraResources = [],
+    shouldUpdateCurrentResource = true,
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
@@ -89,6 +90,7 @@ export const useCreate = <
     MutateVariables<TPath, TFormData>
   >;
   extraResources?: Resource<any>[];
+  shouldUpdateCurrentResource?: boolean;
 }) => {
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
   const queryClient = useQueryClient();
@@ -129,9 +131,9 @@ export const useCreate = <
 
         const { id } = data.data as any;
 
-        const queryKeysOne = [helpersQueryKeys.getOne(variables.resource, id)];
-        const queryKeysList = [helpersQueryKeys.getList(variables.resource)];
-        const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(variables.resource)];
+        const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
+        const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(variables.resource)] : [];
+        const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(variables.resource)] : [];
 
         extraResources.forEach((extResource) => {
           queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));

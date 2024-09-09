@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import { deepEqual } from 'fast-equals';
+import { isEqual } from '../../internal/utils/is-equal';
 
 /**
  * Invalidates queries in the cache that match any of the specified key groups.
@@ -44,11 +44,9 @@ export const invalidateMatchingQueries = ({
     predicate: (query) => {
       const keys = query.queryKey;
 
-      const isEqual = queryKeys.some((keyGroup) => (
-        keyGroup.every((matchKey) => keys.some((key) => deepEqual(key, matchKey)))
+      return queryKeys.some((keyGroup) => (
+        keyGroup.every((matchKey) => keys.some((key) => isEqual(key, matchKey)))
       ));
-
-      return isEqual;
     },
   });
 };

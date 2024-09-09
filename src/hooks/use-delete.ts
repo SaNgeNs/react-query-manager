@@ -12,9 +12,10 @@ import {
 import { useRQWrapperContext } from '../components/RQWrapper';
 import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
-import { createSnapshot, undoEventEmitter } from '../internal/utils/internal';
 import { Snapshot } from '../internal/type';
 import { deleteItemsFromQueryCache, helpersQueryKeys, invalidateQueries } from '../utils/queries';
+import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
+import { createSnapshot } from '../internal/utils/create-snapshot';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TType> = (
@@ -50,6 +51,7 @@ type DeleteBase<
   >;
   mode?: MutateMode;
   extraResources?: Resource<any>[];
+  shouldUpdateCurrentResource?: boolean;
   type: TType;
 };
 
@@ -65,6 +67,7 @@ const useDeleteBase = <
       undoable: true,
     },
     extraResources = [],
+    shouldUpdateCurrentResource = true,
     type = 'many' as TType,
   }: DeleteBase<TPath, TData, TType>) => {
   const {
@@ -159,9 +162,9 @@ const useDeleteBase = <
       : [(variables as any as DeleteBaseVariables<TPath, 'one'>).id];
 
     if (mode.optimistic) {
-      const queryKeysOne = helpersQueryKeys.getOneArray(resource, ids);
-      const queryKeysList = [helpersQueryKeys.getList(resource)];
-      const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(resource)];
+      const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
+      const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
+      const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];
 
       extraResources.forEach((extResource) => {
         queryKeysOne.push(...helpersQueryKeys.getOneArray(extResource, ids));

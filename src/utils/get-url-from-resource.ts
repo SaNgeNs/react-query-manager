@@ -1,5 +1,5 @@
+import { removeFirstAndLastSlash } from '../internal/utils/remove-first-and-last-slash';
 import { Resource } from '../type';
-import { removeFirstAndLastSlash } from '../internal/utils/internal';
 
 /**
  * Takes a `Resource` object and returns its path as a string,
