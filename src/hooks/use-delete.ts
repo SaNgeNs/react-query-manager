@@ -23,10 +23,12 @@ type MutateBaseVariables<TPath extends string, TType> = (
     ids: (string | number)[];
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
   } : {
     id: string | number;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
   }
 );
 

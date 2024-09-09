@@ -25,11 +25,13 @@ type MutateBaseVariables<TPath extends string, TFormData, TType> = (
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
   } : {
     id: string | number;
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
   }
 )
 

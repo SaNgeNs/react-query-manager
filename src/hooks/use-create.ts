@@ -17,6 +17,7 @@ type MutateVariables<TPath extends string, TFormData> = {
   data: TFormData;
   resource: Resource<TPath>;
   apiClientParams?: Partial<ApiProps>;
+  extraData?: any;
 }
 
 /** @notExported */

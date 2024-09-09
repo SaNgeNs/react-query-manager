@@ -17,6 +17,7 @@ type Variables<TPath extends string, TFormData> = {
   apiClientParams: Partial<ApiProps> & {
     method: ApiProps['method']
   };
+  extraData?: any;
 }
 
 /** @notExported */

@@ -316,10 +316,12 @@ type MutateBaseVariables$1<TPath extends string, TType> = (TType extends 'many' 
     ids: (string | number)[];
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
 } : {
     id: string | number;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
 });
 /** @notExported */
 type DeleteBaseVariables<TPath extends string, TType> = (Omit<MutateBaseVariables$1<TPath, TType>, 'resource'> & {
@@ -394,6 +396,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -401,6 +404,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         error: null;
         isError: false;
@@ -418,6 +422,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -426,6 +431,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: true;
         isIdle: false;
@@ -442,6 +448,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -450,6 +457,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: false;
         isIdle: false;
@@ -466,6 +474,7 @@ declare const useDeleteOne: <TPath extends string, TData = any>(props: Omit<Dele
             id: string | number;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     };
     delete: ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, "one">) => Promise<void>;
@@ -527,6 +536,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -534,6 +544,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         error: null;
         isError: false;
@@ -551,6 +562,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -559,6 +571,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: true;
         isIdle: false;
@@ -575,6 +588,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -583,6 +597,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: false;
         isIdle: false;
@@ -599,6 +614,7 @@ declare const useDeleteMany: <TPath extends string, TData = any>(props: Omit<Del
             ids: (string | number)[];
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     };
     delete: ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, "many">) => Promise<void>;
@@ -610,11 +626,13 @@ type MutateBaseVariables<TPath extends string, TFormData, TType> = (TType extend
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
 } : {
     id: string | number;
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
 });
 /** @notExported */
 type UpdateBaseVariables<TPath extends string, TFormData, TType> = (Omit<MutateBaseVariables<TPath, TFormData, TType>, 'resource'> & {
@@ -692,6 +710,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -700,6 +719,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         error: null;
         isError: false;
@@ -718,6 +738,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -727,6 +748,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: true;
         isIdle: false;
@@ -744,6 +766,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -753,6 +776,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: false;
         isIdle: false;
@@ -770,6 +794,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "one">) => Promise<void>;
@@ -835,6 +860,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -843,6 +869,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         error: null;
         isError: false;
@@ -861,6 +888,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: undefined;
@@ -870,6 +898,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: true;
         isIdle: false;
@@ -887,6 +916,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -896,6 +926,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         };
         isError: false;
         isIdle: false;
@@ -913,6 +944,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             data: TFormData;
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
+            extraData?: any;
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "many">) => Promise<void>;
@@ -923,6 +955,7 @@ type MutateVariables$1<TPath extends string, TFormData> = {
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
+    extraData?: any;
 };
 /** @notExported */
 type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables$1<TPath, TFormData>, 'resource'> & {
@@ -1109,6 +1142,7 @@ type Variables<TPath extends string, TFormData> = {
     apiClientParams: Partial<ApiProps> & {
         method: ApiProps['method'];
     };
+    extraData?: any;
 };
 /** @notExported */
 type MutateVariables<TPath extends string, TFormData> = (Omit<Variables<TPath, TFormData>, 'resource'> & {
