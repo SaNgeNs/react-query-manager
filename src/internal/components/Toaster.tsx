@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-nested-ternary */
-import React, { useCallback } from 'react';
-import type { ToasterProps, ToastPosition } from 'react-hot-toast';
+import React, { useCallback, useEffect } from 'react';
+import { type ToasterProps, type ToastPosition } from 'react-hot-toast';
 import { resolveValue, useToaster } from 'react-hot-toast/headless';
+import { toast } from '../../utils/toast';
 
 const prefersReducedMotion = (() => {
   let shouldReduceMotion: boolean | undefined;
@@ -18,12 +19,16 @@ const prefersReducedMotion = (() => {
 
 function ToastWrapper({
   id,
+  visible,
+  closeOutside,
   className,
   style,
   onHeightUpdate,
   children,
 }: {
   id: string;
+  visible: boolean;
+  closeOutside: boolean;
   className?: string;
   style?: React.CSSProperties;
   onHeightUpdate: (id: string, height: number) => void;
@@ -47,8 +52,33 @@ function ToastWrapper({
     [id, onHeightUpdate],
   );
 
+  useEffect(() => {
+    const callback = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isInsideToast = target.closest(`[data-toast-id="${id}"]`);
+
+      if (!isInsideToast) {
+        toast.dismiss(id);
+      }
+    };
+
+    if (closeOutside) {
+      setTimeout(() => {
+        document.addEventListener('click', callback);
+      }, 0);
+    }
+
+    return () => {
+      if (closeOutside) {
+        setTimeout(() => {
+          document.removeEventListener('click', callback);
+        }, 0);
+      }
+    };
+  }, [visible, id, closeOutside]);
+
   return (
-    <div ref={ref} className={className} style={style}>
+    <div data-toast-id={id} ref={ref} className={className} style={style}>
       {children}
     </div>
   );
@@ -124,6 +154,8 @@ export function Toaster({
           <ToastWrapper
             id={toast.id}
             key={toast.id}
+            visible={toast.visible}
+            closeOutside={(toast as any)?.extraParams?.closeOutside || false}
             onHeightUpdate={handlers.updateHeight}
             style={{
               ...positionStyle,

@@ -226,7 +226,10 @@ export function RQWrapper({
           </>
         );
       },
-      { duration: toastProps?.globalProps?.toastOptions?.duration || 5000 },
+      {
+        duration: toastProps?.globalProps?.toastOptions?.duration || 5000,
+        extraParams: { closeOutside: true },
+      } as any,
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -238,14 +241,10 @@ export function RQWrapper({
     toastUndo,
   }), [apiUrl, fetch, toastUndo, apiEnsureTrailingSlash]);
 
-  const ToastComponent = toastProps?.wrapper || (() => null);
-
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster {...toastProps?.globalProps}>
-        {(props) => {
-          return <ToastComponent {...props} />;
-        }}
+        {toastProps?.wrapper}
       </Toaster>
 
       <Context.Provider value={contextValue}>
