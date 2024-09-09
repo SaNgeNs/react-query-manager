@@ -330,6 +330,7 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
+    isInvalidateCache?: boolean;
     type: TType;
 };
 /**
@@ -972,12 +973,13 @@ type CreateOneVariables<TPath extends string, TFormData> = (Omit<MutateVariables
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, cacheAddItemTo, }: {
+declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, cacheAddItemTo, isInvalidateCache, }: {
     resourcePath: Resource<TPath>["path"];
     mutationOptions?: UseMutateProps<QueryResponse<TData>, MutateVariables$1<TPath, TFormData>>;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
     cacheAddItemTo?: "start" | "end";
+    isInvalidateCache?: boolean;
 }) => {
     mutation: {
         data: undefined;

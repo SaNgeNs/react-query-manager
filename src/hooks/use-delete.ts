@@ -52,6 +52,7 @@ type DeleteBase<
   mode?: MutateMode;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
+  isInvalidateCache?: boolean;
   type: TType;
 };
 
@@ -68,6 +69,7 @@ const useDeleteBase = <
     },
     extraResources = [],
     shouldUpdateCurrentResource = true,
+    isInvalidateCache = true,
     type = 'many' as TType,
   }: DeleteBase<TPath, TData, TType>) => {
   const {
@@ -136,7 +138,9 @@ const useDeleteBase = <
         queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
       });
 
-      invalidateQueries({ queryClient, queryKeys });
+      if (isInvalidateCache) {
+        invalidateQueries({ queryClient, queryKeys });
+      }
 
       if (mutationOptions?.onSuccess) {
         mutationOptions.onSuccess(...rest);

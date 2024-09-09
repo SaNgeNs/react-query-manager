@@ -84,6 +84,7 @@ export const useCreate = <
     extraResources = [],
     shouldUpdateCurrentResource = true,
     cacheAddItemTo = 'start',
+    isInvalidateCache = true,
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
@@ -93,6 +94,7 @@ export const useCreate = <
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
   cacheAddItemTo?: 'start' | 'end';
+  isInvalidateCache?: boolean;
 }) => {
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
   const queryClient = useQueryClient();
@@ -145,17 +147,19 @@ export const useCreate = <
 
         addItemFromQueryCache({
           queryClient,
-          data,
+          data: data.data || {} as OnlyObject,
           queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
           queryKeysList,
           queryKeysInfiniteList,
           cacheAddItemTo,
         });
 
-        invalidateQueries({
-          queryClient,
-          queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
-        });
+        if (isInvalidateCache) {
+          invalidateQueries({
+            queryClient,
+            queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
+          });
+        }
       }
 
       if (mutationOptions?.onSuccess) {
