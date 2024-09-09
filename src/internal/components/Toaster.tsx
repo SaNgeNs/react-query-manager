@@ -69,7 +69,11 @@ function ToastWrapper({
     }
 
     return () => {
+      console.log('unmount ToastWrapper:', id);
+
       if (closeOutside) {
+        console.log('closeOutside', closeOutside);
+
         setTimeout(() => {
           document.removeEventListener('click', callback);
         }, 0);
@@ -122,6 +126,8 @@ export function Toaster({
   containerClassName,
 }: ToasterProps) {
   const { toasts, handlers } = useToaster(toastOptions);
+
+  console.log('toasts', toasts);
 
   return (
     <div

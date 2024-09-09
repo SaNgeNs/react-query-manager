@@ -1,2 +1,1428 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _createStarExport(obj) { Object.keys(obj) .filter((key) => key !== "default" && key !== "__esModule") .forEach((key) => { if (exports.hasOwnProperty(key)) { return; } Object.defineProperty(exports, key, {enumerable: true, configurable: true, get: () => obj[key]}); }); } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _reactquery = require('@tanstack/react-query'); _createStarExport(_reactquery);function O(e){return e.replace(/^\/+/,"").replace(/\/+$/,"")}var g=(e,t)=>{let a=O(e.path.replace(/{(\w+)}/g,(o,s)=>e.params[s].toString()));return t?`${a}/`:a};var _reactquerydevtools = require('@tanstack/react-query-devtools');var _react = require('react'); var _react2 = _interopRequireDefault(_react);var A=class e extends Error{constructor(a,o,s){super(a);this.message=a;this.status=o;this.data=s;Object.setPrototypeOf(this,e.prototype),this.name=this.constructor.name,typeof Error.captureStackTrace=="function"?Error.captureStackTrace(this,this.constructor):this.stack=new Error(a).stack,this.stack=new Error().stack,console.error(this.message,this)}};var ee=e=>{if(e!==null&&typeof e=="object"){let t={};return Object.entries(e).forEach(([o,s])=>{(s||typeof s=="boolean"||typeof s=="number")&&(t[o]=s)}),t}return{}};function I(e){return encodeURIComponent(e).replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"+").replace(/%5B/gi,"[").replace(/%5D/gi,"]")}var B=e=>{let{onSuccess:t,onError:a}=e,o=e.data instanceof FormData,s=(()=>{let r=e.url;if(e.params){let i=ee(e.params);if(e.queryParamsSerializer)r+=`?${e.queryParamsSerializer(e.params)}`;else if(Object.keys(i).length>0){let c=[];for(let Q in i)i.hasOwnProperty(Q)&&(Array.isArray(i[Q])?i[Q].forEach(D=>{c.push(`${I(Q)}${e.queryArrayParamStyle==="indexedArray"?"[]":""}=${I(D)}`)}):c.push(`${I(Q)}=${I(i[Q])}`));r+=`?${c.join("&")}`}}let[n,p]=r.split("?");return`${n}${p?`?${p}`:""}`})(),u=o?e.data:e.data?JSON.stringify(e.data):"",y={method:e.method,headers:{...!o&&{"Content-Type":"application/json"},...e.authorization&&{Authorization:e.authorization},...e.headers},...u&&{body:u},...e.options};return fetch(s,y).then(async r=>{let n=await(async()=>{try{let i=_optionalChain([r, 'access', _2 => _2.headers, 'access', _3 => _3.get, 'call', _4 => _4("Content-Type"), 'optionalAccess', _5 => _5.toLowerCase, 'call', _6 => _6()])||"";return i.includes("application/json")?await r.json():i.includes("text/plain")||i.includes("text/csv")||i.includes("application/xml")||i.includes("text/xml")||i.includes("application/javascript")||i.includes("text/html")?await r.text():i.includes("multipart/form-data")?await r.formData():await r.blob()}catch(i){throw console.error("Error handling response:",i),i}})(),p={};return r.headers.forEach((i,c)=>{p[c]=i}),{status:r.status,statusText:r.statusText,headers:p,data:n}}).then(r=>{if(r.status<200||r.status>=300){let n=new A(`Request failed with status code: ${r.status}`,r.status,r.data);return a&&a(n,e),Promise.reject(n)}return t&&t(r,e),Promise.resolve(r)}).catch(r=>Promise.reject(new A(r.message)))};var _headless = require('react-hot-toast/headless'); var _headless2 = _interopRequireDefault(_headless);var _reacthottoast = require('react-hot-toast');var{remove:$e,...re}=_headless2.default,L= exports.toast =Object.assign((...e)=>_headless2.default.call(void 0, ...e),re),je= exports.ToastBar =_reacthottoast.ToastBar,Be= exports.resolveToastValue =_reacthottoast.resolveValue;var ie=(()=>{let e;return()=>{if(e===void 0&&typeof window<"u"){let t=matchMedia("(prefers-reduced-motion: reduce)");e=!t||t.matches}return e}})();function ue({id:e,visible:t,closeOutside:a,className:o,style:s,onHeightUpdate:u,children:y}){let r=_react.useCallback.call(void 0, n=>{if(n){let p=()=>{let{height:i}=n.getBoundingClientRect();u(e,i)};p(),new MutationObserver(p).observe(n,{subtree:!0,childList:!0,characterData:!0})}},[e,u]);return _react.useEffect.call(void 0, ()=>{let n=p=>{p.target.closest(`[data-toast-id="${e}"]`)||L.dismiss(e)};return a&&setTimeout(()=>{document.addEventListener("click",n)},0),()=>{a&&setTimeout(()=>{document.removeEventListener("click",n)},0)}},[t,e,a]),_react2.default.createElement("div",{"data-toast-id":e,ref:r,className:o,style:s},y)}var ye=(e,t)=>{let a=e.includes("top"),o=a?{top:0}:{bottom:0},s=e.includes("center")?{justifyContent:"center"}:e.includes("right")?{justifyContent:"flex-end"}:{};return{left:0,right:0,display:"flex",position:"absolute",transition:ie()?void 0:"all 230ms cubic-bezier(.21,1.02,.73,1)",transform:`translateY(${t*(a?1:-1)}px)`,...o,...s}},q=16;function W({reverseOrder:e,position:t="top-center",toastOptions:a,gutter:o,children:s,containerStyle:u,containerClassName:y}){let{toasts:r,handlers:n}=_headless.useToaster.call(void 0, a);return _react2.default.createElement("div",{style:{position:"fixed",zIndex:9999,top:q,left:q,right:q,bottom:q,pointerEvents:"none",...u},className:y,onMouseEnter:n.startPause,onMouseLeave:n.endPause},r.map(p=>{let i=p.position||t,c={...p,position:i},Q=n.calculateOffset(c,{reverseOrder:e,gutter:o,defaultPosition:t}),D=ye(i,Q),x=s;return _react2.default.createElement(ue,{id:c.id,key:c.id,visible:c.visible,closeOutside:_optionalChain([c, 'optionalAccess', _7 => _7.extraParams, 'optionalAccess', _8 => _8.closeOutside])||!1,onHeightUpdate:n.updateHeight,style:{...D,pointerEvents:"auto"}},c.type==="custom"?_headless.resolveValue.call(void 0, p.message,c):x?_react2.default.createElement(x,{...c}):_react2.default.createElement("div",{style:{display:p.visible?"flex":"none"}},_headless.resolveValue.call(void 0, c.message,c)))}))}var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);var z=new _eventemitter32.default,M={once:(e,t)=>{z.once(e,t)},emit:(e,t)=>{z.emit(e,t)}};var H=_react.createContext.call(void 0, {apiUrl:"",apiEnsureTrailingSlash:!1,apiClient:B,toastUndo:()=>{}}),C= exports.useRQWrapperContext =()=>_react.useContext.call(void 0, H);function nt({children:e,config:t={},apiUrl:a,apiClient:o=B,apiEnsureTrailingSlash:s=!1,apiAuthorization:u,apiHeaders:y,apiOnSuccess:r,apiOnError:n,isDevTools:p,devToolsOptions:i,toast:c}){let Q=_react.useMemo.call(void 0, ()=>new (0, _reactquery.QueryClient)({...t,defaultOptions:{..._optionalChain([t, 'optionalAccess', _9 => _9.defaultOptions]),queries:{gcTime:3e5,staleTime:3e5,retry:!1,..._optionalChain([t, 'optionalAccess', _10 => _10.defaultOptions, 'optionalAccess', _11 => _11.queries])}}}),[]),D=_react.useCallback.call(void 0, T=>{let m=u?u():"",h=y?y():{},f=(...P)=>{r&&r(...P),T.onSuccess&&T.onSuccess(...P)},l=(...P)=>{n&&n(...P),T.onError&&T.onError(...P)};return o({...T,headers:T.headers?{...h,...T.headers}:h,authorization:T.authorization||m,onSuccess:f,onError:l})},[]),x=_react.useCallback.call(void 0, T=>{let m=!1;L.dismiss();let h=()=>{m=!0,M.emit("end",!0),L.dismiss()};L.success(f=>{let l=_optionalChain([c, 'optionalAccess', _12 => _12.CustomUndoContent]);return!f.visible&&!m&&(m=!0,M.emit("end",!1)),l?_react2.default.createElement(l,{message:T.message,onUndo:h,type:T.type}):_react2.default.createElement(_react2.default.Fragment,null,T.message,_react2.default.createElement("span",{style:{marginLeft:"10px",cursor:"pointer"},onClick:h,role:"button",tabIndex:0,"aria-label":"Undo",title:"Undo"},"UNDO"))},{duration:_optionalChain([c, 'optionalAccess', _13 => _13.globalProps, 'optionalAccess', _14 => _14.toastOptions, 'optionalAccess', _15 => _15.duration])||5e3,extraParams:{closeOutside:!0}})},[]),b=_react.useMemo.call(void 0, ()=>({apiUrl:O(a),apiClient:D,apiEnsureTrailingSlash:s,toastUndo:x}),[a,D,x,s]);return _react2.default.createElement(_reactquery.QueryClientProvider,{client:Q},_react2.default.createElement(W,{..._optionalChain([c, 'optionalAccess', _16 => _16.globalProps])},_optionalChain([c, 'optionalAccess', _17 => _17.CustomContent])),_react2.default.createElement(H.Provider,{value:b},e),p&&_react2.default.createElement(_reactquerydevtools.ReactQueryDevtools,{buttonPosition:"bottom-right",initialIsOpen:!1,...i}))}var pt=({queryOptions:e,resource:t,params:a={},apiClientParams:o})=>{let{apiUrl:s,apiClient:u,apiEnsureTrailingSlash:y}=C();return _reactquery.useQuery.call(void 0, {...e,queryKey:["get-list",t.path,t.params,a,..._optionalChain([e, 'optionalAccess', _18 => _18.queryKey])?e.queryKey:[]],queryFn:async({queryKey:n})=>{let p={resource:t,params:a,queryKey:n},i=`${s}/${g(p.resource,y)}`;return _optionalChain([e, 'optionalAccess', _19 => _19.queryFn])?await _optionalChain([e, 'optionalAccess', _20 => _20.queryFn, 'call', _21 => _21({apiClient:u,apiUrl:s,variables:p,url:i})]):await u({url:i,method:"GET",params:a,...o})}})};var dt=({queryOptions:e,resource:t,params:a={},apiClientParams:o,pagination:s})=>{let{apiUrl:u,apiClient:y,apiEnsureTrailingSlash:r}=C();return _reactquery.useInfiniteQuery.call(void 0, {initialPageParam:1,getNextPageParam:(...p)=>{let i=p[0],c=Number(p[2]);if(_optionalChain([i, 'optionalAccess', _22 => _22.data, 'optionalAccess', _23 => _23.length]))return c+1},getPreviousPageParam:(...p)=>{let i=Number(p[2]);if(!(i<=1))return i-1},...e,queryKey:["get-infinite-list",t.path,t.params,s,a,..._optionalChain([e, 'optionalAccess', _24 => _24.queryKey])?e.queryKey:[]],queryFn:async({queryKey:p,pageParam:i})=>{let c={resource:t,params:{...a,[s.page[0]]:i,[s.per_page[0]]:s.per_page[1]},queryKey:p},Q=`${u}/${g(c.resource,r)}`;return _optionalChain([e, 'optionalAccess', _25 => _25.queryFn])?await _optionalChain([e, 'optionalAccess', _26 => _26.queryFn, 'call', _27 => _27({apiClient:y,apiUrl:u,variables:c,url:Q})]):await y({url:Q,method:"GET",params:c.params,...o})}})};var xt=({resource:e,id:t,queryOptions:a,params:o={},apiClientParams:s})=>{let{apiUrl:u,apiClient:y,apiEnsureTrailingSlash:r}=C();return _reactquery.useQuery.call(void 0, {...a,queryKey:["get-one",e.path,e.params,String(t),o,..._optionalChain([a, 'optionalAccess', _28 => _28.queryKey])?a.queryKey:[]],queryFn:async({queryKey:p})=>{let i={id:t,resource:e,params:o,queryKey:p},c=`${u}/${g(i.resource,!0)}`;return _optionalChain([a, 'optionalAccess', _29 => _29.queryFn])?await _optionalChain([a, 'optionalAccess', _30 => _30.queryFn, 'call', _31 => _31({apiClient:y,apiUrl:u,variables:i,url:c})]):await y({url:`${c}${i.id}${r?"/":""}`,method:"GET",params:o,...s})}})};var _=({queryClient:e,data:t,queryKeysOne:a,queryKeysList:o,queryKeysInfiniteList:s,cacheAddItemTo:u="start"})=>{let y=r=>!r||!(r.data instanceof Array)?r:{...r,data:u==="start"?[t,...r.data]:[...r.data,t]};a&&a.forEach(r=>{e.setQueryData(r,t)}),o&&o.forEach(r=>{e.setQueriesData({queryKey:r},y)}),s&&s.forEach(r=>{e.setQueriesData({queryKey:r},n=>n&&{...n,pages:n.pages.map(y)})})};var J=({queryClient:e,ids:t,queryKeysOne:a,queryKeysList:o,queryKeysInfiniteList:s})=>{let u=y=>!y||!(y.data instanceof Array)?y:{...y,data:y.data.filter(r=>!t.some(n=>String(n)===String(r.id)))};a&&a.forEach(y=>{e.removeQueries({queryKey:y})}),o&&o.forEach(y=>{e.setQueriesData({queryKey:y},u)}),s&&s.forEach(y=>{e.setQueriesData({queryKey:y},r=>r&&{...r,pages:r.pages.map(u)})})};var d={getOne:(e,t)=>["get-one",e.path,e.params,String(t)],getOneArray:(e,t)=>t.map(a=>["get-one",e.path,e.params,String(a)]),getList:e=>["get-list",e.path,e.params],getInfiniteList:e=>["get-infinite-list",e.path,e.params],getDataQuery:e=>["query-data",e.path,e.params]};function v(e,t){if(typeof e!=typeof t)return!1;if(e instanceof Object&&t instanceof Object){let a=Object.keys(e),o=Object.keys(t);if(a.length!==o.length)return!1;for(let s of a){let u=e[s],y=t[s];if(u!==y&&!v(u,y))return!1}return!0}if(Array.isArray(e)&&Array.isArray(t)){if(e.length!==t.length)return!1;for(let a=0;a<e.length;a++)if(e[a]!==t[a]&&!v(e[a],t[a]))return!1;return!0}return e===t}var Ft=({queryClient:e,queryKeys:t})=>{e.invalidateQueries({predicate:a=>{let o=a.queryKey;return t.some(s=>s.every(u=>o.some(y=>v(y,u))))}})};var S=({queryClient:e,queryKeys:t})=>{t.forEach(a=>{e.invalidateQueries({queryKey:a})})};function w(e,t){let a={...e};if(e instanceof Object&&t instanceof Object){for(let o in t)if(o in e){let s=e[o],u=t[o];typeof s==typeof u&&(Array.isArray(s)&&Array.isArray(u)||s!==null&&!Array.isArray(s)&&typeof s=="object"&&!Array.isArray(u)&&typeof u=="object"||typeof s!="object"&&typeof u!="object")&&(typeof s=="object"&&s!==null&&!Array.isArray(s)?a[o]=w(s,u):a[o]=u)}}return a}var Y=({queryClient:e,data:t,ids:a,queryKeysOne:o,queryKeysList:s,queryKeysInfiniteList:u})=>{let y=r=>!r||!(r.data instanceof Array)?r:{...r,data:r.data.map(n=>a.some(p=>String(p)===String(n.id))?w(n,t):n)};o&&o.forEach(r=>{e.setQueriesData({queryKey:r},n=>!n||!(n.data instanceof Object)||!(t instanceof Object)?n:{...n,data:w(n.data,t)})}),s&&s.forEach(r=>{e.setQueriesData({queryKey:r},y)}),u&&u.forEach(r=>{e.setQueriesData({queryKey:r},n=>n&&{...n,pages:n.pages.map(y)})})};var $=async(e,t)=>{let a=t.reduce((o,s)=>o.concat(e.getQueriesData({queryKey:s})),[]);return await Promise.all(a.map(([o])=>e.cancelQueries({queryKey:o}))),a};var X=({resourcePath:e,mutationOptions:t,mode:a={optimistic:!0,undoable:!0},extraResources:o=[],shouldUpdateCurrentResource:s=!0,isInvalidateCache:u=!0,type:y="many"})=>{let{apiUrl:r,apiClient:n,apiEnsureTrailingSlash:p,toastUndo:i}=C(),c=_reactquery.useQueryClient.call(void 0, ),Q=_react.useRef.call(void 0, []),D=()=>{Q.current.forEach(([m,h])=>{c.setQueryData(m,h)})},{mutate:x,...b}=_reactquery.useMutation.call(void 0, {...t,mutationKey:[y==="many"?"delete-many":"delete-one",e,..._optionalChain([t, 'optionalAccess', _32 => _32.mutationKey])?t.mutationKey:[]],mutationFn:async m=>{let h=`${r}/${g(m.resource,!0)}`;if(_optionalChain([t, 'optionalAccess', _33 => _33.mutationFn]))return await _optionalChain([t, 'optionalAccess', _34 => _34.mutationFn, 'call', _35 => _35({apiClient:n,apiUrl:r,variables:m,url:h})]);let f=y==="many"?m.ids:[m.id],l=await Promise.allSettled(f.map(E=>n({url:`${h}${E}${p?"/":""}`,method:"DELETE",...m.apiClientParams}))),P=[];return l.forEach(E=>{if(E.status==="fulfilled")P.push(E.value);else throw E.reason}),y==="many"?P:P[0]},onSuccess:(...m)=>{let h=m[1],f=[d.getList(h.resource),d.getInfiniteList(h.resource)];o.forEach(l=>{f.push(d.getList(l)),f.push(d.getInfiniteList(l))}),u&&S({queryClient:c,queryKeys:f}),_optionalChain([t, 'optionalAccess', _36 => _36.onSuccess])&&t.onSuccess(...m)},onError:(...m)=>{_optionalChain([t, 'optionalAccess', _37 => _37.onError])&&t.onError(...m),D()}});return{mutation:b,delete:async({resourceParams:m,undoMessage:h,...f})=>{let l={path:e,params:m},P=y==="many"?f.ids:[f.id];if(a.optimistic){let E=s?d.getOneArray(l,P):[],R=s?[d.getList(l)]:[],F=s?[d.getInfiniteList(l)]:[];o.forEach(j=>{E.push(...d.getOneArray(j,P)),R.push(d.getList(j)),F.push(d.getInfiniteList(j))}),Q.current=await $(c,[...E,...R,...F]),J({queryClient:c,ids:P,queryKeysOne:E,queryKeysList:R,queryKeysInfiniteList:F})}if(a.undoable){let E=P.length>1;M.once("end",R=>{R?D():x({...f,resource:l})}),i({message:h||`Element${E?"s":""} deleted`,type:E?"delete-many":"delete-one"})}else x({...f,resource:l})}}},_t= exports.useDeleteOne =e=>X({...e,type:"one"}),Jt= exports.useDeleteMany =e=>X({...e,type:"many"});var Z=({resourcePath:e,mutationOptions:t,mode:a={optimistic:!0,undoable:!0},extraResources:o=[],shouldUpdateCurrentResource:s=!0,type:u="many"})=>{let{apiUrl:y,apiClient:r,apiEnsureTrailingSlash:n,toastUndo:p}=C(),i=_reactquery.useQueryClient.call(void 0, ),c=_react.useRef.call(void 0, []),Q=()=>{c.current.forEach(([T,m])=>{i.setQueryData(T,m)})},{mutate:D,...x}=_reactquery.useMutation.call(void 0, {...t,mutationKey:[u==="many"?"update-many":"update-one",e,..._optionalChain([t, 'optionalAccess', _38 => _38.mutationKey])?t.mutationKey:[]],mutationFn:async T=>{let m=`${y}/${g(T.resource,!0)}`;if(_optionalChain([t, 'optionalAccess', _39 => _39.mutationFn]))return await _optionalChain([t, 'optionalAccess', _40 => _40.mutationFn, 'call', _41 => _41({apiClient:r,apiUrl:y,variables:T,url:m})]);let h=u==="many"?T.ids:[T.id],f=await Promise.allSettled(h.map(P=>r({url:`${m}${P}${n?"/":""}`,method:"PATCH",data:T.data,...T.apiClientParams}))),l=[];return f.forEach(P=>{if(P.status==="fulfilled")l.push(P.value);else throw P.reason}),u==="many"?l:l[0]},onSuccess:(...T)=>{let m=T[1];if(!a.optimistic){let h=u==="many"?m.ids:[m.id],f=[...d.getOneArray(m.resource,h),d.getList(m.resource),d.getInfiniteList(m.resource)];o.forEach(l=>{f.push(...d.getOneArray(l,h)),f.push(d.getList(l)),f.push(d.getInfiniteList(l))}),S({queryClient:i,queryKeys:f})}_optionalChain([t, 'optionalAccess', _42 => _42.onSuccess])&&t.onSuccess(...T)},onError:(...T)=>{_optionalChain([t, 'optionalAccess', _43 => _43.onError])&&t.onError(...T),Q()}});return{mutation:x,update:async({resourceParams:T,undoMessage:m,...h})=>{let f={path:e,params:T},l=u==="many"?h.ids:[h.id];if(a.optimistic){let P=s?d.getOneArray(f,l):[],E=s?[d.getList(f)]:[],R=s?[d.getInfiniteList(f)]:[];o.forEach(F=>{P.push(...d.getOneArray(F,l)),E.push(d.getList(F)),R.push(d.getInfiniteList(F))}),c.current=await $(i,[...P,...E,...R]),Y({queryClient:i,data:h.data,ids:l,queryKeysOne:P,queryKeysList:E,queryKeysInfiniteList:R})}if(a.undoable){let P=l.length>1;M.once("end",E=>{E?Q():D({...h,resource:f})}),p({message:m||`Element${P?"s":""} updated`,type:P?"update-many":"update-one"})}else D({...h,resource:f})}}},na= exports.useUpdateOne =e=>Z({...e,type:"one"}),oa= exports.useUpdateMany =e=>Z({...e,type:"many"});var ma=({resourcePath:e,mutationOptions:t,extraResources:a=[],shouldUpdateCurrentResource:o=!0,cacheAddItemTo:s="start",isInvalidateCache:u=!0})=>{let{apiUrl:y,apiClient:r,apiEnsureTrailingSlash:n}=C(),p=_reactquery.useQueryClient.call(void 0, ),{mutate:i,...c}=_reactquery.useMutation.call(void 0, {...t,mutationKey:["create",e,..._optionalChain([t, 'optionalAccess', _44 => _44.mutationKey])?t.mutationKey:[]],mutationFn:async D=>{let x=`${y}/${g(D.resource,n)}`;return _optionalChain([t, 'optionalAccess', _45 => _45.mutationFn])?await _optionalChain([t, 'optionalAccess', _46 => _46.mutationFn, 'call', _47 => _47({apiClient:r,apiUrl:y,variables:D,url:x})]):await r({url:x,method:"POST",data:D.data,...D.apiClientParams})},onSuccess:(...D)=>{let x=D[0];if(x){let b=D[1],{id:T}=x.data,m=o?[d.getOne(b.resource,T)]:[],h=o?[d.getList(b.resource)]:[],f=o?[d.getInfiniteList(b.resource)]:[];a.forEach(l=>{m.push(d.getOne(l,T)),h.push(d.getList(l)),f.push(d.getInfiniteList(l))}),_({queryClient:p,data:x.data||{},queryKeysOne:m.map(l=>[...l,{}]),queryKeysList:h,queryKeysInfiniteList:f,cacheAddItemTo:s}),u&&S({queryClient:p,queryKeys:[...h,...f]})}_optionalChain([t, 'optionalAccess', _48 => _48.onSuccess])&&t.onSuccess(...D)}});return{mutation:c,create:({resourceParams:D,...x})=>{i({...x,resource:{path:e,params:D}})}}};var ha=({queryOptions:e,resource:t,params:a={},apiClientParams:o})=>{let{apiUrl:s,apiClient:u,apiEnsureTrailingSlash:y}=C();return _reactquery.useQuery.call(void 0, {...e,queryKey:["query-data",t.path,t.params,a,..._optionalChain([e, 'optionalAccess', _49 => _49.queryKey])?e.queryKey:[]],queryFn:async({queryKey:n})=>{let p={resource:t,params:a,queryKey:n},i=`${s}/${g(p.resource,y)}`;return _optionalChain([e, 'optionalAccess', _50 => _50.queryFn])?await _optionalChain([e, 'optionalAccess', _51 => _51.queryFn, 'call', _52 => _52({apiClient:u,apiUrl:s,variables:p,url:i})]):await u({url:i,method:"GET",params:a,...o})}})};var Ea=({resourcePath:e,mutationOptions:t})=>{let{apiUrl:a,apiClient:o,apiEnsureTrailingSlash:s}=C(),{mutate:u,...y}=_reactquery.useMutation.call(void 0, {...t,mutationKey:["mutate-data",e,..._optionalChain([t, 'optionalAccess', _53 => _53.mutationKey])?t.mutationKey:[]],mutationFn:async n=>{let p=`${a}/${g(n.resource,s)}`;return _optionalChain([t, 'optionalAccess', _54 => _54.mutationFn])?await _optionalChain([t, 'optionalAccess', _55 => _55.mutationFn, 'call', _56 => _56({apiClient:o,apiUrl:a,variables:n,url:p})]):await o({url:p,data:n.data,...n.apiClientParams})}});return{mutation:y,mutate:async({resourceParams:n,...p})=>{u({...p,resource:{path:e,params:n}})}}};exports.CustomError = A; exports.RQWrapper = nt; exports.ToastBar = je; exports.addItemFromQueryCache = _; exports.deleteItemsFromQueryCache = J; exports.fetcher = B; exports.getUrlFromResource = g; exports.helpersQueryKeys = d; exports.invalidateMatchingQueries = Ft; exports.invalidateQueries = S; exports.resolveToastValue = Be; exports.toast = L; exports.updateItemsFromQueryCache = Y; exports.useCreate = ma; exports.useDataMutate = Ea; exports.useDataQuery = ha; exports.useDeleteMany = Jt; exports.useDeleteOne = _t; exports.useGetInfiniteList = dt; exports.useGetList = pt; exports.useGetOne = xt; exports.useRQWrapperContext = C; exports.useUpdateMany = oa; exports.useUpdateOne = na;
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _createStarExport(obj) { Object.keys(obj) .filter((key) => key !== "default" && key !== "__esModule") .forEach((key) => { if (exports.hasOwnProperty(key)) { return; } Object.defineProperty(exports, key, {enumerable: true, configurable: true, get: () => obj[key]}); }); } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }// src/index.ts
+var _reactquery = require('@tanstack/react-query'); _createStarExport(_reactquery);
+
+// src/hooks/use-get-list.ts
+
+
+// src/internal/utils/remove-first-and-last-slash.ts
+function removeFirstAndLastSlash(path) {
+  return path.replace(/^\/+/, "").replace(/\/+$/, "");
+}
+
+// src/utils/get-url-from-resource.ts
+var getUrlFromResource = (resource, ensureTrailingSlash) => {
+  const url = removeFirstAndLastSlash(resource.path.replace(/{(\w+)}/g, (_, key) => {
+    return resource.params[key].toString();
+  }));
+  return ensureTrailingSlash ? `${url}/` : url;
+};
+
+// src/components/RQWrapper.tsx
+
+var _reactquerydevtools = require('@tanstack/react-query-devtools');
+
+
+
+
+
+var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+
+// src/utils/custom-error.ts
+var CustomError = class _CustomError extends Error {
+  constructor(message, status, data) {
+    super(message);
+    this.message = message;
+    this.status = status;
+    this.data = data;
+    Object.setPrototypeOf(this, _CustomError.prototype);
+    this.name = this.constructor.name;
+    if (typeof Error.captureStackTrace === "function") {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      this.stack = new Error(message).stack;
+    }
+    this.stack = new Error().stack;
+    console.error(this.message, this);
+  }
+};
+
+// src/utils/fetcher.ts
+var filterEmptyParams = (params) => {
+  if (params !== null && typeof params === "object") {
+    const optionParams = {};
+    const entries = Object.entries(params);
+    entries.forEach(([key, value]) => {
+      if (value || typeof value === "boolean" || typeof value === "number") {
+        optionParams[key] = value;
+      }
+    });
+    return optionParams;
+  }
+  return {};
+};
+function encode(value) {
+  return encodeURIComponent(value).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
+}
+var fetcher = (args) => {
+  const { onSuccess, onError } = args;
+  const isFormData = args.data instanceof FormData;
+  const apiUrl = (() => {
+    let URL = args.url;
+    if (args.params) {
+      const queryParams = filterEmptyParams(args.params);
+      if (args.queryParamsSerializer) {
+        URL += `?${args.queryParamsSerializer(args.params)}`;
+      } else if (Object.keys(queryParams).length > 0) {
+        const str = [];
+        for (const p in queryParams) {
+          if (queryParams.hasOwnProperty(p)) {
+            if (Array.isArray(queryParams[p])) {
+              queryParams[p].forEach((value) => {
+                str.push(`${encode(p)}${args.queryArrayParamStyle === "indexedArray" ? "[]" : ""}=${encode(value)}`);
+              });
+            } else {
+              str.push(
+                `${encode(p)}=${encode(queryParams[p])}`
+              );
+            }
+          }
+        }
+        URL += `?${str.join("&")}`;
+      }
+    }
+    const [startUrl, endUrl] = URL.split("?");
+    return `${startUrl}${endUrl ? `?${endUrl}` : ""}`;
+  })();
+  const body = (() => {
+    if (isFormData) {
+      return args.data;
+    }
+    if (args.data) {
+      return JSON.stringify(args.data);
+    }
+    return "";
+  })();
+  const fetchOptions = {
+    method: args.method,
+    headers: {
+      ...!isFormData && { "Content-Type": "application/json" },
+      ...args.authorization && { Authorization: args.authorization },
+      ...args.headers
+    },
+    ...body && { body },
+    ...args.options
+  };
+  return fetch(apiUrl, fetchOptions).then(async (response) => {
+    const responseData = await (async () => {
+      try {
+        const contentType = _optionalChain([response, 'access', _2 => _2.headers, 'access', _3 => _3.get, 'call', _4 => _4("Content-Type"), 'optionalAccess', _5 => _5.toLowerCase, 'call', _6 => _6()]) || "";
+        if (contentType.includes("application/json")) {
+          return await response.json();
+        }
+        if (contentType.includes("text/plain") || contentType.includes("text/csv") || contentType.includes("application/xml") || contentType.includes("text/xml") || contentType.includes("application/javascript") || contentType.includes("text/html")) {
+          return await response.text();
+        }
+        if (contentType.includes("multipart/form-data")) {
+          return await response.formData();
+        }
+        return await response.blob();
+      } catch (error) {
+        console.error("Error handling response:", error);
+        throw error;
+      }
+    })();
+    const headers = {};
+    response.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
+    return {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+      data: responseData
+    };
+  }).then((result) => {
+    if (result.status < 200 || result.status >= 300) {
+      const error = new CustomError(
+        `Request failed with status code: ${result.status}`,
+        result.status,
+        result.data
+      );
+      if (onError) {
+        onError(error, args);
+      }
+      return Promise.reject(error);
+    }
+    if (onSuccess) {
+      onSuccess(result, args);
+    }
+    return Promise.resolve(result);
+  }).catch((error) => {
+    return Promise.reject(new CustomError(
+      error.message
+    ));
+  });
+};
+
+// src/internal/components/Toaster.tsx
+
+var _headless = require('react-hot-toast/headless'); var _headless2 = _interopRequireDefault(_headless);
+
+// src/utils/toast.ts
+
+var _reacthottoast = require('react-hot-toast');
+var { remove, ...restOfToastApi } = _headless2.default;
+var toast = Object.assign(
+  (...args) => _headless2.default.call(void 0, ...args),
+  restOfToastApi
+);
+var ToastBar = _reacthottoast.ToastBar;
+var resolveToastValue = _reacthottoast.resolveValue;
+
+// src/internal/components/Toaster.tsx
+var prefersReducedMotion = /* @__PURE__ */ (() => {
+  let shouldReduceMotion;
+  return () => {
+    if (shouldReduceMotion === void 0 && typeof window !== "undefined") {
+      const mediaQuery = matchMedia("(prefers-reduced-motion: reduce)");
+      shouldReduceMotion = !mediaQuery || mediaQuery.matches;
+    }
+    return shouldReduceMotion;
+  };
+})();
+function ToastWrapper({
+  id,
+  visible,
+  closeOutside,
+  className,
+  style,
+  onHeightUpdate,
+  children
+}) {
+  const ref = _react.useCallback.call(void 0, 
+    (el) => {
+      if (el) {
+        const updateHeight = () => {
+          const { height } = el.getBoundingClientRect();
+          onHeightUpdate(id, height);
+        };
+        updateHeight();
+        new MutationObserver(updateHeight).observe(el, {
+          subtree: true,
+          childList: true,
+          characterData: true
+        });
+      }
+    },
+    [id, onHeightUpdate]
+  );
+  _react.useEffect.call(void 0, () => {
+    const callback = (event) => {
+      const target = event.target;
+      const isInsideToast = target.closest(`[data-toast-id="${id}"]`);
+      if (!isInsideToast) {
+        toast.dismiss(id);
+      }
+    };
+    if (closeOutside) {
+      setTimeout(() => {
+        document.addEventListener("click", callback);
+      }, 0);
+    }
+    return () => {
+      console.log("unmount ToastWrapper:", id);
+      if (closeOutside) {
+        console.log("closeOutside", closeOutside);
+        setTimeout(() => {
+          document.removeEventListener("click", callback);
+        }, 0);
+      }
+    };
+  }, [visible, id, closeOutside]);
+  return /* @__PURE__ */ _react2.default.createElement("div", { "data-toast-id": id, ref, className, style }, children);
+}
+var getPositionStyle = (position, offset) => {
+  const top = position.includes("top");
+  const verticalStyle = top ? { top: 0 } : { bottom: 0 };
+  const horizontalStyle = position.includes("center") ? { justifyContent: "center" } : position.includes("right") ? { justifyContent: "flex-end" } : {};
+  return {
+    left: 0,
+    right: 0,
+    display: "flex",
+    position: "absolute",
+    transition: prefersReducedMotion() ? void 0 : "all 230ms cubic-bezier(.21,1.02,.73,1)",
+    transform: `translateY(${offset * (top ? 1 : -1)}px)`,
+    ...verticalStyle,
+    ...horizontalStyle
+  };
+};
+var DEFAULT_OFFSET = 16;
+function Toaster({
+  reverseOrder,
+  position = "top-center",
+  toastOptions,
+  gutter,
+  children,
+  containerStyle,
+  containerClassName
+}) {
+  const { toasts, handlers } = _headless.useToaster.call(void 0, toastOptions);
+  console.log("toasts", toasts);
+  return /* @__PURE__ */ _react2.default.createElement(
+    "div",
+    {
+      style: {
+        position: "fixed",
+        zIndex: 9999,
+        top: DEFAULT_OFFSET,
+        left: DEFAULT_OFFSET,
+        right: DEFAULT_OFFSET,
+        bottom: DEFAULT_OFFSET,
+        pointerEvents: "none",
+        ...containerStyle
+      },
+      className: containerClassName,
+      onMouseEnter: handlers.startPause,
+      onMouseLeave: handlers.endPause
+    },
+    toasts.map((t) => {
+      const toastPosition = t.position || position;
+      const toast2 = { ...t, position: toastPosition };
+      const offset = handlers.calculateOffset(toast2, {
+        reverseOrder,
+        gutter,
+        defaultPosition: position
+      });
+      const positionStyle = getPositionStyle(toastPosition, offset);
+      const Component = children;
+      return /* @__PURE__ */ _react2.default.createElement(
+        ToastWrapper,
+        {
+          id: toast2.id,
+          key: toast2.id,
+          visible: toast2.visible,
+          closeOutside: _optionalChain([toast2, 'optionalAccess', _7 => _7.extraParams, 'optionalAccess', _8 => _8.closeOutside]) || false,
+          onHeightUpdate: handlers.updateHeight,
+          style: {
+            ...positionStyle,
+            pointerEvents: "auto"
+          }
+        },
+        toast2.type === "custom" ? _headless.resolveValue.call(void 0, t.message, toast2) : Component ? /* @__PURE__ */ _react2.default.createElement(Component, { ...toast2 }) : /* @__PURE__ */ _react2.default.createElement("div", { style: { display: t.visible ? "flex" : "none" } }, _headless.resolveValue.call(void 0, toast2.message, toast2))
+      );
+    })
+  );
+}
+
+// src/internal/utils/undo-event-emitter.ts
+var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);
+var eventEmitter = new (0, _eventemitter32.default)();
+var undoEventEmitter = {
+  /**
+   * Listens for the next 'end' event and then removes the listener.
+   *
+   * @param type The type of event to listen for. Currently only 'end' is supported.
+   * @param callback The callback function to be called when the event is emitted. The callback will receive a boolean indicating whether the event was triggered by an undo action.
+   * @return A function that can be called to remove the listener.
+   */
+  once: (type, callback) => {
+    eventEmitter.once(type, callback);
+  },
+  /**
+   * Emits an 'end' event, which is used to let any registered callbacks know that an undo/redo action has completed.
+   *
+   * @param type The type of event to emit. Currently only 'end' is supported.
+   * @param isUndo A boolean indicating whether the event was triggered by an undo action.
+   */
+  emit: (type, isUndo) => {
+    eventEmitter.emit(type, isUndo);
+  }
+};
+
+// src/components/RQWrapper.tsx
+var Context = _react.createContext.call(void 0, {
+  apiUrl: "",
+  apiEnsureTrailingSlash: false,
+  apiClient: fetcher,
+  toastUndo: () => {
+  }
+});
+var useRQWrapperContext = () => {
+  return _react.useContext.call(void 0, Context);
+};
+function RQWrapper({
+  children,
+  config = {},
+  apiUrl,
+  apiClient = fetcher,
+  apiEnsureTrailingSlash = false,
+  apiAuthorization,
+  apiHeaders,
+  apiOnSuccess,
+  apiOnError,
+  isDevTools,
+  devToolsOptions,
+  toast: toastProps
+}) {
+  const queryClient = _react.useMemo.call(void 0, () => {
+    return new (0, _reactquery.QueryClient)({
+      ...config,
+      defaultOptions: {
+        ..._optionalChain([config, 'optionalAccess', _9 => _9.defaultOptions]),
+        queries: {
+          gcTime: 5 * 60 * 1e3,
+          // 5 minutes,
+          staleTime: 5 * 60 * 1e3,
+          // 5 minutes
+          retry: false,
+          ..._optionalChain([config, 'optionalAccess', _10 => _10.defaultOptions, 'optionalAccess', _11 => _11.queries])
+        }
+      }
+    });
+  }, []);
+  const fetch2 = _react.useCallback.call(void 0, (args) => {
+    const globalAuthorization = apiAuthorization ? apiAuthorization() : "";
+    const globalHeaders = apiHeaders ? apiHeaders() : {};
+    const onSuccess = (...successArgs) => {
+      if (apiOnSuccess) {
+        apiOnSuccess(...successArgs);
+      }
+      if (args.onSuccess) {
+        args.onSuccess(...successArgs);
+      }
+    };
+    const onError = (...errorArgs) => {
+      if (apiOnError) {
+        apiOnError(...errorArgs);
+      }
+      if (args.onError) {
+        args.onError(...errorArgs);
+      }
+    };
+    return apiClient({
+      ...args,
+      headers: args.headers ? {
+        ...globalHeaders,
+        ...args.headers
+      } : globalHeaders,
+      authorization: args.authorization || globalAuthorization,
+      onSuccess,
+      onError
+    });
+  }, []);
+  const toastUndo = _react.useCallback.call(void 0, (data) => {
+    let isSuccess = false;
+    toast.dismiss();
+    const onUndo = () => {
+      console.log("onUndo");
+      isSuccess = true;
+      undoEventEmitter.emit("end", true);
+      toast.dismiss();
+    };
+    toast.success(
+      (t) => {
+        const CustomContent = _optionalChain([toastProps, 'optionalAccess', _12 => _12.CustomUndoContent]);
+        if (!t.visible && !isSuccess) {
+          isSuccess = true;
+          undoEventEmitter.emit("end", false);
+        }
+        return CustomContent ? /* @__PURE__ */ _react2.default.createElement(CustomContent, { message: data.message, onUndo, type: data.type }) : /* @__PURE__ */ _react2.default.createElement(_react2.default.Fragment, null, data.message, /* @__PURE__ */ _react2.default.createElement(
+          "span",
+          {
+            style: { marginLeft: "10px", cursor: "pointer" },
+            onClick: onUndo,
+            role: "button",
+            tabIndex: 0,
+            "aria-label": "Undo",
+            title: "Undo"
+          },
+          "UNDO"
+        ));
+      },
+      {
+        duration: _optionalChain([toastProps, 'optionalAccess', _13 => _13.globalProps, 'optionalAccess', _14 => _14.toastOptions, 'optionalAccess', _15 => _15.duration]) || 5e3,
+        extraParams: { closeOutside: true }
+      }
+    );
+  }, []);
+  const contextValue = _react.useMemo.call(void 0, () => ({
+    apiUrl: removeFirstAndLastSlash(apiUrl),
+    apiClient: fetch2,
+    apiEnsureTrailingSlash,
+    toastUndo
+  }), [apiUrl, fetch2, toastUndo, apiEnsureTrailingSlash]);
+  return /* @__PURE__ */ _react2.default.createElement(_reactquery.QueryClientProvider, { client: queryClient }, /* @__PURE__ */ _react2.default.createElement(Toaster, { ..._optionalChain([toastProps, 'optionalAccess', _16 => _16.globalProps]) }, _optionalChain([toastProps, 'optionalAccess', _17 => _17.CustomContent])), /* @__PURE__ */ _react2.default.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ _react2.default.createElement(
+    _reactquerydevtools.ReactQueryDevtools,
+    {
+      buttonPosition: "bottom-right",
+      initialIsOpen: false,
+      ...devToolsOptions
+    }
+  ));
+}
+
+// src/hooks/use-get-list.ts
+var useGetList = ({
+  queryOptions,
+  resource,
+  params = {},
+  apiClientParams
+}) => {
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
+  const query = _reactquery.useQuery.call(void 0, {
+    ...queryOptions,
+    queryKey: [
+      "get-list",
+      resource.path,
+      resource.params,
+      params,
+      ..._optionalChain([queryOptions, 'optionalAccess', _18 => _18.queryKey]) ? queryOptions.queryKey : []
+    ],
+    queryFn: async ({ queryKey }) => {
+      const variables = { resource, params, queryKey };
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      if (_optionalChain([queryOptions, 'optionalAccess', _19 => _19.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _20 => _20.queryFn, 'call', _21 => _21({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url,
+        method: "GET",
+        params,
+        ...apiClientParams
+      });
+      return result;
+    }
+  });
+  return query;
+};
+
+// src/hooks/use-get-infinite-list.ts
+
+var useGetInfiniteList = ({
+  queryOptions,
+  resource,
+  params = {},
+  apiClientParams,
+  pagination
+}) => {
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
+  const query = _reactquery.useInfiniteQuery.call(void 0, {
+    initialPageParam: 1,
+    getNextPageParam: (...args) => {
+      const lastPage = args[0];
+      const lastPageParam = Number(args[2]);
+      if (!_optionalChain([lastPage, 'optionalAccess', _22 => _22.data, 'optionalAccess', _23 => _23.length])) {
+        return void 0;
+      }
+      return lastPageParam + 1;
+    },
+    getPreviousPageParam: (...args) => {
+      const firstPageParam = Number(args[2]);
+      if (firstPageParam <= 1) {
+        return void 0;
+      }
+      return firstPageParam - 1;
+    },
+    ...queryOptions,
+    queryKey: [
+      "get-infinite-list",
+      resource.path,
+      resource.params,
+      pagination,
+      params,
+      ..._optionalChain([queryOptions, 'optionalAccess', _24 => _24.queryKey]) ? queryOptions.queryKey : []
+    ],
+    queryFn: async ({ queryKey, pageParam }) => {
+      const variables = {
+        resource,
+        params: {
+          ...params,
+          [pagination.page[0]]: pageParam,
+          [pagination.per_page[0]]: pagination.per_page[1]
+        },
+        queryKey
+      };
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      if (_optionalChain([queryOptions, 'optionalAccess', _25 => _25.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _26 => _26.queryFn, 'call', _27 => _27({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url,
+        method: "GET",
+        params: variables.params,
+        ...apiClientParams
+      });
+      return result;
+    }
+  });
+  return query;
+};
+
+// src/hooks/use-get-one.ts
+
+var useGetOne = ({
+  resource,
+  id,
+  queryOptions,
+  params = {},
+  apiClientParams
+}) => {
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
+  const query = _reactquery.useQuery.call(void 0, {
+    ...queryOptions,
+    queryKey: [
+      "get-one",
+      resource.path,
+      resource.params,
+      String(id),
+      params,
+      ..._optionalChain([queryOptions, 'optionalAccess', _28 => _28.queryKey]) ? queryOptions.queryKey : []
+    ],
+    queryFn: async ({ queryKey }) => {
+      const variables = {
+        id,
+        resource,
+        params,
+        queryKey
+      };
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
+      if (_optionalChain([queryOptions, 'optionalAccess', _29 => _29.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _30 => _30.queryFn, 'call', _31 => _31({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url: `${url}${variables.id}${apiEnsureTrailingSlash ? "/" : ""}`,
+        method: "GET",
+        params,
+        ...apiClientParams
+      });
+      return result;
+    }
+  });
+  return query;
+};
+
+// src/hooks/use-delete.ts
+
+
+
+// src/utils/queries/add-item-from-query-cache.ts
+var addItemFromQueryCache = ({
+  queryClient,
+  data,
+  queryKeysOne,
+  queryKeysList,
+  queryKeysInfiniteList,
+  cacheAddItemTo = "start"
+}) => {
+  const updateListData = (page) => {
+    if (!page || !(page.data instanceof Array)) {
+      return page;
+    }
+    return {
+      ...page,
+      data: cacheAddItemTo === "start" ? [data, ...page.data] : [...page.data, data]
+    };
+  };
+  if (queryKeysOne) {
+    queryKeysOne.forEach((queryKeyOne) => {
+      queryClient.setQueryData(queryKeyOne, data);
+    });
+  }
+  if (queryKeysList) {
+    queryKeysList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        updateListData
+      );
+    });
+  }
+  if (queryKeysInfiniteList) {
+    queryKeysInfiniteList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        (old) => {
+          if (!old) {
+            return old;
+          }
+          return {
+            ...old,
+            pages: old.pages.map(updateListData)
+          };
+        }
+      );
+    });
+  }
+};
+
+// src/utils/queries/delete-items-from-query-cache.ts
+var deleteItemsFromQueryCache = ({
+  queryClient,
+  ids,
+  queryKeysOne,
+  queryKeysList,
+  queryKeysInfiniteList
+}) => {
+  const updateListData = (page) => {
+    if (!page || !(page.data instanceof Array)) {
+      return page;
+    }
+    return {
+      ...page,
+      data: page.data.filter((item) => {
+        return !ids.some((id) => String(id) === String(item.id));
+      })
+    };
+  };
+  if (queryKeysOne) {
+    queryKeysOne.forEach((queryKeyOne) => {
+      queryClient.removeQueries({ queryKey: queryKeyOne });
+    });
+  }
+  if (queryKeysList) {
+    queryKeysList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        updateListData
+      );
+    });
+  }
+  if (queryKeysInfiniteList) {
+    queryKeysInfiniteList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        (old) => {
+          if (!old) {
+            return old;
+          }
+          return {
+            ...old,
+            pages: old.pages.map(updateListData)
+          };
+        }
+      );
+    });
+  }
+};
+
+// src/utils/queries/helpers-query-keys.ts
+var helpersQueryKeys = {
+  /**
+   * Generates a query key for fetching a single item by ID.
+   *
+   * @param itemResource - The resource object containing the path and parameters for the query.
+   * @param id - The ID of the item to fetch.
+   * @returns The query key for the single item.
+   *
+   * @example
+   * const key = helpersQueryKeys.getOne(resource, 1);
+   * // key: ['get-one', 'posts', {}, '1']
+   */
+  getOne: (itemResource, id) => ["get-one", itemResource.path, itemResource.params, String(id)],
+  /**
+   * Generates an array of query keys for fetching multiple items by their IDs.
+   *
+   * @param itemResource - The resource object containing the path and parameters for the query.
+   * @param ids - An array of IDs for the items to fetch.
+   * @returns An array of query keys for the items.
+   *
+   * @example
+   * const keys = helpersQueryKeys.getOneArray(resource, [1, 2]);
+   * // keys: [
+   * //   ['get-one', 'posts', {}, '1'],
+   * //   ['get-one', 'posts', {}, '2']
+   * // ]
+   */
+  getOneArray: (itemResource, ids) => ids.map((id) => ["get-one", itemResource.path, itemResource.params, String(id)]),
+  /**
+   * Generates a query key for fetching a list of items.
+   *
+   * @param itemResource - The resource object containing the path and parameters for the query.
+   * @returns The query key for the list of items.
+   *
+   * @example
+   * const key = helpersQueryKeys.getList(resource);
+   * // key: ['get-list', 'posts', {}]
+   */
+  getList: (itemResource) => ["get-list", itemResource.path, itemResource.params],
+  /**
+   * Generates a query key for fetching an infinite list of items.
+   *
+   * @param itemResource - The resource object containing the path and parameters for the query.
+   * @returns The query key for the infinite list of items.
+   *
+   * @example
+   * const key = helpersQueryKeys.getInfiniteList(resource);
+   * // key: ['get-infinite-list', 'posts', {}]
+   */
+  getInfiniteList: (itemResource) => ["get-infinite-list", itemResource.path, itemResource.params],
+  /**
+   * Generates a data query key.
+   *
+   * @param itemResource - The resource object containing the path and parameters for the query.
+   * @returns The data query key.
+   *
+   * @example
+   * const key = helpersQueryKeys.getDataQuery(resource);
+   * // key: ['query-data', 'posts', {}]
+   */
+  getDataQuery: (itemResource) => ["query-data", itemResource.path, itemResource.params]
+};
+
+// src/internal/utils/is-equal.ts
+function isEqual(data1, data2) {
+  if (typeof data1 !== typeof data2) {
+    return false;
+  }
+  if (data1 instanceof Object && data2 instanceof Object) {
+    const keys1 = Object.keys(data1);
+    const keys2 = Object.keys(data2);
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+    for (const key of keys1) {
+      const value1 = data1[key];
+      const value2 = data2[key];
+      if (value1 !== value2 && !isEqual(value1, value2)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  if (Array.isArray(data1) && Array.isArray(data2)) {
+    if (data1.length !== data2.length) {
+      return false;
+    }
+    for (let i = 0; i < data1.length; i++) {
+      if (data1[i] !== data2[i] && !isEqual(data1[i], data2[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return data1 === data2;
+}
+
+// src/utils/queries/invalidate-matching-queries.ts
+var invalidateMatchingQueries = ({
+  queryClient,
+  queryKeys
+}) => {
+  queryClient.invalidateQueries({
+    predicate: (query) => {
+      const keys = query.queryKey;
+      return queryKeys.some((keyGroup) => keyGroup.every((matchKey) => keys.some((key) => isEqual(key, matchKey))));
+    }
+  });
+};
+
+// src/utils/queries/invalidate-queries.ts
+var invalidateQueries = ({
+  queryClient,
+  queryKeys
+}) => {
+  queryKeys.forEach((queryKey) => {
+    queryClient.invalidateQueries({ queryKey });
+  });
+};
+
+// src/internal/utils/merge-objects.ts
+function mergeObjects(target, source) {
+  const result = { ...target };
+  if (target instanceof Object && source instanceof Object) {
+    for (const key in source) {
+      if (key in target) {
+        const targetValue = target[key];
+        const sourceValue = source[key];
+        const isSameType = typeof targetValue === typeof sourceValue && (Array.isArray(targetValue) && Array.isArray(sourceValue) || targetValue !== null && !Array.isArray(targetValue) && typeof targetValue === "object" && !Array.isArray(sourceValue) && typeof sourceValue === "object" || typeof targetValue !== "object" && typeof sourceValue !== "object");
+        if (isSameType) {
+          if (typeof targetValue === "object" && targetValue !== null && !Array.isArray(targetValue)) {
+            result[key] = mergeObjects(targetValue, sourceValue);
+          } else {
+            result[key] = sourceValue;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
+
+// src/utils/queries/update-items-from-query-cache.ts
+var updateItemsFromQueryCache = ({
+  queryClient,
+  data,
+  ids,
+  queryKeysOne,
+  queryKeysList,
+  queryKeysInfiniteList
+}) => {
+  const updateListData = (page) => {
+    if (!page || !(page.data instanceof Array)) {
+      return page;
+    }
+    return {
+      ...page,
+      data: page.data.map((item) => {
+        return ids.some((id) => String(id) === String(item.id)) ? mergeObjects(item, data) : item;
+      })
+    };
+  };
+  if (queryKeysOne) {
+    queryKeysOne.forEach((queryKeyOne) => {
+      queryClient.setQueriesData(
+        { queryKey: queryKeyOne },
+        (old) => {
+          if (!old || !(old.data instanceof Object) || !(data instanceof Object)) {
+            return old;
+          }
+          return { ...old, data: mergeObjects(old.data, data) };
+        }
+      );
+    });
+  }
+  if (queryKeysList) {
+    queryKeysList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        updateListData
+      );
+    });
+  }
+  if (queryKeysInfiniteList) {
+    queryKeysInfiniteList.forEach((queryKey) => {
+      queryClient.setQueriesData(
+        { queryKey },
+        (old) => {
+          if (!old) {
+            return old;
+          }
+          return {
+            ...old,
+            pages: old.pages.map(updateListData)
+          };
+        }
+      );
+    });
+  }
+};
+
+// src/internal/utils/create-snapshot.ts
+var createSnapshot = async (queryClient, keys) => {
+  const snapshot = keys.reduce(
+    (prev, queryKey) => prev.concat(queryClient.getQueriesData({ queryKey })),
+    []
+  );
+  await Promise.all(
+    snapshot.map(([queryKey]) => queryClient.cancelQueries({ queryKey }))
+  );
+  return snapshot;
+};
+
+// src/hooks/use-delete.ts
+var useDeleteBase = ({
+  resourcePath,
+  mutationOptions,
+  mode = {
+    optimistic: true,
+    undoable: true
+  },
+  extraResources = [],
+  shouldUpdateCurrentResource = true,
+  isInvalidateCache = true,
+  type = "many"
+}) => {
+  const {
+    apiUrl,
+    apiClient,
+    apiEnsureTrailingSlash,
+    toastUndo
+  } = useRQWrapperContext();
+  const queryClient = _reactquery.useQueryClient.call(void 0, );
+  const snapshot = _react.useRef.call(void 0, []);
+  const backToSnapshot = () => {
+    snapshot.current.forEach(([key, value]) => {
+      queryClient.setQueryData(key, value);
+    });
+  };
+  const { mutate, ...mutation } = _reactquery.useMutation.call(void 0, {
+    ...mutationOptions,
+    mutationKey: [
+      type === "many" ? "delete-many" : "delete-one",
+      resourcePath,
+      ..._optionalChain([mutationOptions, 'optionalAccess', _32 => _32.mutationKey]) ? mutationOptions.mutationKey : []
+    ],
+    mutationFn: async (variables) => {
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
+      if (_optionalChain([mutationOptions, 'optionalAccess', _33 => _33.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _34 => _34.mutationFn, 'call', _35 => _35({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const ids = type === "many" ? variables.ids : [variables.id];
+      const actions = await Promise.allSettled(ids.map((id) => apiClient({
+        url: `${url}${id}${apiEnsureTrailingSlash ? "/" : ""}`,
+        method: "DELETE",
+        ...variables.apiClientParams
+      })));
+      const result = [];
+      actions.forEach((response) => {
+        if (response.status === "fulfilled") {
+          result.push(response.value);
+        } else {
+          throw response.reason;
+        }
+      });
+      return type === "many" ? result : result[0];
+    },
+    onSuccess: (...rest) => {
+      const variables = rest[1];
+      const queryKeys = [
+        helpersQueryKeys.getList(variables.resource),
+        helpersQueryKeys.getInfiniteList(variables.resource)
+      ];
+      extraResources.forEach((extResource) => {
+        queryKeys.push(helpersQueryKeys.getList(extResource));
+        queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
+      });
+      if (isInvalidateCache) {
+        invalidateQueries({ queryClient, queryKeys });
+      }
+      if (_optionalChain([mutationOptions, 'optionalAccess', _36 => _36.onSuccess])) {
+        mutationOptions.onSuccess(...rest);
+      }
+    },
+    onError: (...rest) => {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _37 => _37.onError])) {
+        mutationOptions.onError(...rest);
+      }
+      backToSnapshot();
+    }
+  });
+  const deleteBase = async ({ resourceParams, undoMessage, ...variables }) => {
+    const resource = {
+      path: resourcePath,
+      params: resourceParams
+    };
+    const ids = type === "many" ? variables.ids : [variables.id];
+    if (mode.optimistic) {
+      const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
+      const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
+      const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];
+      extraResources.forEach((extResource) => {
+        queryKeysOne.push(...helpersQueryKeys.getOneArray(extResource, ids));
+        queryKeysList.push(helpersQueryKeys.getList(extResource));
+        queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
+      });
+      snapshot.current = await createSnapshot(queryClient, [
+        ...queryKeysOne,
+        ...queryKeysList,
+        ...queryKeysInfiniteList
+      ]);
+      deleteItemsFromQueryCache({
+        queryClient,
+        ids,
+        queryKeysOne,
+        queryKeysList,
+        queryKeysInfiniteList
+      });
+    }
+    if (mode.undoable) {
+      const isMany = ids.length > 1;
+      undoEventEmitter.once("end", (isUndo) => {
+        if (isUndo) {
+          backToSnapshot();
+        } else {
+          mutate({ ...variables, resource });
+        }
+      });
+      toastUndo({
+        message: undoMessage || `Element${isMany ? "s" : ""} deleted`,
+        type: isMany ? "delete-many" : "delete-one"
+      });
+    } else {
+      mutate({ ...variables, resource });
+    }
+  };
+  return {
+    mutation,
+    delete: deleteBase
+  };
+};
+var useDeleteOne = (props) => {
+  return useDeleteBase({ ...props, type: "one" });
+};
+var useDeleteMany = (props) => {
+  return useDeleteBase({ ...props, type: "many" });
+};
+
+// src/hooks/use-update.ts
+
+
+var useUpdateBase = ({
+  resourcePath,
+  mutationOptions,
+  mode = {
+    optimistic: true,
+    undoable: true
+  },
+  extraResources = [],
+  shouldUpdateCurrentResource = true,
+  type = "many"
+}) => {
+  const {
+    apiUrl,
+    apiClient,
+    apiEnsureTrailingSlash,
+    toastUndo
+  } = useRQWrapperContext();
+  const queryClient = _reactquery.useQueryClient.call(void 0, );
+  const snapshot = _react.useRef.call(void 0, []);
+  const backToSnapshot = () => {
+    snapshot.current.forEach(([key, value]) => {
+      queryClient.setQueryData(key, value);
+    });
+  };
+  const { mutate, ...mutation } = _reactquery.useMutation.call(void 0, {
+    ...mutationOptions,
+    mutationKey: [
+      type === "many" ? "update-many" : "update-one",
+      resourcePath,
+      ..._optionalChain([mutationOptions, 'optionalAccess', _38 => _38.mutationKey]) ? mutationOptions.mutationKey : []
+    ],
+    mutationFn: async (variables) => {
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
+      if (_optionalChain([mutationOptions, 'optionalAccess', _39 => _39.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _40 => _40.mutationFn, 'call', _41 => _41({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const ids = type === "many" ? variables.ids : [variables.id];
+      const actions = await Promise.allSettled(ids.map((id) => apiClient({
+        url: `${url}${id}${apiEnsureTrailingSlash ? "/" : ""}`,
+        method: "PATCH",
+        data: variables.data,
+        ...variables.apiClientParams
+      })));
+      const result = [];
+      actions.forEach((response) => {
+        if (response.status === "fulfilled") {
+          result.push(response.value);
+        } else {
+          throw response.reason;
+        }
+      });
+      return type === "many" ? result : result[0];
+    },
+    onSuccess: (...rest) => {
+      const variables = rest[1];
+      if (!mode.optimistic) {
+        const ids = type === "many" ? variables.ids : [variables.id];
+        const queryKeys = [
+          ...helpersQueryKeys.getOneArray(variables.resource, ids),
+          helpersQueryKeys.getList(variables.resource),
+          helpersQueryKeys.getInfiniteList(variables.resource)
+        ];
+        extraResources.forEach((extResource) => {
+          queryKeys.push(...helpersQueryKeys.getOneArray(extResource, ids));
+          queryKeys.push(helpersQueryKeys.getList(extResource));
+          queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
+        });
+        invalidateQueries({ queryClient, queryKeys });
+      }
+      if (_optionalChain([mutationOptions, 'optionalAccess', _42 => _42.onSuccess])) {
+        mutationOptions.onSuccess(...rest);
+      }
+    },
+    onError: (...rest) => {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _43 => _43.onError])) {
+        mutationOptions.onError(...rest);
+      }
+      backToSnapshot();
+    }
+  });
+  const update = async ({ resourceParams, undoMessage, ...variables }) => {
+    const resource = {
+      path: resourcePath,
+      params: resourceParams
+    };
+    const ids = type === "many" ? variables.ids : [variables.id];
+    if (mode.optimistic) {
+      const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
+      const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
+      const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];
+      extraResources.forEach((extResource) => {
+        queryKeysOne.push(...helpersQueryKeys.getOneArray(extResource, ids));
+        queryKeysList.push(helpersQueryKeys.getList(extResource));
+        queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
+      });
+      snapshot.current = await createSnapshot(queryClient, [
+        ...queryKeysOne,
+        ...queryKeysList,
+        ...queryKeysInfiniteList
+      ]);
+      updateItemsFromQueryCache({
+        queryClient,
+        data: variables.data,
+        ids,
+        queryKeysOne,
+        queryKeysList,
+        queryKeysInfiniteList
+      });
+    }
+    if (mode.undoable) {
+      const isMany = ids.length > 1;
+      undoEventEmitter.once("end", (isUndo) => {
+        if (isUndo) {
+          backToSnapshot();
+        } else {
+          mutate({ ...variables, resource });
+        }
+      });
+      toastUndo({
+        message: undoMessage || `Element${isMany ? "s" : ""} updated`,
+        type: isMany ? "update-many" : "update-one"
+      });
+    } else {
+      mutate({ ...variables, resource });
+    }
+  };
+  return {
+    mutation,
+    update
+  };
+};
+var useUpdateOne = (props) => {
+  return useUpdateBase({ ...props, type: "one" });
+};
+var useUpdateMany = (props) => {
+  return useUpdateBase({ ...props, type: "many" });
+};
+
+// src/hooks/use-create.ts
+
+var useCreate = ({
+  resourcePath,
+  mutationOptions,
+  extraResources = [],
+  shouldUpdateCurrentResource = true,
+  cacheAddItemTo = "start",
+  isInvalidateCache = true
+}) => {
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
+  const queryClient = _reactquery.useQueryClient.call(void 0, );
+  const { mutate, ...mutation } = _reactquery.useMutation.call(void 0, {
+    ...mutationOptions,
+    mutationKey: [
+      "create",
+      resourcePath,
+      ..._optionalChain([mutationOptions, 'optionalAccess', _44 => _44.mutationKey]) ? mutationOptions.mutationKey : []
+    ],
+    mutationFn: async (variables) => {
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      if (_optionalChain([mutationOptions, 'optionalAccess', _45 => _45.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _46 => _46.mutationFn, 'call', _47 => _47({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url,
+        method: "POST",
+        data: variables.data,
+        ...variables.apiClientParams
+      });
+      return result;
+    },
+    onSuccess: (...rest) => {
+      const data = rest[0];
+      if (data) {
+        const variables = rest[1];
+        const { id } = data.data;
+        const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
+        const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(variables.resource)] : [];
+        const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(variables.resource)] : [];
+        extraResources.forEach((extResource) => {
+          queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
+          queryKeysList.push(helpersQueryKeys.getList(extResource));
+          queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
+        });
+        addItemFromQueryCache({
+          queryClient,
+          data: data.data || {},
+          queryKeysOne: queryKeysOne.map((item) => [...item, {}]),
+          queryKeysList,
+          queryKeysInfiniteList,
+          cacheAddItemTo
+        });
+        if (isInvalidateCache) {
+          invalidateQueries({
+            queryClient,
+            queryKeys: [...queryKeysList, ...queryKeysInfiniteList]
+          });
+        }
+      }
+      if (_optionalChain([mutationOptions, 'optionalAccess', _48 => _48.onSuccess])) {
+        mutationOptions.onSuccess(...rest);
+      }
+    }
+  });
+  const create = ({ resourceParams, ...variables }) => {
+    const resource = {
+      path: resourcePath,
+      params: resourceParams
+    };
+    mutate({ ...variables, resource });
+  };
+  return {
+    mutation,
+    create
+  };
+};
+
+// src/hooks/use-data-query.ts
+
+var useDataQuery = ({
+  queryOptions,
+  resource,
+  params = {},
+  apiClientParams
+}) => {
+  const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
+  const query = _reactquery.useQuery.call(void 0, {
+    ...queryOptions,
+    queryKey: [
+      "query-data",
+      resource.path,
+      resource.params,
+      params,
+      ..._optionalChain([queryOptions, 'optionalAccess', _49 => _49.queryKey]) ? queryOptions.queryKey : []
+    ],
+    queryFn: async ({ queryKey }) => {
+      const variables = { resource, params, queryKey };
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      if (_optionalChain([queryOptions, 'optionalAccess', _50 => _50.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _51 => _51.queryFn, 'call', _52 => _52({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url,
+        method: "GET",
+        params,
+        ...apiClientParams
+      });
+      return result;
+    }
+  });
+  return query;
+};
+
+// src/hooks/use-data-mutate.ts
+
+var useDataMutate = ({
+  resourcePath,
+  mutationOptions
+}) => {
+  const {
+    apiUrl,
+    apiClient,
+    apiEnsureTrailingSlash
+  } = useRQWrapperContext();
+  const { mutate: onMutate, ...mutation } = _reactquery.useMutation.call(void 0, {
+    ...mutationOptions,
+    mutationKey: [
+      "mutate-data",
+      resourcePath,
+      ..._optionalChain([mutationOptions, 'optionalAccess', _53 => _53.mutationKey]) ? mutationOptions.mutationKey : []
+    ],
+    mutationFn: async (variables) => {
+      const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
+      if (_optionalChain([mutationOptions, 'optionalAccess', _54 => _54.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _55 => _55.mutationFn, 'call', _56 => _56({
+          apiClient,
+          apiUrl,
+          variables,
+          url
+        })]);
+        return results;
+      }
+      const result = await apiClient({
+        url,
+        data: variables.data,
+        ...variables.apiClientParams
+      });
+      return result;
+    }
+  });
+  const mutate = async ({ resourceParams, ...variables }) => {
+    const resource = {
+      path: resourcePath,
+      params: resourceParams
+    };
+    onMutate({ ...variables, resource });
+  };
+  return {
+    mutation,
+    mutate
+  };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.CustomError = CustomError; exports.RQWrapper = RQWrapper; exports.ToastBar = ToastBar; exports.addItemFromQueryCache = addItemFromQueryCache; exports.deleteItemsFromQueryCache = deleteItemsFromQueryCache; exports.fetcher = fetcher; exports.getUrlFromResource = getUrlFromResource; exports.helpersQueryKeys = helpersQueryKeys; exports.invalidateMatchingQueries = invalidateMatchingQueries; exports.invalidateQueries = invalidateQueries; exports.resolveToastValue = resolveToastValue; exports.toast = toast; exports.updateItemsFromQueryCache = updateItemsFromQueryCache; exports.useCreate = useCreate; exports.useDataMutate = useDataMutate; exports.useDataQuery = useDataQuery; exports.useDeleteMany = useDeleteMany; exports.useDeleteOne = useDeleteOne; exports.useGetInfiniteList = useGetInfiniteList; exports.useGetList = useGetList; exports.useGetOne = useGetOne; exports.useRQWrapperContext = useRQWrapperContext; exports.useUpdateMany = useUpdateMany; exports.useUpdateOne = useUpdateOne;
 //# sourceMappingURL=index.js.map
