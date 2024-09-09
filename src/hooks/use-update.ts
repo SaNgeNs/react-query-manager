@@ -97,7 +97,9 @@ const useUpdateBase = <
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
 
       if (mutationOptions?.mutationFn) {
-        const results = await mutationOptions?.mutationFn({ apiClient, variables, url });
+        const results = await mutationOptions?.mutationFn({
+          apiClient, apiUrl, variables, url,
+        });
         return results;
       }
 

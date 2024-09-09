@@ -90,7 +90,9 @@ export const useGetList = <TPath extends string, TData = any>({
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (queryOptions?.queryFn) {
-        const results = await queryOptions?.queryFn({ apiClient, variables, url });
+        const results = await queryOptions?.queryFn({
+          apiClient, apiUrl, variables, url,
+        });
         return results;
       }
 

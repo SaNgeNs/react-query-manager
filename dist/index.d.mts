@@ -76,6 +76,7 @@ type UseQueryProps<TData extends QueryResponse, TQueryKey extends any[], TVariab
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
+        apiUrl: string;
         url: string;
         variables: TVariables;
     }) => Promise<QueryResponse> | QueryResponse;
@@ -84,6 +85,7 @@ type UseInfiniteQueryProps<TData extends QueryResponse, TQueryKey extends any[],
     queryKey?: any[];
     queryFn?: (data: {
         apiClient: ApiClient;
+        apiUrl: string;
         url: string;
         variables: TVariables;
     }) => Promise<QueryResponse> | QueryResponse;
@@ -92,6 +94,7 @@ type UseMutateProps<TData extends QueryResponse | QueryResponse[], TVariables = 
     mutationKey?: any[];
     mutationFn?: (data: {
         apiClient: ApiClient;
+        apiUrl: string;
         variables: TVariables;
         url: string;
     }) => Promise<TData> | TData;

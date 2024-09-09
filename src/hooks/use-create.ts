@@ -114,7 +114,9 @@ export const useCreate = <
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
 
       if (mutationOptions?.mutationFn) {
-        const results = await mutationOptions?.mutationFn({ apiClient, variables, url });
+        const results = await mutationOptions?.mutationFn({
+          apiClient, apiUrl, variables, url,
+        });
         return results;
       }
 
