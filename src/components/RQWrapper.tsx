@@ -238,10 +238,14 @@ export function RQWrapper({
     toastUndo,
   }), [apiUrl, fetch, toastUndo, apiEnsureTrailingSlash]);
 
+  const ToastComponent = toastProps?.wrapper || (() => null);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster {...toastProps?.globalProps}>
-        {toastProps?.wrapper}
+        {(props) => {
+          return <ToastComponent {...props} />;
+        }}
       </Toaster>
 
       <Context.Provider value={contextValue}>
