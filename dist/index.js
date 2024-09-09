@@ -230,9 +230,7 @@ function ToastWrapper({
       }, 0);
     }
     return () => {
-      console.log("unmount ToastWrapper:", id);
       if (closeOutside) {
-        console.log("closeOutside", closeOutside);
         setTimeout(() => {
           document.removeEventListener("click", callback);
         }, 0);
@@ -267,7 +265,6 @@ function Toaster({
   containerClassName
 }) {
   const { toasts, handlers } = _headless.useToaster.call(void 0, toastOptions);
-  console.log("toasts", toasts);
   return /* @__PURE__ */ _react2.default.createElement(
     "div",
     {
@@ -414,7 +411,6 @@ function RQWrapper({
     let isSuccess = false;
     toast.dismiss();
     const onUndo = () => {
-      console.log("onUndo");
       isSuccess = true;
       undoEventEmitter.emit("end", true);
       toast.dismiss();
