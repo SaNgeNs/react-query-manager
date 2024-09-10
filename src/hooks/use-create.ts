@@ -10,7 +10,9 @@ import {
 import { useRQWrapperContext } from '../components/RQWrapper';
 import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
-import { addItemFromQueryCache, helpersQueryKeys, invalidateQueries } from '../utils/queries';
+import {
+  addItemsToListQueryCache, addItemToQueryCache, helpersQueryKeys, invalidateQueries,
+} from '../utils/queries';
 
 /** @notExported */
 type MutateVariables<TPath extends string, TFormData, TExtraData> = {
@@ -149,13 +151,18 @@ export const useCreate = <
           queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
         });
 
-        addItemFromQueryCache({
+        addItemToQueryCache({
           queryClient,
           data: data.data || {} as OnlyObject,
           queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
-          queryKeysList,
-          queryKeysInfiniteList,
+        });
+
+        addItemsToListQueryCache({
+          data: [data],
+          queryClient,
           cacheAddItemTo,
+          queryKeysInfiniteList,
+          queryKeysList,
         });
 
         if (isInvalidateCache) {

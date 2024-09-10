@@ -8,7 +8,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   dts: true,
-  minify: false,
+  minify: true,
   outDir: 'dist',
   target: 'esnext',
 });

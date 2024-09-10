@@ -1458,27 +1458,37 @@ declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPat
  * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.data - The new data to add to the corresponding items.
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
- * @param params.queryKeysList - Cache keys for list queries that should be updated.
- * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
- * @param params.cacheAddItemTo - Specifies the position to add a new item in the cache.
- * - `'start'`: Adds the new item to the beginning of the cache list.
- * - `'end'`: Adds the new item to the end of the cache list.
  *
  * @example
  * addItemFromQueryCache({
  *   queryClient,
  *   data: { name: 'New Item' },
  *   queryKeysOne: [['get-one', 'posts', {}, '1']],
- *   queryKeysList: [['get-list', 'posts', {}]],
- *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
  * });
  */
-declare const addItemFromQueryCache: <TData = any>({ queryClient, data, queryKeysOne, queryKeysList, queryKeysInfiniteList, cacheAddItemTo, }: {
+declare const addItemToQueryCache: ({ queryClient, data, queryKeysOne, }: {
     queryClient: QueryClient;
     data: OnlyObject;
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
-    queryKeysList?: [QueryListKey<"">[0], ...any[]][];
-    queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
+}) => void;
+
+/**
+ * Adds items to the query cache for list and infinite list queries.
+ *
+ * @example
+ * addItemsToListQueryCache({
+ *   queryClient,
+ *   data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }],
+ *   queryKeysList: [['get-list', 'posts', {}]],
+ *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]],
+ *   cacheAddItemTo: 'end'
+ * });
+ */
+declare const addItemsToListQueryCache: ({ queryClient, data, queryKeysList, queryKeysInfiniteList, cacheAddItemTo, }: {
+    queryClient: QueryClient;
+    data: OnlyObject[];
+    queryKeysList?: [QueryListKey<"">[0], ...OnlyObject[]][];
+    queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...OnlyObject[]][];
     cacheAddItemTo?: "end" | "start";
 }) => void;
 
@@ -1667,4 +1677,4 @@ declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids,
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
 }) => void;
 
-export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemFromQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemToQueryCache, addItemsToListQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

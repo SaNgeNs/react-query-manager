@@ -1,4 +1,5 @@
-export * from './add-item-from-query-cache';
+export * from './add-item-to-query-cache';
+export * from './add-items-to-list-query-cache';
 export * from './delete-items-from-query-cache';
 export * from './helpers-query-keys';
 export * from './invalidate-matching-queries';
