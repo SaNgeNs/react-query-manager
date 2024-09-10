@@ -395,7 +395,15 @@ function RQWrapper({
           isSuccess = true;
           undoEventEmitter.emit("end", false);
         }
-        return CustomContent ? /* @__PURE__ */ React2.createElement(CustomContent, { message: data.message, onUndo, type: data.type }) : /* @__PURE__ */ React2.createElement(React2.Fragment, null, data.message, /* @__PURE__ */ React2.createElement(
+        return CustomContent ? /* @__PURE__ */ React2.createElement(
+          CustomContent,
+          {
+            message: data.message,
+            onUndo,
+            type: data.type,
+            toast: t
+          }
+        ) : /* @__PURE__ */ React2.createElement(React2.Fragment, null, data.message, /* @__PURE__ */ React2.createElement(
           "span",
           {
             style: { marginLeft: "10px", cursor: "pointer" },

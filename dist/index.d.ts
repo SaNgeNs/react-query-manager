@@ -39,6 +39,7 @@ type ToastCustomUndoContent = (data: {
     message: string;
     type: UndoTypes;
     onUndo: () => void;
+    toast: Toast;
 }) => React.JSX.Element;
 type OnlyObject = Record<string, unknown>;
 type MutationMode = 'many' | 'one';

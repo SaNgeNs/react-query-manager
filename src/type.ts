@@ -1,7 +1,7 @@
 import {
   InfiniteData, UseInfiniteQueryOptions, UseMutationOptions, UseQueryOptions,
 } from '@tanstack/react-query';
-import type { ToasterProps } from 'react-hot-toast';
+import type { Toast, ToasterProps } from 'react-hot-toast';
 import React from 'react';
 import { CustomError } from './utils/custom-error';
 
@@ -17,6 +17,7 @@ export type ToastCustomUndoContent = (data: {
   message: string;
   type: UndoTypes;
   onUndo: () => void;
+  toast: Toast;
 }) => React.JSX.Element;
 
 export type OnlyObject = Record<string, unknown>;

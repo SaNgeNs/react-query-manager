@@ -206,7 +206,14 @@ export function RQWrapper({
         }
 
         return CustomContent
-          ? <CustomContent message={data.message} onUndo={onUndo} type={data.type} />
+          ? (
+            <CustomContent
+              message={data.message}
+              onUndo={onUndo}
+              type={data.type}
+              toast={t}
+            />
+          )
           : (
             <>
               {data.message}
