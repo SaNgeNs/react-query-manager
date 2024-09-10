@@ -7,7 +7,7 @@
  * @returns True if the value can be converted to a number, otherwise false.
  */
 function isCanConvertToNumber(value: any): boolean {
-  return !Number.isNaN(parseFloat(value)) && Number.isFinite(value);
+  return !Number.isNaN(Number(value));
 }
 
 /**
@@ -17,9 +17,8 @@ function isCanConvertToNumber(value: any): boolean {
  * @param value2 - The second value to check.
  * @returns True if the values can be coerced to the same type (e.g., string to number).
  */
-function isNumber(value1: any, value2: any): boolean {
-  return (isCanConvertToNumber(value1) && isCanConvertToNumber(value2))
-    || typeof value1 === typeof value2;
+function isCanNumber(value1: any, value2: any): boolean {
+  return isCanConvertToNumber(value1) && isCanConvertToNumber(value2);
 }
 
 /**
@@ -54,7 +53,7 @@ export function mergeObjects<TData extends object>(target: TData, source: any): 
             && !Array.isArray(sourceValue) && typeof sourceValue === 'object')
           || (typeof targetValue !== 'object' && typeof sourceValue !== 'object'));
 
-        const canConvertToNumber = isNumber(targetValue, sourceValue);
+        const canConvertToNumber = isCanNumber(targetValue, sourceValue);
 
         if (isSameType || canConvertToNumber) {
           if (typeof targetValue === 'object' && targetValue !== null && !Array.isArray(targetValue)) {
