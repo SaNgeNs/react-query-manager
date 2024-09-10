@@ -226,8 +226,7 @@ export function RQWrapper({
       },
       {
         duration: toastProps?.globalProps?.toastOptions?.duration || 5000,
-        extraParams: { closeOutside: true },
-      } as any,
+      },
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -167,19 +167,6 @@ var fetcher = (args) => {
 // src/internal/components/Toaster.tsx
 
 var _headless = require('react-hot-toast/headless'); var _headless2 = _interopRequireDefault(_headless);
-
-// src/utils/toast.ts
-
-var _reacthottoast = require('react-hot-toast');
-var { remove, ...restOfToastApi } = _headless2.default;
-var toast = Object.assign(
-  (...args) => _headless2.default.call(void 0, ...args),
-  restOfToastApi
-);
-var ToastBar = _reacthottoast.ToastBar;
-var resolveToastValue = _reacthottoast.resolveValue;
-
-// src/internal/components/Toaster.tsx
 var prefersReducedMotion = /* @__PURE__ */ (() => {
   let shouldReduceMotion;
   return () => {
@@ -192,8 +179,6 @@ var prefersReducedMotion = /* @__PURE__ */ (() => {
 })();
 function ToastWrapper({
   id,
-  visible,
-  closeOutside,
   className,
   style,
   onHeightUpdate,
@@ -216,27 +201,6 @@ function ToastWrapper({
     },
     [id, onHeightUpdate]
   );
-  _react.useEffect.call(void 0, () => {
-    const callback = (event) => {
-      const target = event.target;
-      const isInsideToast = target.closest(`[data-toast-id="${id}"]`);
-      if (!isInsideToast) {
-        toast.dismiss(id);
-      }
-    };
-    if (closeOutside) {
-      setTimeout(() => {
-        document.addEventListener("click", callback);
-      }, 0);
-    }
-    return () => {
-      if (closeOutside) {
-        setTimeout(() => {
-          document.removeEventListener("click", callback);
-        }, 0);
-      }
-    };
-  }, [visible, id, closeOutside]);
   return /* @__PURE__ */ _react2.default.createElement("div", { "data-toast-id": id, ref, className, style }, children);
 }
 var getPositionStyle = (position, offset) => {
@@ -297,8 +261,6 @@ function Toaster({
         {
           id: toast2.id,
           key: toast2.id,
-          visible: toast2.visible,
-          closeOutside: _optionalChain([toast2, 'optionalAccess', _7 => _7.extraParams, 'optionalAccess', _8 => _8.closeOutside]) || false,
           onHeightUpdate: handlers.updateHeight,
           style: {
             ...positionStyle,
@@ -310,6 +272,17 @@ function Toaster({
     })
   );
 }
+
+// src/utils/toast.ts
+
+var _reacthottoast = require('react-hot-toast');
+var { remove, ...restOfToastApi } = _headless2.default;
+var toast = Object.assign(
+  (...args) => _headless2.default.call(void 0, ...args),
+  restOfToastApi
+);
+var ToastBar = _reacthottoast.ToastBar;
+var resolveToastValue = _reacthottoast.resolveValue;
 
 // src/internal/utils/undo-event-emitter.ts
 var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);
@@ -365,14 +338,14 @@ function RQWrapper({
     return new (0, _reactquery.QueryClient)({
       ...config,
       defaultOptions: {
-        ..._optionalChain([config, 'optionalAccess', _9 => _9.defaultOptions]),
+        ..._optionalChain([config, 'optionalAccess', _7 => _7.defaultOptions]),
         queries: {
           gcTime: 5 * 60 * 1e3,
           // 5 minutes,
           staleTime: 5 * 60 * 1e3,
           // 5 minutes
           retry: false,
-          ..._optionalChain([config, 'optionalAccess', _10 => _10.defaultOptions, 'optionalAccess', _11 => _11.queries])
+          ..._optionalChain([config, 'optionalAccess', _8 => _8.defaultOptions, 'optionalAccess', _9 => _9.queries])
         }
       }
     });
@@ -417,7 +390,7 @@ function RQWrapper({
     };
     toast.success(
       (t) => {
-        const CustomContent = _optionalChain([toastProps, 'optionalAccess', _12 => _12.CustomUndoContent]);
+        const CustomContent = _optionalChain([toastProps, 'optionalAccess', _10 => _10.CustomUndoContent]);
         if (!t.visible && !isSuccess) {
           isSuccess = true;
           undoEventEmitter.emit("end", false);
@@ -436,8 +409,7 @@ function RQWrapper({
         ));
       },
       {
-        duration: _optionalChain([toastProps, 'optionalAccess', _13 => _13.globalProps, 'optionalAccess', _14 => _14.toastOptions, 'optionalAccess', _15 => _15.duration]) || 5e3,
-        extraParams: { closeOutside: true }
+        duration: _optionalChain([toastProps, 'optionalAccess', _11 => _11.globalProps, 'optionalAccess', _12 => _12.toastOptions, 'optionalAccess', _13 => _13.duration]) || 5e3
       }
     );
   }, []);
@@ -447,7 +419,7 @@ function RQWrapper({
     apiEnsureTrailingSlash,
     toastUndo
   }), [apiUrl, fetch2, toastUndo, apiEnsureTrailingSlash]);
-  return /* @__PURE__ */ _react2.default.createElement(_reactquery.QueryClientProvider, { client: queryClient }, /* @__PURE__ */ _react2.default.createElement(Toaster, { ..._optionalChain([toastProps, 'optionalAccess', _16 => _16.globalProps]) }, _optionalChain([toastProps, 'optionalAccess', _17 => _17.CustomContent])), /* @__PURE__ */ _react2.default.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ _react2.default.createElement(
+  return /* @__PURE__ */ _react2.default.createElement(_reactquery.QueryClientProvider, { client: queryClient }, /* @__PURE__ */ _react2.default.createElement(Toaster, { ..._optionalChain([toastProps, 'optionalAccess', _14 => _14.globalProps]) }, _optionalChain([toastProps, 'optionalAccess', _15 => _15.CustomContent])), /* @__PURE__ */ _react2.default.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ _react2.default.createElement(
     _reactquerydevtools.ReactQueryDevtools,
     {
       buttonPosition: "bottom-right",
@@ -472,13 +444,13 @@ var useGetList = ({
       resource.path,
       resource.params,
       params,
-      ..._optionalChain([queryOptions, 'optionalAccess', _18 => _18.queryKey]) ? queryOptions.queryKey : []
+      ..._optionalChain([queryOptions, 'optionalAccess', _16 => _16.queryKey]) ? queryOptions.queryKey : []
     ],
     queryFn: async ({ queryKey }) => {
       const variables = { resource, params, queryKey };
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
-      if (_optionalChain([queryOptions, 'optionalAccess', _19 => _19.queryFn])) {
-        const results = await _optionalChain([queryOptions, 'optionalAccess', _20 => _20.queryFn, 'call', _21 => _21({
+      if (_optionalChain([queryOptions, 'optionalAccess', _17 => _17.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _18 => _18.queryFn, 'call', _19 => _19({
           apiClient,
           apiUrl,
           variables,
@@ -513,7 +485,7 @@ var useGetInfiniteList = ({
     getNextPageParam: (...args) => {
       const lastPage = args[0];
       const lastPageParam = Number(args[2]);
-      if (!_optionalChain([lastPage, 'optionalAccess', _22 => _22.data, 'optionalAccess', _23 => _23.length])) {
+      if (!_optionalChain([lastPage, 'optionalAccess', _20 => _20.data, 'optionalAccess', _21 => _21.length])) {
         return void 0;
       }
       return lastPageParam + 1;
@@ -532,7 +504,7 @@ var useGetInfiniteList = ({
       resource.params,
       pagination,
       params,
-      ..._optionalChain([queryOptions, 'optionalAccess', _24 => _24.queryKey]) ? queryOptions.queryKey : []
+      ..._optionalChain([queryOptions, 'optionalAccess', _22 => _22.queryKey]) ? queryOptions.queryKey : []
     ],
     queryFn: async ({ queryKey, pageParam }) => {
       const variables = {
@@ -545,8 +517,8 @@ var useGetInfiniteList = ({
         queryKey
       };
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
-      if (_optionalChain([queryOptions, 'optionalAccess', _25 => _25.queryFn])) {
-        const results = await _optionalChain([queryOptions, 'optionalAccess', _26 => _26.queryFn, 'call', _27 => _27({
+      if (_optionalChain([queryOptions, 'optionalAccess', _23 => _23.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _24 => _24.queryFn, 'call', _25 => _25({
           apiClient,
           apiUrl,
           variables,
@@ -584,7 +556,7 @@ var useGetOne = ({
       resource.params,
       String(id),
       params,
-      ..._optionalChain([queryOptions, 'optionalAccess', _28 => _28.queryKey]) ? queryOptions.queryKey : []
+      ..._optionalChain([queryOptions, 'optionalAccess', _26 => _26.queryKey]) ? queryOptions.queryKey : []
     ],
     queryFn: async ({ queryKey }) => {
       const variables = {
@@ -594,8 +566,8 @@ var useGetOne = ({
         queryKey
       };
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
-      if (_optionalChain([queryOptions, 'optionalAccess', _29 => _29.queryFn])) {
-        const results = await _optionalChain([queryOptions, 'optionalAccess', _30 => _30.queryFn, 'call', _31 => _31({
+      if (_optionalChain([queryOptions, 'optionalAccess', _27 => _27.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _28 => _28.queryFn, 'call', _29 => _29({
           apiClient,
           apiUrl,
           variables,
@@ -963,12 +935,12 @@ var useDeleteBase = ({
     mutationKey: [
       type === "many" ? "delete-many" : "delete-one",
       resourcePath,
-      ..._optionalChain([mutationOptions, 'optionalAccess', _32 => _32.mutationKey]) ? mutationOptions.mutationKey : []
+      ..._optionalChain([mutationOptions, 'optionalAccess', _30 => _30.mutationKey]) ? mutationOptions.mutationKey : []
     ],
     mutationFn: async (variables) => {
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
-      if (_optionalChain([mutationOptions, 'optionalAccess', _33 => _33.mutationFn])) {
-        const results = await _optionalChain([mutationOptions, 'optionalAccess', _34 => _34.mutationFn, 'call', _35 => _35({
+      if (_optionalChain([mutationOptions, 'optionalAccess', _31 => _31.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _32 => _32.mutationFn, 'call', _33 => _33({
           apiClient,
           apiUrl,
           variables,
@@ -1005,12 +977,12 @@ var useDeleteBase = ({
       if (isInvalidateCache) {
         invalidateQueries({ queryClient, queryKeys });
       }
-      if (_optionalChain([mutationOptions, 'optionalAccess', _36 => _36.onSuccess])) {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _34 => _34.onSuccess])) {
         mutationOptions.onSuccess(...rest);
       }
     },
     onError: (...rest) => {
-      if (_optionalChain([mutationOptions, 'optionalAccess', _37 => _37.onError])) {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _35 => _35.onError])) {
         mutationOptions.onError(...rest);
       }
       backToSnapshot();
@@ -1105,12 +1077,12 @@ var useUpdateBase = ({
     mutationKey: [
       type === "many" ? "update-many" : "update-one",
       resourcePath,
-      ..._optionalChain([mutationOptions, 'optionalAccess', _38 => _38.mutationKey]) ? mutationOptions.mutationKey : []
+      ..._optionalChain([mutationOptions, 'optionalAccess', _36 => _36.mutationKey]) ? mutationOptions.mutationKey : []
     ],
     mutationFn: async (variables) => {
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, true)}`;
-      if (_optionalChain([mutationOptions, 'optionalAccess', _39 => _39.mutationFn])) {
-        const results = await _optionalChain([mutationOptions, 'optionalAccess', _40 => _40.mutationFn, 'call', _41 => _41({
+      if (_optionalChain([mutationOptions, 'optionalAccess', _37 => _37.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _38 => _38.mutationFn, 'call', _39 => _39({
           apiClient,
           apiUrl,
           variables,
@@ -1151,12 +1123,12 @@ var useUpdateBase = ({
         });
         invalidateQueries({ queryClient, queryKeys });
       }
-      if (_optionalChain([mutationOptions, 'optionalAccess', _42 => _42.onSuccess])) {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _40 => _40.onSuccess])) {
         mutationOptions.onSuccess(...rest);
       }
     },
     onError: (...rest) => {
-      if (_optionalChain([mutationOptions, 'optionalAccess', _43 => _43.onError])) {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _41 => _41.onError])) {
         mutationOptions.onError(...rest);
       }
       backToSnapshot();
@@ -1237,12 +1209,12 @@ var useCreate = ({
     mutationKey: [
       "create",
       resourcePath,
-      ..._optionalChain([mutationOptions, 'optionalAccess', _44 => _44.mutationKey]) ? mutationOptions.mutationKey : []
+      ..._optionalChain([mutationOptions, 'optionalAccess', _42 => _42.mutationKey]) ? mutationOptions.mutationKey : []
     ],
     mutationFn: async (variables) => {
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
-      if (_optionalChain([mutationOptions, 'optionalAccess', _45 => _45.mutationFn])) {
-        const results = await _optionalChain([mutationOptions, 'optionalAccess', _46 => _46.mutationFn, 'call', _47 => _47({
+      if (_optionalChain([mutationOptions, 'optionalAccess', _43 => _43.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _44 => _44.mutationFn, 'call', _45 => _45({
           apiClient,
           apiUrl,
           variables,
@@ -1286,7 +1258,7 @@ var useCreate = ({
           });
         }
       }
-      if (_optionalChain([mutationOptions, 'optionalAccess', _48 => _48.onSuccess])) {
+      if (_optionalChain([mutationOptions, 'optionalAccess', _46 => _46.onSuccess])) {
         mutationOptions.onSuccess(...rest);
       }
     }
@@ -1320,13 +1292,13 @@ var useDataQuery = ({
       resource.path,
       resource.params,
       params,
-      ..._optionalChain([queryOptions, 'optionalAccess', _49 => _49.queryKey]) ? queryOptions.queryKey : []
+      ..._optionalChain([queryOptions, 'optionalAccess', _47 => _47.queryKey]) ? queryOptions.queryKey : []
     ],
     queryFn: async ({ queryKey }) => {
       const variables = { resource, params, queryKey };
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
-      if (_optionalChain([queryOptions, 'optionalAccess', _50 => _50.queryFn])) {
-        const results = await _optionalChain([queryOptions, 'optionalAccess', _51 => _51.queryFn, 'call', _52 => _52({
+      if (_optionalChain([queryOptions, 'optionalAccess', _48 => _48.queryFn])) {
+        const results = await _optionalChain([queryOptions, 'optionalAccess', _49 => _49.queryFn, 'call', _50 => _50({
           apiClient,
           apiUrl,
           variables,
@@ -1362,12 +1334,12 @@ var useDataMutate = ({
     mutationKey: [
       "mutate-data",
       resourcePath,
-      ..._optionalChain([mutationOptions, 'optionalAccess', _53 => _53.mutationKey]) ? mutationOptions.mutationKey : []
+      ..._optionalChain([mutationOptions, 'optionalAccess', _51 => _51.mutationKey]) ? mutationOptions.mutationKey : []
     ],
     mutationFn: async (variables) => {
       const url = `${apiUrl}/${getUrlFromResource(variables.resource, apiEnsureTrailingSlash)}`;
-      if (_optionalChain([mutationOptions, 'optionalAccess', _54 => _54.mutationFn])) {
-        const results = await _optionalChain([mutationOptions, 'optionalAccess', _55 => _55.mutationFn, 'call', _56 => _56({
+      if (_optionalChain([mutationOptions, 'optionalAccess', _52 => _52.mutationFn])) {
+        const results = await _optionalChain([mutationOptions, 'optionalAccess', _53 => _53.mutationFn, 'call', _54 => _54({
           apiClient,
           apiUrl,
           variables,

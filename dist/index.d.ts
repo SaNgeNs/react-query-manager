@@ -1395,7 +1395,7 @@ interface ToastBarProps {
  *
  * See the [documentation](https://react-hot-toast.com/docs/toast) for more details.
  */
-declare const toast: ((message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, opts?: Partial<Pick<react_hot_toast_headless.Toast, "position" | "id" | "icon" | "duration" | "ariaProps" | "className" | "style" | "iconTheme">> | undefined) => string) & {
+declare const toast: ((message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, opts?: Partial<Pick<react_hot_toast_headless.Toast, "position" | "id" | "className" | "style" | "icon" | "duration" | "ariaProps" | "iconTheme">> | undefined) => string) & {
     error: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     success: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     loading: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;

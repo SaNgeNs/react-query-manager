@@ -165,21 +165,8 @@ var fetcher = (args) => {
 };
 
 // src/internal/components/Toaster.tsx
-import React, { useCallback, useEffect } from "react";
-import { resolveValue as resolveValue2, useToaster } from "react-hot-toast/headless";
-
-// src/utils/toast.ts
-import toastApi from "react-hot-toast/headless";
-import { ToastBar as ToastBarToast, resolveValue } from "react-hot-toast";
-var { remove, ...restOfToastApi } = toastApi;
-var toast = Object.assign(
-  (...args) => toastApi(...args),
-  restOfToastApi
-);
-var ToastBar = ToastBarToast;
-var resolveToastValue = resolveValue;
-
-// src/internal/components/Toaster.tsx
+import React, { useCallback } from "react";
+import { resolveValue, useToaster } from "react-hot-toast/headless";
 var prefersReducedMotion = /* @__PURE__ */ (() => {
   let shouldReduceMotion;
   return () => {
@@ -192,8 +179,6 @@ var prefersReducedMotion = /* @__PURE__ */ (() => {
 })();
 function ToastWrapper({
   id,
-  visible,
-  closeOutside,
   className,
   style,
   onHeightUpdate,
@@ -216,27 +201,6 @@ function ToastWrapper({
     },
     [id, onHeightUpdate]
   );
-  useEffect(() => {
-    const callback = (event) => {
-      const target = event.target;
-      const isInsideToast = target.closest(`[data-toast-id="${id}"]`);
-      if (!isInsideToast) {
-        toast.dismiss(id);
-      }
-    };
-    if (closeOutside) {
-      setTimeout(() => {
-        document.addEventListener("click", callback);
-      }, 0);
-    }
-    return () => {
-      if (closeOutside) {
-        setTimeout(() => {
-          document.removeEventListener("click", callback);
-        }, 0);
-      }
-    };
-  }, [visible, id, closeOutside]);
   return /* @__PURE__ */ React.createElement("div", { "data-toast-id": id, ref, className, style }, children);
 }
 var getPositionStyle = (position, offset) => {
@@ -297,19 +261,28 @@ function Toaster({
         {
           id: toast2.id,
           key: toast2.id,
-          visible: toast2.visible,
-          closeOutside: toast2?.extraParams?.closeOutside || false,
           onHeightUpdate: handlers.updateHeight,
           style: {
             ...positionStyle,
             pointerEvents: "auto"
           }
         },
-        toast2.type === "custom" ? resolveValue2(t.message, toast2) : Component ? /* @__PURE__ */ React.createElement(Component, { ...toast2 }) : /* @__PURE__ */ React.createElement("div", { style: { display: t.visible ? "flex" : "none" } }, resolveValue2(toast2.message, toast2))
+        toast2.type === "custom" ? resolveValue(t.message, toast2) : Component ? /* @__PURE__ */ React.createElement(Component, { ...toast2 }) : /* @__PURE__ */ React.createElement("div", { style: { display: t.visible ? "flex" : "none" } }, resolveValue(toast2.message, toast2))
       );
     })
   );
 }
+
+// src/utils/toast.ts
+import toastApi from "react-hot-toast/headless";
+import { ToastBar as ToastBarToast, resolveValue as resolveValue2 } from "react-hot-toast";
+var { remove, ...restOfToastApi } = toastApi;
+var toast = Object.assign(
+  (...args) => toastApi(...args),
+  restOfToastApi
+);
+var ToastBar = ToastBarToast;
+var resolveToastValue = resolveValue2;
 
 // src/internal/utils/undo-event-emitter.ts
 import EventEmitter from "eventemitter3";
@@ -436,8 +409,7 @@ function RQWrapper({
         ));
       },
       {
-        duration: toastProps?.globalProps?.toastOptions?.duration || 5e3,
-        extraParams: { closeOutside: true }
+        duration: toastProps?.globalProps?.toastOptions?.duration || 5e3
       }
     );
   }, []);
