@@ -92,7 +92,7 @@ export const useCreate = <
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
-    QueryResponse<TData>,
+    QueryResponse<TData> | QueryResponse<TData>[],
     MutateVariables<TPath, TFormData, TExtraData>
   >;
   extraResources?: Resource<any>[];
@@ -104,7 +104,7 @@ export const useCreate = <
   const queryClient = useQueryClient();
 
   const { mutate, ...mutation } = useMutation<
-    QueryResponse<TData>,
+    QueryResponse<TData> | QueryResponse<TData>[],
     CustomError,
     MutateVariables<TPath, TFormData, TExtraData>
   >({
@@ -139,26 +139,34 @@ export const useCreate = <
       if (data) {
         const variables = rest[1];
 
-        const { id } = data.data as any;
-
-        const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
         const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(variables.resource)] : [];
         const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(variables.resource)] : [];
 
         extraResources.forEach((extResource) => {
-          queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
           queryKeysList.push(helpersQueryKeys.getList(extResource));
           queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
         });
 
-        addItemToQueryCache({
-          queryClient,
-          data: data.data || {} as OnlyObject,
-          queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
+        const responses = Array.isArray(data) ? data : [data];
+
+        responses.forEach((response) => {
+          const { id } = response!.data as any;
+
+          const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
+
+          extraResources.forEach((extResource) => {
+            queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
+          });
+
+          addItemToQueryCache({
+            queryClient,
+            data: response!.data || {},
+            queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
+          });
         });
 
         addItemsToListQueryCache({
-          data: [data],
+          data: responses.map((response) => (response?.data || {})),
           queryClient,
           cacheAddItemTo,
           queryKeysInfiniteList,

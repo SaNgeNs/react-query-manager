@@ -1012,7 +1012,7 @@ type CreateOneVariables<TPath extends string, TFormData, TExtraData> = (Omit<Mut
  */
 declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject, TExtraData = any>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, cacheAddItemTo, isInvalidateCache, }: {
     resourcePath: Resource<TPath>["path"];
-    mutationOptions?: UseMutateProps<QueryResponse<TData>, MutateVariables$1<TPath, TFormData, TExtraData>>;
+    mutationOptions?: UseMutateProps<QueryResponse<TData> | QueryResponse<TData>[], MutateVariables$1<TPath, TFormData, TExtraData>>;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
     cacheAddItemTo?: "start" | "end";
@@ -1033,7 +1033,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData> | QueryResponse<TData>[], CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
     } | {
         data: undefined;
         variables: MutateVariables$1<TPath, TFormData, TExtraData>;
@@ -1049,7 +1049,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData> | QueryResponse<TData>[], CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
     } | {
         data: undefined;
         error: CustomError;
@@ -1065,9 +1065,9 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData> | QueryResponse<TData>[], CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
     } | {
-        data: QueryResponse<TData>;
+        data: QueryResponse<TData> | QueryResponse<TData>[];
         error: null;
         variables: MutateVariables$1<TPath, TFormData, TExtraData>;
         isError: false;
@@ -1081,7 +1081,7 @@ declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObj
         failureReason: CustomError | null;
         isPaused: boolean;
         submittedAt: number;
-        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData>, CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
+        mutateAsync: _tanstack_react_query.UseMutateAsyncFunction<QueryResponse<TData> | QueryResponse<TData>[], CustomError, MutateVariables$1<TPath, TFormData, TExtraData>, unknown>;
     };
     create: ({ resourceParams, ...variables }: CreateOneVariables<TPath, TFormData, TExtraData>) => void;
 };
