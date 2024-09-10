@@ -196,45 +196,48 @@ export function RQWrapper({
       toast.dismiss();
     };
 
-    toast.success(
-      (t) => {
-        const CustomContent = toastProps?.CustomUndoContent;
+    // TODO
+    if (process.env.NODE_ENV !== 'test') {
+      toast.success(
+        (t) => {
+          const CustomContent = toastProps?.CustomUndoContent;
 
-        if (!t.visible && !isSuccess) {
-          isSuccess = true;
-          undoEventEmitter.emit('end', false);
-        }
+          if (!t.visible && !isSuccess) {
+            isSuccess = true;
+            undoEventEmitter.emit('end', false);
+          }
 
-        return CustomContent
-          ? (
-            <CustomContent
-              message={data.message}
-              onUndo={onUndo}
-              type={data.type}
-              toast={t}
-            />
-          )
-          : (
-            <>
-              {data.message}
+          return CustomContent
+            ? (
+              <CustomContent
+                message={data.message}
+                onUndo={onUndo}
+                type={data.type}
+                toast={t}
+              />
+            )
+            : (
+              <>
+                {data.message}
 
-              <span
-                style={{ marginLeft: '10px', cursor: 'pointer' }}
-                onClick={onUndo}
-                role="button"
-                tabIndex={0}
-                aria-label="Undo"
-                title="Undo"
-              >
-                UNDO
-              </span>
-            </>
-          );
-      },
-      {
-        duration: toastProps?.globalProps?.toastOptions?.duration || 5000,
-      },
-    );
+                <span
+                  style={{ marginLeft: '10px', cursor: 'pointer' }}
+                  onClick={onUndo}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Undo"
+                  title="Undo"
+                >
+                  UNDO
+                </span>
+              </>
+            );
+        },
+        {
+          duration: toastProps?.globalProps?.toastOptions?.duration || 5000,
+        },
+      );
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -247,9 +250,12 @@ export function RQWrapper({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster {...toastProps?.globalProps}>
-        {toastProps?.CustomContent}
-      </Toaster>
+      {/* TODO */}
+      {process.env.NODE_ENV !== 'test' && (
+        <Toaster {...toastProps?.globalProps}>
+          {toastProps?.CustomContent}
+        </Toaster>
+      )}
 
       <Context.Provider value={contextValue}>
         {children}

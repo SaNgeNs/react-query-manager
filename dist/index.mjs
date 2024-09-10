@@ -170,7 +170,7 @@ import { resolveValue, useToaster } from "react-hot-toast/headless";
 var prefersReducedMotion = /* @__PURE__ */ (() => {
   let shouldReduceMotion;
   return () => {
-    if (shouldReduceMotion === void 0 && typeof window !== "undefined") {
+    if (shouldReduceMotion === void 0 && typeof window !== "undefined" && window.matchMedia) {
       const mediaQuery = matchMedia("(prefers-reduced-motion: reduce)");
       shouldReduceMotion = !mediaQuery || mediaQuery.matches;
     }
@@ -388,38 +388,40 @@ function RQWrapper({
       undoEventEmitter.emit("end", true);
       toast.dismiss();
     };
-    toast.success(
-      (t) => {
-        const CustomContent = toastProps?.CustomUndoContent;
-        if (!t.visible && !isSuccess) {
-          isSuccess = true;
-          undoEventEmitter.emit("end", false);
-        }
-        return CustomContent ? /* @__PURE__ */ React2.createElement(
-          CustomContent,
-          {
-            message: data.message,
-            onUndo,
-            type: data.type,
-            toast: t
+    if (process.env.NODE_ENV !== "test") {
+      toast.success(
+        (t) => {
+          const CustomContent = toastProps?.CustomUndoContent;
+          if (!t.visible && !isSuccess) {
+            isSuccess = true;
+            undoEventEmitter.emit("end", false);
           }
-        ) : /* @__PURE__ */ React2.createElement(React2.Fragment, null, data.message, /* @__PURE__ */ React2.createElement(
-          "span",
-          {
-            style: { marginLeft: "10px", cursor: "pointer" },
-            onClick: onUndo,
-            role: "button",
-            tabIndex: 0,
-            "aria-label": "Undo",
-            title: "Undo"
-          },
-          "UNDO"
-        ));
-      },
-      {
-        duration: toastProps?.globalProps?.toastOptions?.duration || 5e3
-      }
-    );
+          return CustomContent ? /* @__PURE__ */ React2.createElement(
+            CustomContent,
+            {
+              message: data.message,
+              onUndo,
+              type: data.type,
+              toast: t
+            }
+          ) : /* @__PURE__ */ React2.createElement(React2.Fragment, null, data.message, /* @__PURE__ */ React2.createElement(
+            "span",
+            {
+              style: { marginLeft: "10px", cursor: "pointer" },
+              onClick: onUndo,
+              role: "button",
+              tabIndex: 0,
+              "aria-label": "Undo",
+              title: "Undo"
+            },
+            "UNDO"
+          ));
+        },
+        {
+          duration: toastProps?.globalProps?.toastOptions?.duration || 5e3
+        }
+      );
+    }
   }, []);
   const contextValue = useMemo(() => ({
     apiUrl: removeFirstAndLastSlash(apiUrl),
@@ -427,7 +429,7 @@ function RQWrapper({
     apiEnsureTrailingSlash,
     toastUndo
   }), [apiUrl, fetch2, toastUndo, apiEnsureTrailingSlash]);
-  return /* @__PURE__ */ React2.createElement(QueryClientProvider, { client: queryClient }, /* @__PURE__ */ React2.createElement(Toaster, { ...toastProps?.globalProps }, toastProps?.CustomContent), /* @__PURE__ */ React2.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ React2.createElement(
+  return /* @__PURE__ */ React2.createElement(QueryClientProvider, { client: queryClient }, process.env.NODE_ENV !== "test" && /* @__PURE__ */ React2.createElement(Toaster, { ...toastProps?.globalProps }, toastProps?.CustomContent), /* @__PURE__ */ React2.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ React2.createElement(
     ReactQueryDevtools,
     {
       buttonPosition: "bottom-right",

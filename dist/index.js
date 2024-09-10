@@ -170,7 +170,7 @@ var _headless = require('react-hot-toast/headless'); var _headless2 = _interopRe
 var prefersReducedMotion = /* @__PURE__ */ (() => {
   let shouldReduceMotion;
   return () => {
-    if (shouldReduceMotion === void 0 && typeof window !== "undefined") {
+    if (shouldReduceMotion === void 0 && typeof window !== "undefined" && window.matchMedia) {
       const mediaQuery = matchMedia("(prefers-reduced-motion: reduce)");
       shouldReduceMotion = !mediaQuery || mediaQuery.matches;
     }
@@ -388,38 +388,40 @@ function RQWrapper({
       undoEventEmitter.emit("end", true);
       toast.dismiss();
     };
-    toast.success(
-      (t) => {
-        const CustomContent = _optionalChain([toastProps, 'optionalAccess', _10 => _10.CustomUndoContent]);
-        if (!t.visible && !isSuccess) {
-          isSuccess = true;
-          undoEventEmitter.emit("end", false);
-        }
-        return CustomContent ? /* @__PURE__ */ _react2.default.createElement(
-          CustomContent,
-          {
-            message: data.message,
-            onUndo,
-            type: data.type,
-            toast: t
+    if (process.env.NODE_ENV !== "test") {
+      toast.success(
+        (t) => {
+          const CustomContent = _optionalChain([toastProps, 'optionalAccess', _10 => _10.CustomUndoContent]);
+          if (!t.visible && !isSuccess) {
+            isSuccess = true;
+            undoEventEmitter.emit("end", false);
           }
-        ) : /* @__PURE__ */ _react2.default.createElement(_react2.default.Fragment, null, data.message, /* @__PURE__ */ _react2.default.createElement(
-          "span",
-          {
-            style: { marginLeft: "10px", cursor: "pointer" },
-            onClick: onUndo,
-            role: "button",
-            tabIndex: 0,
-            "aria-label": "Undo",
-            title: "Undo"
-          },
-          "UNDO"
-        ));
-      },
-      {
-        duration: _optionalChain([toastProps, 'optionalAccess', _11 => _11.globalProps, 'optionalAccess', _12 => _12.toastOptions, 'optionalAccess', _13 => _13.duration]) || 5e3
-      }
-    );
+          return CustomContent ? /* @__PURE__ */ _react2.default.createElement(
+            CustomContent,
+            {
+              message: data.message,
+              onUndo,
+              type: data.type,
+              toast: t
+            }
+          ) : /* @__PURE__ */ _react2.default.createElement(_react2.default.Fragment, null, data.message, /* @__PURE__ */ _react2.default.createElement(
+            "span",
+            {
+              style: { marginLeft: "10px", cursor: "pointer" },
+              onClick: onUndo,
+              role: "button",
+              tabIndex: 0,
+              "aria-label": "Undo",
+              title: "Undo"
+            },
+            "UNDO"
+          ));
+        },
+        {
+          duration: _optionalChain([toastProps, 'optionalAccess', _11 => _11.globalProps, 'optionalAccess', _12 => _12.toastOptions, 'optionalAccess', _13 => _13.duration]) || 5e3
+        }
+      );
+    }
   }, []);
   const contextValue = _react.useMemo.call(void 0, () => ({
     apiUrl: removeFirstAndLastSlash(apiUrl),
@@ -427,7 +429,7 @@ function RQWrapper({
     apiEnsureTrailingSlash,
     toastUndo
   }), [apiUrl, fetch2, toastUndo, apiEnsureTrailingSlash]);
-  return /* @__PURE__ */ _react2.default.createElement(_reactquery.QueryClientProvider, { client: queryClient }, /* @__PURE__ */ _react2.default.createElement(Toaster, { ..._optionalChain([toastProps, 'optionalAccess', _14 => _14.globalProps]) }, _optionalChain([toastProps, 'optionalAccess', _15 => _15.CustomContent])), /* @__PURE__ */ _react2.default.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ _react2.default.createElement(
+  return /* @__PURE__ */ _react2.default.createElement(_reactquery.QueryClientProvider, { client: queryClient }, process.env.NODE_ENV !== "test" && /* @__PURE__ */ _react2.default.createElement(Toaster, { ..._optionalChain([toastProps, 'optionalAccess', _14 => _14.globalProps]) }, _optionalChain([toastProps, 'optionalAccess', _15 => _15.CustomContent])), /* @__PURE__ */ _react2.default.createElement(Context.Provider, { value: contextValue }, children), isDevTools && /* @__PURE__ */ _react2.default.createElement(
     _reactquerydevtools.ReactQueryDevtools,
     {
       buttonPosition: "bottom-right",

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-shadow */
 /* eslint-disable no-nested-ternary */
 import React, { useCallback } from 'react';
@@ -8,7 +9,8 @@ const prefersReducedMotion = (() => {
   let shouldReduceMotion: boolean | undefined;
 
   return () => {
-    if (shouldReduceMotion === undefined && typeof window !== 'undefined') {
+    // @ts-ignore
+    if (shouldReduceMotion === undefined && typeof window !== 'undefined' && window.matchMedia) {
       const mediaQuery = matchMedia('(prefers-reduced-motion: reduce)');
       shouldReduceMotion = !mediaQuery || mediaQuery.matches;
     }
