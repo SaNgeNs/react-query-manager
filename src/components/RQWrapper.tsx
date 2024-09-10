@@ -13,6 +13,7 @@ import { Toaster } from '../internal/components/Toaster';
 import { toast } from '../utils/toast';
 import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 import { removeFirstAndLastSlash } from '../internal/utils/remove-first-and-last-slash';
+import { IS_TEST_ENV } from '../internal/env';
 
 const Context = createContext<RQWrapperContextProps>({
   apiUrl: '',
@@ -196,8 +197,7 @@ export function RQWrapper({
       toast.dismiss();
     };
 
-    // TODO
-    if (process.env.NODE_ENV !== 'test') {
+    if (!IS_TEST_ENV) {
       toast.success(
         (t) => {
           const CustomContent = toastProps?.CustomUndoContent;
@@ -250,8 +250,7 @@ export function RQWrapper({
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* TODO */}
-      {process.env.NODE_ENV !== 'test' && (
+      {!IS_TEST_ENV && (
         <Toaster {...toastProps?.globalProps}>
           {toastProps?.CustomContent}
         </Toaster>

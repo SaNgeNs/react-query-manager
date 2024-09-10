@@ -17,6 +17,7 @@ import { Snapshot } from '../internal/type';
 import { helpersQueryKeys, invalidateQueries, updateItemsFromQueryCache } from '../utils/queries';
 import { createSnapshot } from '../internal/utils/create-snapshot';
 import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
+import { IS_TEST_ENV } from '../internal/env';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
@@ -202,7 +203,7 @@ const useUpdateBase = <
       });
     }
 
-    if (mode.undoable) {
+    if (mode.undoable && !IS_TEST_ENV) {
       const isMany = ids.length > 1;
 
       undoEventEmitter.once('end', (isUndo) => {

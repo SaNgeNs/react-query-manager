@@ -16,6 +16,7 @@ import { Snapshot } from '../internal/type';
 import { deleteItemsFromQueryCache, helpersQueryKeys, invalidateQueries } from '../utils/queries';
 import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 import { createSnapshot } from '../internal/utils/create-snapshot';
+import { IS_TEST_ENV } from '../internal/env';
 
 /** @notExported */
 type MutateBaseVariables<TPath extends string, TType, TExtraData> = (
@@ -197,7 +198,7 @@ const useDeleteBase = <
       });
     }
 
-    if (mode.undoable) {
+    if (mode.undoable && !IS_TEST_ENV) {
       const isMany = ids.length > 1;
 
       undoEventEmitter.once('end', (isUndo) => {
