@@ -1,6 +1,28 @@
 /* eslint-disable no-restricted-syntax */
 
 /**
+ * Checks if a value can be converted to a number.
+ *
+ * @param value - The value to check.
+ * @returns True if the value can be converted to a number, otherwise false.
+ */
+function isCanConvertToNumber(value: any): boolean {
+  return !Number.isNaN(parseFloat(value)) && Number.isFinite(value);
+}
+
+/**
+ * Checks if two values can be coerced to the same type.
+ *
+ * @param value1 - The first value to check.
+ * @param value2 - The second value to check.
+ * @returns True if the values can be coerced to the same type (e.g., string to number).
+ */
+function isNumber(value1: any, value2: any): boolean {
+  return (isCanConvertToNumber(value1) && isCanConvertToNumber(value2))
+    || typeof value1 === typeof value2;
+}
+
+/**
  * Recursively merges two objects together, ensuring that only fields that exist
  * and match in type in the target object are merged from the source object.
  *
@@ -32,7 +54,9 @@ export function mergeObjects<TData extends object>(target: TData, source: any): 
             && !Array.isArray(sourceValue) && typeof sourceValue === 'object')
           || (typeof targetValue !== 'object' && typeof sourceValue !== 'object'));
 
-        if (isSameType) {
+        const canConvertToNumber = isNumber(targetValue, sourceValue);
+
+        if (isSameType || canConvertToNumber) {
           if (typeof targetValue === 'object' && targetValue !== null && !Array.isArray(targetValue)) {
             result[key] = mergeObjects(targetValue, sourceValue as typeof targetValue);
           } else {

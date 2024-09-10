@@ -122,7 +122,7 @@ export type ExtractParams<TPath extends string> = TPath extends `${string}{${inf
 export type PathParams<TPath extends string> = ExtractParams<TPath> extends never
   ? Record<string, never>
   : {
-      [K in ExtractParams<TPath>]: string | number;
+      [K in ExtractParams<TPath>]: string;
     };
 
 /** Represents a resource with a given path and parameters. */
