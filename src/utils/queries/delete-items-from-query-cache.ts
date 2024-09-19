@@ -5,6 +5,7 @@ import {
   QueryListKey,
   QueryOneKey,
 } from '../../type';
+import { removeQueries } from './remove-queries';
 
 /**
  * Deletes items from the query cache based on provided IDs.
@@ -51,9 +52,7 @@ export const deleteItemsFromQueryCache = <TData = any>({
   };
 
   if (queryKeysOne) {
-    queryKeysOne.forEach((queryKeyOne) => {
-      queryClient.removeQueries({ queryKey: queryKeyOne });
-    });
+    removeQueries({ queryClient, queryKeys: queryKeysOne });
   }
 
   if (queryKeysList) {

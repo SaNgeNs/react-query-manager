@@ -1603,7 +1603,7 @@ declare const helpersQueryKeys: {
  * ];
  *
  * // Invalidate queries with keys matching any of the key groups
- * invalidateMatchingQueries(queryClient, keyGroups);
+ * invalidateMatchingQueries({ queryClient, queryKeys: keyGroups });
  *
  * @param params
  * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
@@ -1619,6 +1619,43 @@ declare const helpersQueryKeys: {
  * @returns {void} - This function does not return a value.
  */
 declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
+    queryClient: QueryClient;
+    queryKeys: any[][];
+}) => void;
+
+/**
+ * Remove queries in the cache that match any of the specified key groups.
+ *
+ * This function uses the `predicate` option to filter queries whose keys match any of the key groups provided.
+ * A query's key is considered a match if it contains all the keys from at least one of the key groups.
+ * The function then remove all such matching queries using `queryClient.removeQueries`.
+ *
+ * @example
+ * import { removeMatchingQueries } from 'react-query-manager';
+ *
+ * // Define key groups where each group is an array of keys that must all be present in the queryKey to be considered a match.
+ * const keyGroups = [
+ *   ['path', 'get-list'],    // Key group 1
+ *   ['path', 'get-one'],  // Key group 2
+ * ];
+ *
+ * // Remove queries with keys matching any of the key groups
+ * removeMatchingQueries({ queryClient, queryKeys: keyGroups });
+ *
+ * @param params
+ * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
+ * @param params.queryKeys - An array of arrays, where each inner array represents a group of keys that must all be present
+ *                           in a query's key for that query to be removed.
+ *                           Example: `[['path', 'get-list'], ['path', 'get-one']]`.
+ *
+ * This function:
+ * - Retrieves all cached queries.
+ * - Checks if the key of each query matches any of the provided key groups.
+ * - Remove the queries whose keys match any of the specified key groups.
+ *
+ * @returns {void} - This function does not return a value.
+ */
+declare const removeMatchingQueries: ({ queryClient, queryKeys, }: {
     queryClient: QueryClient;
     queryKeys: any[][];
 }) => void;
@@ -1642,6 +1679,29 @@ declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
  * @returns {void} - This function does not return a value.
  */
 declare const invalidateQueries: ({ queryClient, queryKeys, }: {
+    queryClient: QueryClient;
+    queryKeys: any[][];
+}) => void;
+
+/**
+ * Remove queries in the cache that have a key matching any of the specified `queryKeys`.
+ *
+ * @param params
+ * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
+ * @param params.queryKeys - An array of arrays of keys for which the corresponding queries should be removed.
+ *
+ * @example
+ * removeQueries({
+ *   queryClient,
+ *   queryKeys: [
+ *     ['get-list', 'path'],
+ *     ['get-one', 'path', '1'],
+ *   ],
+ * });
+ *
+ * @returns {void} - This function does not return a value.
+ */
+declare const removeQueries: ({ queryClient, queryKeys, }: {
     queryClient: QueryClient;
     queryKeys: any[][];
 }) => void;
@@ -1677,4 +1737,4 @@ declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids,
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
 }) => void;
 
-export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemToQueryCache, addItemsToListQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
+export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemToQueryCache, addItemsToListQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, removeMatchingQueries, removeQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };
