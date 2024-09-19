@@ -1,5 +1,3 @@
-# react-query-manager
-
 **react-query-manager** is a library to simplify the work with [@tanstack/react-query](https://tanstack.com/query/latest). It offers custom query hooks, automatically cleanses the cache after mutations, and provides a unified style for keys in the cache to make data management easier.
 
 ## Purpose of the library
