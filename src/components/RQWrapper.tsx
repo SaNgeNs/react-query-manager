@@ -137,15 +137,6 @@ export function RQWrapper({
   const queryClient = useMemo(() => {
     const client = new QueryClient({
       ...config,
-      defaultOptions: {
-        ...config?.defaultOptions,
-        queries: {
-          gcTime: 5 * 60 * 1000, // 5 minutes,
-          staleTime: 5 * 60 * 1000, // 5 minutes
-          retry: false,
-          ...config?.defaultOptions?.queries,
-        },
-      },
     });
 
     queryClientManager.queryClient = client;
