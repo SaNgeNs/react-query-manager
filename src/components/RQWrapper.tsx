@@ -14,6 +14,7 @@ import { toast } from '../utils/toast';
 import { undoEventEmitter } from '../internal/utils/undo-event-emitter';
 import { removeFirstAndLastSlash } from '../internal/utils/remove-first-and-last-slash';
 import { IS_TEST_ENV } from '../internal/env';
+import { queryClientManager } from '../internal/query-client';
 
 const Context = createContext<RQWrapperContextProps>({
   apiUrl: '',
@@ -134,7 +135,7 @@ export function RQWrapper({
   };
 }) {
   const queryClient = useMemo(() => {
-    return new QueryClient({
+    const client = new QueryClient({
       ...config,
       defaultOptions: {
         ...config?.defaultOptions,
@@ -146,6 +147,10 @@ export function RQWrapper({
         },
       },
     });
+
+    queryClientManager.queryClient = client;
+
+    return client;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

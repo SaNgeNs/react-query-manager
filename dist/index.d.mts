@@ -1,5 +1,5 @@
 import * as _tanstack_react_query from '@tanstack/react-query';
-import { UseQueryOptions, UseInfiniteQueryOptions, InfiniteData, UseMutationOptions, QueryClientConfig, QueryClient } from '@tanstack/react-query';
+import { UseQueryOptions, UseInfiniteQueryOptions, InfiniteData, UseMutationOptions, QueryClientConfig } from '@tanstack/react-query';
 export * from '@tanstack/react-query';
 import * as react_hot_toast from 'react-hot-toast';
 import { ToasterProps, Toast } from 'react-hot-toast';
@@ -1455,19 +1455,16 @@ declare const getUrlFromResource: <TPath extends string>(resource: Resource<TPat
  *
  * @template TData - The type of data stored in the cache.
  * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.data - The new data to add to the corresponding items.
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
  *
  * @example
  * addItemFromQueryCache({
- *   queryClient,
  *   data: { name: 'New Item' },
  *   queryKeysOne: [['get-one', 'posts', {}, '1']],
  * });
  */
-declare const addItemToQueryCache: ({ queryClient, data, queryKeysOne, }: {
-    queryClient: QueryClient;
+declare const addItemToQueryCache: ({ data, queryKeysOne, }: {
     data: OnlyObject;
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
 }) => void;
@@ -1477,15 +1474,13 @@ declare const addItemToQueryCache: ({ queryClient, data, queryKeysOne, }: {
  *
  * @example
  * addItemsToListQueryCache({
- *   queryClient,
  *   data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }],
  *   queryKeysList: [['get-list', 'posts', {}]],
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]],
  *   cacheAddItemTo: 'end'
  * });
  */
-declare const addItemsToListQueryCache: ({ queryClient, data, queryKeysList, queryKeysInfiniteList, cacheAddItemTo, }: {
-    queryClient: QueryClient;
+declare const addItemsToListQueryCache: ({ data, queryKeysList, queryKeysInfiniteList, cacheAddItemTo, }: {
     data: OnlyObject[];
     queryKeysList?: [QueryListKey<"">[0], ...OnlyObject[]][];
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...OnlyObject[]][];
@@ -1497,7 +1492,6 @@ declare const addItemsToListQueryCache: ({ queryClient, data, queryKeysList, que
  *
  * @template TData - The type of data stored in the cache.
  * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.ids - The array of item IDs to delete from the cache.
  * @param params.queryKeysOne - Cache keys for single queries that should be deleted.
  * @param params.queryKeysList - Cache keys for list queries from which items should be deleted.
@@ -1505,15 +1499,13 @@ declare const addItemsToListQueryCache: ({ queryClient, data, queryKeysList, que
  *
  * @example
  * deleteItemsFromQueryCache({
- *   queryClient,
  *   ids: [1, 2, 3],
  *   queryKeysOne: [['get-one', 'posts', {}, '1']],
  *   queryKeysList: [['get-list', 'posts', {}]],
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
  * });
  */
-declare const deleteItemsFromQueryCache: <TData = any>({ queryClient, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
-    queryClient: QueryClient;
+declare const deleteItemsFromQueryCache: <TData = any>({ ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
     ids: (string | number)[];
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
     queryKeysList?: [QueryListKey<"">[0], ...any[]][];
@@ -1603,10 +1595,9 @@ declare const helpersQueryKeys: {
  * ];
  *
  * // Invalidate queries with keys matching any of the key groups
- * invalidateMatchingQueries({ queryClient, queryKeys: keyGroups });
+ * invalidateMatchingQueries({ queryKeys: keyGroups });
  *
  * @param params
- * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
  * @param params.queryKeys - An array of arrays, where each inner array represents a group of keys that must all be present
  *                           in a query's key for that query to be invalidated.
  *                           Example: `[['path', 'get-list'], ['path', 'get-one']]`.
@@ -1618,8 +1609,7 @@ declare const helpersQueryKeys: {
  *
  * @returns {void} - This function does not return a value.
  */
-declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
-    queryClient: QueryClient;
+declare const invalidateMatchingQueries: ({ queryKeys, }: {
     queryKeys: any[][];
 }) => void;
 
@@ -1640,10 +1630,9 @@ declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
  * ];
  *
  * // Remove queries with keys matching any of the key groups
- * removeMatchingQueries({ queryClient, queryKeys: keyGroups });
+ * removeMatchingQueries({ queryKeys: keyGroups });
  *
  * @param params
- * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
  * @param params.queryKeys - An array of arrays, where each inner array represents a group of keys that must all be present
  *                           in a query's key for that query to be removed.
  *                           Example: `[['path', 'get-list'], ['path', 'get-one']]`.
@@ -1655,8 +1644,7 @@ declare const invalidateMatchingQueries: ({ queryClient, queryKeys, }: {
  *
  * @returns {void} - This function does not return a value.
  */
-declare const removeMatchingQueries: ({ queryClient, queryKeys, }: {
-    queryClient: QueryClient;
+declare const removeMatchingQueries: ({ queryKeys, }: {
     queryKeys: any[][];
 }) => void;
 
@@ -1664,12 +1652,10 @@ declare const removeMatchingQueries: ({ queryClient, queryKeys, }: {
  * Invalidates queries in the cache that have a key matching any of the specified `queryKeys`.
  *
  * @param params
- * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
  * @param params.queryKeys - An array of arrays of keys for which the corresponding queries should be invalidated.
  *
  * @example
  * invalidateQueries({
- *   queryClient,
  *   queryKeys: [
  *     ['get-list', 'path'],
  *     ['get-one', 'path', '1'],
@@ -1678,8 +1664,7 @@ declare const removeMatchingQueries: ({ queryClient, queryKeys, }: {
  *
  * @returns {void} - This function does not return a value.
  */
-declare const invalidateQueries: ({ queryClient, queryKeys, }: {
-    queryClient: QueryClient;
+declare const invalidateQueries: ({ queryKeys, }: {
     queryKeys: any[][];
 }) => void;
 
@@ -1687,12 +1672,10 @@ declare const invalidateQueries: ({ queryClient, queryKeys, }: {
  * Remove queries in the cache that have a key matching any of the specified `queryKeys`.
  *
  * @param params
- * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
  * @param params.queryKeys - An array of arrays of keys for which the corresponding queries should be removed.
  *
  * @example
  * removeQueries({
- *   queryClient,
  *   queryKeys: [
  *     ['get-list', 'path'],
  *     ['get-one', 'path', '1'],
@@ -1701,8 +1684,7 @@ declare const invalidateQueries: ({ queryClient, queryKeys, }: {
  *
  * @returns {void} - This function does not return a value.
  */
-declare const removeQueries: ({ queryClient, queryKeys, }: {
-    queryClient: QueryClient;
+declare const removeQueries: ({ queryKeys, }: {
     queryKeys: any[][];
 }) => void;
 
@@ -1711,7 +1693,6 @@ declare const removeQueries: ({ queryClient, queryKeys, }: {
  *
  * @template TData - The type of data stored in the cache.
  * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.data - The new data to update the corresponding items.
  * @param params.ids - The array of item IDs to update.
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
@@ -1728,8 +1709,7 @@ declare const removeQueries: ({ queryClient, queryKeys, }: {
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
  * });
  */
-declare const updateItemsFromQueryCache: <TData = any>({ queryClient, data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
-    queryClient: QueryClient;
+declare const updateItemsFromQueryCache: <TData = any>({ data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
     data: OnlyObject;
     ids: (string | number)[];
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];

@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query';
+import { getQueryClient } from '../../internal/query-client';
 import { isEqual } from '../../internal/utils/is-equal';
 
 /**
@@ -18,10 +18,9 @@ import { isEqual } from '../../internal/utils/is-equal';
  * ];
  *
  * // Invalidate queries with keys matching any of the key groups
- * invalidateMatchingQueries({ queryClient, queryKeys: keyGroups });
+ * invalidateMatchingQueries({ queryKeys: keyGroups });
  *
  * @param params
- * @param params.queryClient - The `QueryClient` instance from `@tanstack/react-query` used to interact with the query cache.
  * @param params.queryKeys - An array of arrays, where each inner array represents a group of keys that must all be present
  *                           in a query's key for that query to be invalidated.
  *                           Example: `[['path', 'get-list'], ['path', 'get-one']]`.
@@ -34,12 +33,12 @@ import { isEqual } from '../../internal/utils/is-equal';
  * @returns {void} - This function does not return a value.
  */
 export const invalidateMatchingQueries = ({
-  queryClient,
   queryKeys,
 }: {
-  queryClient: QueryClient,
   queryKeys: any[][],
 }) => {
+  const queryClient = getQueryClient();
+
   queryClient.invalidateQueries({
     predicate: (query) => {
       const keys = query.queryKey;

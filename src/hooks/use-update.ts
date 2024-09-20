@@ -150,7 +150,7 @@ const useUpdateBase = <
           queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
         });
 
-        invalidateQueries({ queryClient, queryKeys });
+        invalidateQueries({ queryKeys });
       }
 
       if (mutationOptions?.onSuccess) {
@@ -187,14 +187,13 @@ const useUpdateBase = <
         queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
       });
 
-      snapshot.current = await createSnapshot(queryClient, [
+      snapshot.current = await createSnapshot([
         ...queryKeysOne,
         ...queryKeysList,
         ...queryKeysInfiniteList,
       ]);
 
       updateItemsFromQueryCache({
-        queryClient,
         data: variables.data as any,
         ids,
         queryKeysOne,

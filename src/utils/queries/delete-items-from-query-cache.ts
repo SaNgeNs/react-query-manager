@@ -1,4 +1,4 @@
-import { InfiniteData, QueryClient } from '@tanstack/react-query';
+import { InfiniteData } from '@tanstack/react-query';
 import {
   QueryResponse,
   QueryInfiniteListKey,
@@ -6,13 +6,13 @@ import {
   QueryOneKey,
 } from '../../type';
 import { removeQueries } from './remove-queries';
+import { getQueryClient } from '../../internal/query-client';
 
 /**
  * Deletes items from the query cache based on provided IDs.
  *
  * @template TData - The type of data stored in the cache.
  * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.ids - The array of item IDs to delete from the cache.
  * @param params.queryKeysOne - Cache keys for single queries that should be deleted.
  * @param params.queryKeysList - Cache keys for list queries from which items should be deleted.
@@ -20,7 +20,6 @@ import { removeQueries } from './remove-queries';
  *
  * @example
  * deleteItemsFromQueryCache({
- *   queryClient,
  *   ids: [1, 2, 3],
  *   queryKeysOne: [['get-one', 'posts', {}, '1']],
  *   queryKeysList: [['get-list', 'posts', {}]],
@@ -28,18 +27,18 @@ import { removeQueries } from './remove-queries';
  * });
  */
 export const deleteItemsFromQueryCache = <TData = any>({
-  queryClient,
   ids,
   queryKeysOne,
   queryKeysList,
   queryKeysInfiniteList,
 }: {
-  queryClient: QueryClient;
   ids: (string | number)[];
   queryKeysOne?: [QueryOneKey<''>[0], ...any[]][];
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
 }) => {
+  const queryClient = getQueryClient();
+
   const updateListData = (page: QueryResponse<TData[]> | undefined) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 
@@ -52,7 +51,7 @@ export const deleteItemsFromQueryCache = <TData = any>({
   };
 
   if (queryKeysOne) {
-    removeQueries({ queryClient, queryKeys: queryKeysOne });
+    removeQueries({ queryKeys: queryKeysOne });
   }
 
   if (queryKeysList) {

@@ -1,15 +1,15 @@
-import { InfiniteData, QueryClient } from '@tanstack/react-query';
+import { InfiniteData } from '@tanstack/react-query';
 import {
   OnlyObject, QueryInfiniteListKey, QueryListKey,
   QueryResponse,
 } from '../../type';
+import { getQueryClient } from '../../internal/query-client';
 
 /**
  * Adds items to the query cache for list and infinite list queries.
  *
  * @example
  * addItemsToListQueryCache({
- *   queryClient,
  *   data: [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }],
  *   queryKeysList: [['get-list', 'posts', {}]],
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]],
@@ -17,18 +17,18 @@ import {
  * });
  */
 export const addItemsToListQueryCache = ({
-  queryClient,
   data,
   queryKeysList,
   queryKeysInfiniteList,
   cacheAddItemTo = 'start',
 }: {
-  queryClient: QueryClient;
   data: OnlyObject[];
   queryKeysList?: [QueryListKey<''>[0], ...OnlyObject[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...OnlyObject[]][];
   cacheAddItemTo?: 'end' | 'start';
 }) => {
+  const queryClient = getQueryClient();
+
   const updateListData = (page: QueryResponse<OnlyObject[]> | undefined) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 

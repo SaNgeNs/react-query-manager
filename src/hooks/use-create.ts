@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   Resource,
   UseMutateProps,
@@ -101,7 +101,6 @@ export const useCreate = <
   isInvalidateCache?: boolean;
 }) => {
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
-  const queryClient = useQueryClient();
 
   const { mutate, ...mutation } = useMutation<
     QueryResponse<TData> | QueryResponse<TData>[],
@@ -159,7 +158,6 @@ export const useCreate = <
           });
 
           addItemToQueryCache({
-            queryClient,
             data: response!.data || {},
             queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
           });
@@ -167,7 +165,6 @@ export const useCreate = <
 
         addItemsToListQueryCache({
           data: responses.map((response) => (response?.data || {})),
-          queryClient,
           cacheAddItemTo,
           queryKeysInfiniteList,
           queryKeysList,
@@ -175,7 +172,6 @@ export const useCreate = <
 
         if (isInvalidateCache) {
           invalidateQueries({
-            queryClient,
             queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
           });
         }

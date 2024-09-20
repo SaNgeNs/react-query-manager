@@ -146,7 +146,7 @@ const useDeleteBase = <
       });
 
       if (isInvalidateCache) {
-        invalidateQueries({ queryClient, queryKeys });
+        invalidateQueries({ queryKeys });
       }
 
       if (mutationOptions?.onSuccess) {
@@ -183,14 +183,13 @@ const useDeleteBase = <
         queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
       });
 
-      snapshot.current = await createSnapshot(queryClient, [
+      snapshot.current = await createSnapshot([
         ...queryKeysOne,
         ...queryKeysList,
         ...queryKeysInfiniteList,
       ]);
 
       deleteItemsFromQueryCache({
-        queryClient,
         ids,
         queryKeysOne,
         queryKeysList,

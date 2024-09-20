@@ -1,4 +1,4 @@
-import { InfiniteData, QueryClient } from '@tanstack/react-query';
+import { InfiniteData } from '@tanstack/react-query';
 import {
   QueryResponse,
   OnlyObject,
@@ -7,13 +7,13 @@ import {
   QueryOneKey,
 } from '../../type';
 import { mergeObjects } from '../../internal/utils/merge-objects';
+import { getQueryClient } from '../../internal/query-client';
 
 /**
  * Updates items in the query cache based on provided IDs and new data.
  *
  * @template TData - The type of data stored in the cache.
  * @param params - The parameters for the function.
- * @param params.queryClient - The QueryClient instance for interacting with the cache.
  * @param params.data - The new data to update the corresponding items.
  * @param params.ids - The array of item IDs to update.
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
@@ -31,20 +31,20 @@ import { mergeObjects } from '../../internal/utils/merge-objects';
  * });
  */
 export const updateItemsFromQueryCache = <TData = any>({
-  queryClient,
   data,
   ids,
   queryKeysOne,
   queryKeysList,
   queryKeysInfiniteList,
 }: {
-  queryClient: QueryClient;
   data: OnlyObject;
   ids: (string | number)[];
   queryKeysOne?: [QueryOneKey<''>[0], ...any[]][];
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
 }) => {
+  const queryClient = getQueryClient();
+
   const updateListData = (page: QueryResponse<TData[]> | undefined) => {
     if (!page || !(page.data instanceof Array)) { return page; }
 
