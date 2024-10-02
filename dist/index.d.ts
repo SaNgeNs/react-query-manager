@@ -59,8 +59,9 @@ type ApiProps = {
     queryParamsSerializer?: (params: OnlyObject) => string;
     queryArrayParamStyle?: 'indexedArray' | 'repeatedParameters';
     data?: any;
-    onSuccess?: (data: any, args: Omit<ApiProps, 'onSuccess' | 'onError'>) => void;
-    onError?: (error: CustomError, args: Omit<ApiProps, 'onSuccess' | 'onError'>) => void;
+    onSuccess?: (data: any, args: Omit<ApiProps, 'onSuccess' | 'onError' | 'context'>, context: ApiProps['context']) => void;
+    onError?: (error: CustomError, args: Omit<ApiProps, 'onSuccess' | 'onError' | 'context'>, context: ApiProps['context']) => void;
+    context?: any;
 };
 type ApiClient = <TData = any>(args: ApiProps) => Promise<FetcherResponse<TData>>;
 type RQWrapperContextProps = {
@@ -1365,12 +1366,17 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrail
  * fetcher({
  *   url: 'https://jsonplaceholder.typicode.com/todos/1',
  *   method: 'GET',
- *   onSuccess: (data, args) => {
+ *   onSuccess: (data, args, context) => {
  *     console.log(data);
+ *     console.log(args);
+ *     console.log(context);
  *   },
- *   onError: (error, args) => {
+ *   onError: (error, args, context) => {
  *     console.error(error);
+ *     console.error(args);
+ *     console.error(context);
  *   },
+ *   context: { value: '1' }
  * });
  *
  * @param args The request configuration.
