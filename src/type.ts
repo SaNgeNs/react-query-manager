@@ -51,8 +51,9 @@ export type ApiProps = {
   queryParamsSerializer?: (params: OnlyObject) => string,
   queryArrayParamStyle?: 'indexedArray' | 'repeatedParameters',
   data?: any;
-  onSuccess?: (data: any, args: Omit<ApiProps, 'onSuccess' | 'onError'>) => void;
-  onError?: (error: CustomError, args: Omit<ApiProps, 'onSuccess' | 'onError'>) => void;
+  onSuccess?: (data: any, args: Omit<ApiProps, 'onSuccess' | 'onError' | 'context'>, context: ApiProps['context']) => void;
+  onError?: (error: CustomError, args: Omit<ApiProps, 'onSuccess' | 'onError' | 'context'>, context: ApiProps['context']) => void;
+  context?: any;
 };
 
 export type ApiClient = <TData = any>(args: ApiProps) => Promise<FetcherResponse<TData>>;

@@ -57,21 +57,26 @@ function encode(value: string) {
  * fetcher({
  *   url: 'https://jsonplaceholder.typicode.com/todos/1',
  *   method: 'GET',
- *   onSuccess: (data, args) => {
+ *   onSuccess: (data, args, context) => {
  *     console.log(data);
+ *     console.log(args);
+ *     console.log(context);
  *   },
- *   onError: (error, args) => {
+ *   onError: (error, args, context) => {
  *     console.error(error);
+ *     console.error(args);
+ *     console.error(context);
  *   },
+ *   context: { value: '1' }
  * });
  *
  * @param args The request configuration.
  *
  * @returns The response as a promise.
  */
-export const fetcher: ApiClient = (args) => {
-  const { onSuccess, onError } = args;
-
+export const fetcher: ApiClient = ({
+  onSuccess, onError, context, ...args
+}) => {
   const isFormData = args.data instanceof FormData;
 
   const apiUrl = (() => {
@@ -183,13 +188,15 @@ export const fetcher: ApiClient = (args) => {
       );
 
       if (onError) {
-        onError(error, args);
+        onError(error, args, context);
       }
 
       return Promise.reject(error);
     }
 
-    if (onSuccess) { onSuccess(result, args); }
+    if (onSuccess) {
+      onSuccess(result, args, context);
+    }
 
     return Promise.resolve(result);
   }).catch((error) => {
