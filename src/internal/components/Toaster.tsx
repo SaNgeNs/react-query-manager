@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-shadow */
-/* eslint-disable no-nested-ternary */
 import React, { useCallback } from 'react';
 import { type ToasterProps, type ToastPosition } from 'react-hot-toast';
 import { resolveValue, useToaster } from 'react-hot-toast/headless';

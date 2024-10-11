@@ -1,6 +1,3 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-alert */
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { createElement, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';

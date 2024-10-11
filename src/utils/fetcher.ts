@@ -1,7 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-prototype-builtins */
-
 import { ApiClient } from '../type';
 import { CustomError } from './custom-error';
 
@@ -91,6 +87,7 @@ export const fetcher: ApiClient = ({
         const str = [];
 
         for (const p in queryParams) {
+          // eslint-disable-next-line no-prototype-builtins
           if (queryParams.hasOwnProperty(p)) {
             if (Array.isArray(queryParams[p])) {
               queryParams[p].forEach((value) => {

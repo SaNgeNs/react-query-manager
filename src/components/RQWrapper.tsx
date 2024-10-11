@@ -205,29 +205,29 @@ export function RQWrapper({
 
           return CustomContent
             ? (
-              <CustomContent
-                message={data.message}
-                onUndo={onUndo}
-                type={data.type}
-                toast={t}
-              />
-            )
+                <CustomContent
+                  message={data.message}
+                  onUndo={onUndo}
+                  type={data.type}
+                  toast={t}
+                />
+              )
             : (
-              <>
-                {data.message}
+                <>
+                  {data.message}
 
-                <span
-                  style={{ marginLeft: '10px', cursor: 'pointer' }}
-                  onClick={onUndo}
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Undo"
-                  title="Undo"
-                >
-                  UNDO
-                </span>
-              </>
-            );
+                  <span
+                    style={{ marginLeft: '10px', cursor: 'pointer' }}
+                    onClick={onUndo}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Undo"
+                    title="Undo"
+                  >
+                    UNDO
+                  </span>
+                </>
+              );
         },
         {
           duration: toastProps?.globalProps?.toastOptions?.duration || 5000,

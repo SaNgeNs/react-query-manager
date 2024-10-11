@@ -1,5 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-restricted-syntax */
 export function isEqual(data1: unknown, data2: unknown): boolean {
   if (typeof data1 !== typeof data2) {
     return false;

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable import/no-extraneous-dependencies */
-
 const dotenv = require('dotenv');
 const esbuild = require('esbuild');
 const process = require('node:process');
@@ -10,8 +7,8 @@ const args = process.argv;
 
 const config = {
   logLevel: 'info',
-  entryPoints: ['dev/index.tsx'],
-  outfile: 'dev/public/build/bundle.js',
+  entryPoints: ['example/index.tsx'],
+  outfile: 'example/public/build/bundle.js',
   bundle: true,
 };
 
@@ -25,7 +22,7 @@ if (args.includes('--start')) {
     .then(async (ctx) => {
       await ctx.watch();
       await ctx.serve({
-        servedir: 'dev/public',
+        servedir: 'example/public',
         onRequest: ({
           remoteAddress, method, path, status, timeInMS,
         }) => {

@@ -2,6 +2,7 @@ import toastApi, { Renderable, ToastPosition } from 'react-hot-toast/headless';
 import { type Toast, ToastBar as ToastBarToast, resolveValue } from 'react-hot-toast';
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { remove, ...restOfToastApi } = toastApi;
 
 /** @notExported */

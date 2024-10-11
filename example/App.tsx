@@ -1,5 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { ToastBar } from 'react-hot-toast';
 import { RQWrapper } from '../src/components/RQWrapper';

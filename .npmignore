@@ -6,7 +6,7 @@ esbuild.config.cjs
 .npmignore
 src
 node_modules
-dev
+example
 *.ts
 *.tsx
 *.map

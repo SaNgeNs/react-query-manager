@@ -34,7 +34,6 @@ export class CustomError extends Error {
 
     this.stack = new Error().stack;
 
-    // eslint-disable-next-line no-console
     console.error(this.message, this);
   }
 }
