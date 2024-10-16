@@ -9,7 +9,7 @@ import { CustomError } from './custom-error';
  * @param {Record<string, any>} params - The object containing the parameters to be filtered.
  * @returns {Record<string, unknown>} A new object with only the non-empty parameters.
  */
-const filterEmptyParams = (params: any) => {
+export const filterEmptyParams = (params: any) => {
   if (params !== null && typeof params === 'object') {
     const optionParams: Record<string, unknown> = {};
     const entries = Object.entries(params);
@@ -34,7 +34,7 @@ const filterEmptyParams = (params: any) => {
  *
  * @returns The encoded value.
  */
-function encode(value: string) {
+export const encode = (value: string) => {
   return encodeURIComponent(value)
     .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')
@@ -42,7 +42,7 @@ function encode(value: string) {
     .replace(/%20/g, '+')
     .replace(/%5B/gi, '[')
     .replace(/%5D/gi, ']');
-}
+};
 
 /**
  * A utility function for making API requests.
@@ -136,28 +136,32 @@ export const fetcher: ApiClient = ({
   return fetch(apiUrl, fetchOptions).then(async (response) => {
     const responseData = await (async () => {
       try {
-        const contentType = response.headers.get('Content-Type')?.toLowerCase() || '';
+        const contentType = response.headers.get('Content-Type')?.toLowerCase();
 
-        if (contentType.includes('application/json')) {
-          return await response.json();
+        if (contentType) {
+          if (contentType.includes('application/json')) {
+            return await response.json();
+          }
+
+          if (
+            contentType.includes('text/plain')
+            || contentType.includes('text/csv')
+            || contentType.includes('application/xml')
+            || contentType.includes('text/xml')
+            || contentType.includes('application/javascript')
+            || contentType.includes('text/html')
+          ) {
+            return await response.text();
+          }
+
+          if (contentType.includes('multipart/form-data')) {
+            return await response.formData();
+          }
+
+          return await response.blob();
         }
 
-        if (
-          contentType.includes('text/plain')
-          || contentType.includes('text/csv')
-          || contentType.includes('application/xml')
-          || contentType.includes('text/xml')
-          || contentType.includes('application/javascript')
-          || contentType.includes('text/html')
-        ) {
-          return await response.text();
-        }
-
-        if (contentType.includes('multipart/form-data')) {
-          return await response.formData();
-        }
-
-        return await response.blob();
+        return null;
       } catch (error) {
         console.error('Error handling response:', error);
         throw error;

@@ -1,3 +1,5 @@
+import { fetcher } from './utils/fetcher';
+
 export * from '@tanstack/react-query';
 
 export * from './hooks/use-get-list';
@@ -11,10 +13,11 @@ export * from './hooks/use-data-mutate';
 
 export * from './components/RQWrapper';
 
-export * from './utils/fetcher';
 export * from './utils/custom-error';
 export * from './utils/toast';
 export * from './utils/get-url-from-resource';
 export * from './utils/queries';
 
 export * from './type';
+
+export { fetcher };
