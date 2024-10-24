@@ -150,6 +150,34 @@ type MutateDataKey<TPath extends string> = ['mutate-data', Resource<TPath>['path
 type TakeFirstKeys<T extends any[], N extends number, R extends any[] = []> = R['length'] extends N ? R : T extends [infer First, ...infer Rest] ? TakeFirstKeys<Rest, N, [...R, First]> : R;
 
 /**
+ * A utility function for making API requests.
+ *
+ * @example
+ * import { fetcher } from 'react-query-manager';
+ *
+ * fetcher({
+ *   url: 'https://jsonplaceholder.typicode.com/todos/1',
+ *   method: 'GET',
+ *   onSuccess: (data, args, context) => {
+ *     console.log(data);
+ *     console.log(args);
+ *     console.log(context);
+ *   },
+ *   onError: (error, args, context) => {
+ *     console.error(error);
+ *     console.error(args);
+ *     console.error(context);
+ *   },
+ *   context: { value: '1' }
+ * });
+ *
+ * @param args The request configuration.
+ *
+ * @returns The response as a promise.
+ */
+declare const fetcher: ApiClient;
+
+/**
  * A hook that helps you fetch a list of resources.
  *
  * The hook uses `useQuery` from `@tanstack/react-query` to fetch data and cache it.
@@ -1356,34 +1384,6 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrail
         CustomUndoContent?: ToastCustomUndoContent;
     };
 }): React.JSX.Element;
-
-/**
- * A utility function for making API requests.
- *
- * @example
- * import { fetcher } from 'react-query-manager';
- *
- * fetcher({
- *   url: 'https://jsonplaceholder.typicode.com/todos/1',
- *   method: 'GET',
- *   onSuccess: (data, args, context) => {
- *     console.log(data);
- *     console.log(args);
- *     console.log(context);
- *   },
- *   onError: (error, args, context) => {
- *     console.error(error);
- *     console.error(args);
- *     console.error(context);
- *   },
- *   context: { value: '1' }
- * });
- *
- * @param args The request configuration.
- *
- * @returns The response as a promise.
- */
-declare const fetcher: ApiClient;
 
 /** @notExported */
 interface ToastBarProps {

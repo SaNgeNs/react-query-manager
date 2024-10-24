@@ -299,8 +299,6 @@ describe('fetcher', () => {
     });
 
     it('should handle with response error', async () => {
-      jest.spyOn(console, 'error').mockImplementation(() => {});
-
       const error = new Error('error');
 
       (fetch as jest.Mock).mockResolvedValueOnce({
@@ -310,13 +308,14 @@ describe('fetcher', () => {
         json: jest.fn().mockRejectedValueOnce(error),
       });
 
-      await expect(
-        fetcher({ url: 'https://example.com/api', method: 'GET' }),
-      ).rejects.toThrow(error);
+      const response = await fetcher({ url: 'https://example.com/api', method: 'GET' });
 
-      expect(console.error).toHaveBeenCalledWith('Error handling response:', error);
-
-      jest.spyOn(console, 'error').mockRestore();
+      expect(response).toEqual({
+        status: 200,
+        statusText: 'OK',
+        headers: { 'content-type': 'application/json' },
+        data: null,
+      });
     });
 
     it('should construct URL with params and queryParamsSerializer', async () => {

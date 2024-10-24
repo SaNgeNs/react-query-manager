@@ -136,35 +136,41 @@ export const fetcher: ApiClient = ({
   return fetch(apiUrl, fetchOptions).then(async (response) => {
     const responseData = await (async () => {
       try {
+        const contentLength = response.headers.get('Content-Length');
         const contentType = response.headers.get('Content-Type')?.toLowerCase();
 
-        if (contentType) {
-          if (contentType.includes('application/json')) {
-            return await response.json();
-          }
-
-          if (
-            contentType.includes('text/plain')
-            || contentType.includes('text/csv')
-            || contentType.includes('application/xml')
-            || contentType.includes('text/xml')
-            || contentType.includes('application/javascript')
-            || contentType.includes('text/html')
-          ) {
-            return await response.text();
-          }
-
-          if (contentType.includes('multipart/form-data')) {
-            return await response.formData();
-          }
-
-          return await response.blob();
+        if (
+          response.status === 204 ||
+          response.status === 304 ||
+          contentLength === '0' ||
+          !contentType
+        ) {
+          return null;
         }
 
-        return null;
+        if (contentType.includes('application/json')) {
+          return await response.json();
+        }
+
+        if (
+          contentType.includes('text/plain')
+          || contentType.includes('text/csv')
+          || contentType.includes('application/xml')
+          || contentType.includes('text/xml')
+          || contentType.includes('application/javascript')
+          || contentType.includes('text/html')
+        ) {
+          return await response.text();
+        }
+
+        if (contentType.includes('multipart/form-data')) {
+          return await response.formData();
+        }
+
+        return await response.blob();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        console.error('Error handling response:', error);
-        throw error;
+        return null;
       }
     })();
 

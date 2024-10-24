@@ -130,46 +130,46 @@ export default function List() {
             ) : (
               <div>
                 {queryPost.data && (
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
+                  <form
+                    onSubmit={(event) => {
+                      event.preventDefault();
 
-                    const form = event.target as HTMLFormElement;
-                    const title = (form.elements[0] as HTMLInputElement).value;
-                    const body = (form.elements[1] as HTMLInputElement).value;
+                      const form = event.target as HTMLFormElement;
+                      const title = (form.elements[0] as HTMLInputElement).value;
+                      const body = (form.elements[1] as HTMLInputElement).value;
 
-                    updatePost.update({
-                      resourceParams: {},
-                      id: selectedPostId,
-                      data: { title, body },
-                    });
-                  }}
-                >
-                  <input
-                    key={queryPost.data?.data.title}
-                    defaultValue={queryPost.data?.data.title}
-                    style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-                  />
-
-                  <br />
-                  <br />
-
-                  <input
-                    key={queryPost.data?.data.body}
-                    defaultValue={queryPost.data?.data.body}
-                    style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-                  />
-
-                  <br />
-                  <br />
-
-                  <button
-                    style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-                    type="submit"
+                      updatePost.update({
+                        resourceParams: {},
+                        id: selectedPostId,
+                        data: { title, body },
+                      });
+                    }}
                   >
-                    Update
-                  </button>
-                </form>
+                    <input
+                      key={queryPost.data?.data.title}
+                      defaultValue={queryPost.data?.data.title}
+                      style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
+                    />
+
+                    <br />
+                    <br />
+
+                    <input
+                      key={queryPost.data?.data.body}
+                      defaultValue={queryPost.data?.data.body}
+                      style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
+                    />
+
+                    <br />
+                    <br />
+
+                    <button
+                      style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
+                      type="submit"
+                    >
+                      Update
+                    </button>
+                  </form>
                 )}
               </div>
             )}
