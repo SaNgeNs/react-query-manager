@@ -676,6 +676,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
+    isInvalidateCache?: boolean;
     type: TType;
 };
 /**
@@ -1533,7 +1534,7 @@ declare const helpersQueryKeys: {
      * const key = helpersQueryKeys.getOne(resource, 1);
      * // key: ['get-one', 'posts', {}, '1']
      */
-    getOne: (itemResource: Resource<any>, id: string | number) => TakeFirstKeys<QueryOneKey<any>, 4>;
+    getOne: <TPath extends string>(itemResource: Resource<TPath>, id: string | number) => TakeFirstKeys<QueryOneKey<any>, 4>;
     /**
      * Generates an array of query keys for fetching multiple items by their IDs.
      *
@@ -1548,7 +1549,7 @@ declare const helpersQueryKeys: {
      * //   ['get-one', 'posts', {}, '2']
      * // ]
      */
-    getOneArray: (itemResource: Resource<any>, ids: (string | number)[]) => TakeFirstKeys<QueryOneKey<any>, 4>[];
+    getOneArray: <TPath extends string>(itemResource: Resource<TPath>, ids: (string | number)[]) => TakeFirstKeys<QueryOneKey<any>, 4>[];
     /**
      * Generates a query key for fetching a list of items.
      *
@@ -1559,7 +1560,7 @@ declare const helpersQueryKeys: {
      * const key = helpersQueryKeys.getList(resource);
      * // key: ['get-list', 'posts', {}]
      */
-    getList: (itemResource: Resource<any>) => TakeFirstKeys<QueryListKey<any>, 3>;
+    getList: <TPath extends string>(itemResource: Resource<TPath>) => TakeFirstKeys<QueryListKey<any>, 3>;
     /**
      * Generates a query key for fetching an infinite list of items.
      *
@@ -1570,7 +1571,7 @@ declare const helpersQueryKeys: {
      * const key = helpersQueryKeys.getInfiniteList(resource);
      * // key: ['get-infinite-list', 'posts', {}]
      */
-    getInfiniteList: (itemResource: Resource<any>) => TakeFirstKeys<QueryInfiniteListKey<any>, 3>;
+    getInfiniteList: <TPath extends string>(itemResource: Resource<TPath>) => TakeFirstKeys<QueryInfiniteListKey<any>, 3>;
     /**
      * Generates a data query key.
      *
@@ -1581,7 +1582,7 @@ declare const helpersQueryKeys: {
      * const key = helpersQueryKeys.getDataQuery(resource);
      * // key: ['query-data', 'posts', {}]
      */
-    getDataQuery: (itemResource: Resource<any>) => TakeFirstKeys<QueryDataKey<any>, 3>;
+    getDataQuery: <TPath extends string>(itemResource: Resource<TPath>) => TakeFirstKeys<QueryDataKey<any>, 3>;
 };
 
 /**

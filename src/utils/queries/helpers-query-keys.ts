@@ -23,7 +23,7 @@ export const helpersQueryKeys = {
    * // key: ['get-one', 'posts', {}, '1']
    */
   getOne: (
-    (itemResource: Resource<any>, id: string | number): TakeFirstKeys<QueryOneKey<any>, 4> => (
+    <TPath extends string>(itemResource: Resource<TPath>, id: string | number): TakeFirstKeys<QueryOneKey<any>, 4> => (
       ['get-one', itemResource.path, itemResource.params, String(id)]
     )
   ),
@@ -43,7 +43,7 @@ export const helpersQueryKeys = {
    * // ]
    */
   getOneArray: (
-    (itemResource: Resource<any>, ids: (string | number)[]): TakeFirstKeys<QueryOneKey<any>, 4>[] => ids.map((id) => (
+    <TPath extends string>(itemResource: Resource<TPath>, ids: (string | number)[]): TakeFirstKeys<QueryOneKey<any>, 4>[] => ids.map((id) => (
       ['get-one', itemResource.path, itemResource.params, String(id)]
     ))
   ),
@@ -59,7 +59,7 @@ export const helpersQueryKeys = {
    * // key: ['get-list', 'posts', {}]
    */
   getList: (
-    (itemResource: Resource<any>): TakeFirstKeys<QueryListKey<any>, 3> => (
+    <TPath extends string>(itemResource: Resource<TPath>): TakeFirstKeys<QueryListKey<any>, 3> => (
       ['get-list', itemResource.path, itemResource.params]
     )
   ),
@@ -75,7 +75,7 @@ export const helpersQueryKeys = {
    * // key: ['get-infinite-list', 'posts', {}]
    */
   getInfiniteList: (
-    (itemResource: Resource<any>): TakeFirstKeys<QueryInfiniteListKey<any>, 3> => (
+    <TPath extends string>(itemResource: Resource<TPath>): TakeFirstKeys<QueryInfiniteListKey<any>, 3> => (
       ['get-infinite-list', itemResource.path, itemResource.params]
     )
   ),
@@ -91,7 +91,7 @@ export const helpersQueryKeys = {
    * // key: ['query-data', 'posts', {}]
    */
   getDataQuery: (
-    (itemResource: Resource<any>): TakeFirstKeys<QueryDataKey<any>, 3> => (
+    <TPath extends string>(itemResource: Resource<TPath>): TakeFirstKeys<QueryDataKey<any>, 3> => (
       ['query-data', itemResource.path, itemResource.params]
     )
   ),

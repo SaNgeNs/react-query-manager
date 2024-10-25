@@ -54,6 +54,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
   mode?: MutateMode;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
+  isInvalidateCache?: boolean;
   type: TType;
 }
 
@@ -72,6 +73,7 @@ const useUpdateBase = <
     },
     extraResources = [],
     shouldUpdateCurrentResource = true,
+    isInvalidateCache = true,
     type = 'many' as TType,
   }: UpdateBase<TPath, TData, TFormData, TType, TExtraData>) => {
   const {
@@ -133,7 +135,7 @@ const useUpdateBase = <
     onSuccess: (...rest) => {
       const variables = rest[1];
 
-      if (!mode.optimistic) {
+      if (isInvalidateCache) {
         const ids = type === 'many'
           ? (variables as MutateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
           : [(variables as MutateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
