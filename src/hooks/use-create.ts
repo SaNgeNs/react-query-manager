@@ -149,18 +149,20 @@ export const useCreate = <
         const responses = Array.isArray(data) ? data : [data];
 
         responses.forEach((response) => {
-          const { id } = response!.data as any;
+          if (response) {
+            const { id } = response!.data as any;
 
-          const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
+            const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
 
-          extraResources.forEach((extResource) => {
-            queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
-          });
+            extraResources.forEach((extResource) => {
+              queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
+            });
 
-          addItemToQueryCache({
-            data: response!.data || {},
-            queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
-          });
+            addItemToQueryCache({
+              data: response,
+              queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
+            });
+          }
         });
 
         addItemsToListQueryCache({
