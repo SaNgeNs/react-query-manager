@@ -25,11 +25,13 @@ type MutateBaseVariables<TPath extends string, TType, TExtraData> = (
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
   } : {
     id: string | number;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
   }
 );
 
@@ -56,7 +58,7 @@ type DeleteBase<
   mode?: MutateMode;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
-  isInvalidateCache?: boolean;
+  shouldInvalidateCache?: boolean;
   type: TType;
 };
 
@@ -72,9 +74,9 @@ const useDeleteBase = <
       optimistic: true,
       undoable: true,
     },
-    extraResources = [],
+    extraResources: extraResourcesProps = [],
     shouldUpdateCurrentResource = true,
-    isInvalidateCache = true,
+    shouldInvalidateCache = true,
     type = 'many' as TType,
   }: DeleteBase<TPath, TData, TType, TExtraData>) => {
   const {
@@ -135,6 +137,11 @@ const useDeleteBase = <
     onSuccess: (...rest) => {
       const variables = rest[1];
 
+      const extraResources = variables.extraResources ? [
+        ...extraResourcesProps,
+        ...variables.extraResources,
+      ] : extraResourcesProps;
+
       const queryKeys = [
         helpersQueryKeys.getList(variables.resource),
         helpersQueryKeys.getInfiniteList(variables.resource),
@@ -145,7 +152,7 @@ const useDeleteBase = <
         queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
       });
 
-      if (isInvalidateCache) {
+      if (shouldInvalidateCache) {
         invalidateQueries({ queryKeys });
       }
 
@@ -173,6 +180,11 @@ const useDeleteBase = <
       : [(variables as any as DeleteBaseVariables<TPath, 'one', TExtraData>).id];
 
     if (mode.optimistic) {
+      const extraResources = variables.extraResources ? [
+        ...extraResourcesProps,
+        ...variables.extraResources,
+      ] : extraResourcesProps;
+
       const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
       const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
       const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];

@@ -27,12 +27,14 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
   } : {
     id: string | number;
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
   }
 )
 
@@ -54,7 +56,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
   mode?: MutateMode;
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
-  isInvalidateCache?: boolean;
+  shouldInvalidateCache?: boolean;
   type: TType;
 }
 
@@ -71,9 +73,9 @@ const useUpdateBase = <
       optimistic: true,
       undoable: true,
     },
-    extraResources = [],
+    extraResources: extraResourcesProps = [],
     shouldUpdateCurrentResource = true,
-    isInvalidateCache = true,
+    shouldInvalidateCache = true,
     type = 'many' as TType,
   }: UpdateBase<TPath, TData, TFormData, TType, TExtraData>) => {
   const {
@@ -135,7 +137,12 @@ const useUpdateBase = <
     onSuccess: (...rest) => {
       const variables = rest[1];
 
-      if (isInvalidateCache) {
+      const extraResources = variables.extraResources ? [
+        ...extraResourcesProps,
+        ...variables.extraResources,
+      ] : extraResourcesProps;
+
+      if (shouldInvalidateCache) {
         const ids = type === 'many'
           ? (variables as MutateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
           : [(variables as MutateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
@@ -179,6 +186,11 @@ const useUpdateBase = <
       : [(variables as any as UpdateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
 
     if (mode.optimistic) {
+      const extraResources = variables.extraResources ? [
+        ...extraResourcesProps,
+        ...variables.extraResources,
+      ] : extraResourcesProps;
+
       const queryKeysOne = shouldUpdateCurrentResource ? helpersQueryKeys.getOneArray(resource, ids) : [];
       const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(resource)] : [];
       const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(resource)] : [];

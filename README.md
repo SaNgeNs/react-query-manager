@@ -62,34 +62,17 @@ const CustomContent: ToastCustomContent = (toastProps) => {
 };
 
 const CustomUndoContent: ToastCustomUndoContent = ({ message, type, onUndo }) => {
-  const buttonText = (() => {
-    switch (type) {
-      case 'delete-many': {
-        return 'Cancel delete-many';
-      }
-
-      case 'delete-one': {
-        return 'Cancel delete-one';
-      }
-
-      case 'update-many': {
-        return 'Cancel update-many';
-      }
-
-      case 'update-one': {
-        return 'Cancel update-one';
-      }
-
-      default: {
-        return 'Undo';
-      }
-    }
-  })();
+  const texts = {
+    'delete-many': 'Cancel delete-many',
+    'delete-one': 'Cancel delete-one',
+    'update-many': 'Cancel update-many',
+    'update-one': 'Cancel update-one',
+  };
 
   return (
     <div>
       <span>{message}</span>
-      <button type="button" onClick={onUndo}>{buttonText}</button>
+      <button type="button" onClick={onUndo}>{texts[type] || 'Undo'}</button>
     </div>
   );
 };

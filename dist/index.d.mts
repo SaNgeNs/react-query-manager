@@ -347,11 +347,13 @@ type MutateBaseVariables$1<TPath extends string, TType, TExtraData> = (TType ext
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
 } : {
     id: string | number;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
 });
 /** @notExported */
 type DeleteBaseVariables<TPath extends string, TType, TExtraData> = (Omit<MutateBaseVariables$1<TPath, TType, TExtraData>, 'resource'> & {
@@ -365,7 +367,7 @@ type DeleteBase<TPath extends string, TData = any, TType extends MutationMode = 
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
-    isInvalidateCache?: boolean;
+    shouldInvalidateCache?: boolean;
     type: TType;
 };
 /**
@@ -427,6 +429,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -435,6 +438,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         error: null;
         isError: false;
@@ -453,6 +457,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -462,6 +467,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: true;
         isIdle: false;
@@ -479,6 +485,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -488,6 +495,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: false;
         isIdle: false;
@@ -505,6 +513,7 @@ declare const useDeleteOne: <TPath extends string, TData = any, TExtraData = any
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     };
     delete: ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, "one", TExtraData>) => Promise<void>;
@@ -567,6 +576,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -575,6 +585,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         error: null;
         isError: false;
@@ -593,6 +604,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -602,6 +614,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: true;
         isIdle: false;
@@ -619,6 +632,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -628,6 +642,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: false;
         isIdle: false;
@@ -645,6 +660,7 @@ declare const useDeleteMany: <TPath extends string, TData = any, TExtraData = an
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     };
     delete: ({ resourceParams, undoMessage, ...variables }: DeleteBaseVariables<TPath, "many", TExtraData>) => Promise<void>;
@@ -657,12 +673,14 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
 } : {
     id: string | number;
     data: TFormData;
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
 });
 /** @notExported */
 type UpdateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (Omit<MutateBaseVariables<TPath, TFormData, TType, TExtraData>, 'resource'> & {
@@ -676,7 +694,7 @@ type UpdateBase<TPath extends string, TData, TFormData, TType extends MutationMo
     mode?: MutateMode;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
-    isInvalidateCache?: boolean;
+    shouldInvalidateCache?: boolean;
     type: TType;
 };
 /**
@@ -742,6 +760,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -751,6 +770,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         error: null;
         isError: false;
@@ -770,6 +790,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -780,6 +801,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: true;
         isIdle: false;
@@ -798,6 +820,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -808,6 +831,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: false;
         isIdle: false;
@@ -826,6 +850,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "one", TExtraData>) => Promise<void>;
@@ -892,6 +917,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -901,6 +927,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         error: null;
         isError: false;
@@ -920,6 +947,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: undefined;
@@ -930,6 +958,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: true;
         isIdle: false;
@@ -948,6 +977,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -958,6 +988,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         };
         isError: false;
         isIdle: false;
@@ -976,6 +1007,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             resource: Resource<TPath>;
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
+            extraResources?: Resource<any>[];
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "many", TExtraData>) => Promise<void>;
@@ -987,6 +1019,7 @@ type MutateVariables$1<TPath extends string, TFormData, TExtraData> = {
     resource: Resource<TPath>;
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
+    extraResources?: Resource<any>[];
 };
 /** @notExported */
 type CreateOneVariables<TPath extends string, TFormData, TExtraData> = (Omit<MutateVariables$1<TPath, TFormData, TExtraData>, 'resource'> & {
@@ -1040,13 +1073,13 @@ type CreateOneVariables<TPath extends string, TFormData, TExtraData> = (Omit<Mut
  *
  * `mutation` is result `useMutation` without propery `mutate`
  */
-declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject, TExtraData = any>({ resourcePath, mutationOptions, extraResources, shouldUpdateCurrentResource, cacheAddItemTo, isInvalidateCache, }: {
+declare const useCreate: <TPath extends string, TData = any, TFormData = OnlyObject, TExtraData = any>({ resourcePath, mutationOptions, extraResources: extraResourcesProps, shouldUpdateCurrentResource, cacheAddItemTo, shouldInvalidateCache, }: {
     resourcePath: Resource<TPath>["path"];
     mutationOptions?: UseMutateProps<QueryResponse<TData> | QueryResponse<TData>[], MutateVariables$1<TPath, TFormData, TExtraData>>;
     extraResources?: Resource<any>[];
     shouldUpdateCurrentResource?: boolean;
     cacheAddItemTo?: "start" | "end";
-    isInvalidateCache?: boolean;
+    shouldInvalidateCache?: boolean;
 }) => {
     mutation: {
         data: undefined;

@@ -20,6 +20,7 @@ type MutateVariables<TPath extends string, TFormData, TExtraData> = {
   resource: Resource<TPath>;
   apiClientParams?: Partial<ApiProps>;
   extraData?: TExtraData;
+  extraResources?: Resource<any>[];
 }
 
 /** @notExported */
@@ -81,14 +82,14 @@ export const useCreate = <
   TPath extends string,
   TData = any,
   TFormData = OnlyObject,
-  TExtraData = any
+  TExtraData = any,
 >({
     resourcePath,
     mutationOptions,
-    extraResources = [],
+    extraResources: extraResourcesProps = [],
     shouldUpdateCurrentResource = true,
     cacheAddItemTo = 'start',
-    isInvalidateCache = true,
+    shouldInvalidateCache = true,
   } : {
   resourcePath: Resource<TPath>['path'];
   mutationOptions?: UseMutateProps<
@@ -98,7 +99,7 @@ export const useCreate = <
   extraResources?: Resource<any>[];
   shouldUpdateCurrentResource?: boolean;
   cacheAddItemTo?: 'start' | 'end';
-  isInvalidateCache?: boolean;
+  shouldInvalidateCache?: boolean;
 }) => {
   const { apiUrl, apiClient, apiEnsureTrailingSlash } = useRQWrapperContext();
 
@@ -134,6 +135,12 @@ export const useCreate = <
     },
     onSuccess: (...rest) => {
       const data = rest[0];
+      const variables = rest[1];
+
+      const extraResources = variables.extraResources ? [
+        ...extraResourcesProps,
+        ...variables.extraResources,
+      ] : extraResourcesProps;
 
       if (data) {
         const variables = rest[1];
@@ -172,7 +179,7 @@ export const useCreate = <
           queryKeysList,
         });
 
-        if (isInvalidateCache) {
+        if (shouldInvalidateCache) {
           invalidateQueries({
             queryKeys: [...queryKeysList, ...queryKeysInfiniteList],
           });
