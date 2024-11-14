@@ -135,24 +135,24 @@ const useDeleteBase = <
       return (type === 'many' ? result : result[0]) as any;
     },
     onSuccess: (...rest) => {
-      const variables = rest[1];
-
-      const extraResources = variables.extraResources ? [
-        ...extraResourcesProps,
-        ...variables.extraResources,
-      ] : extraResourcesProps;
-
-      const queryKeys = [
-        helpersQueryKeys.getList(variables.resource),
-        helpersQueryKeys.getInfiniteList(variables.resource),
-      ];
-
-      extraResources.forEach((extResource) => {
-        queryKeys.push(helpersQueryKeys.getList(extResource));
-        queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
-      });
-
       if (shouldInvalidateCache) {
+        const variables = rest[1];
+
+        const extraResources = variables.extraResources ? [
+          ...extraResourcesProps,
+          ...variables.extraResources,
+        ] : extraResourcesProps;
+
+        const queryKeys = [
+          helpersQueryKeys.getList(variables.resource),
+          helpersQueryKeys.getInfiniteList(variables.resource),
+        ];
+
+        extraResources.forEach((extResource) => {
+          queryKeys.push(helpersQueryKeys.getList(extResource));
+          queryKeys.push(helpersQueryKeys.getInfiniteList(extResource));
+        });
+
         invalidateQueries({ queryKeys });
       }
 

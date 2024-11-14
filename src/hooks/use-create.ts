@@ -145,39 +145,47 @@ export const useCreate = <
       if (data) {
         const variables = rest[1];
 
-        const queryKeysList = shouldUpdateCurrentResource ? [helpersQueryKeys.getList(variables.resource)] : [];
-        const queryKeysInfiniteList = shouldUpdateCurrentResource ? [helpersQueryKeys.getInfiniteList(variables.resource)] : [];
+        const queryKeysList = [helpersQueryKeys.getList(variables.resource)];
+        const queryKeysInfiniteList = [helpersQueryKeys.getInfiniteList(variables.resource)];
 
         extraResources.forEach((extResource) => {
           queryKeysList.push(helpersQueryKeys.getList(extResource));
           queryKeysInfiniteList.push(helpersQueryKeys.getInfiniteList(extResource));
         });
 
-        const responses = Array.isArray(data) ? data : [data];
+        if (shouldUpdateCurrentResource) {
+          const responses = Array.isArray(data) ? data : [data];
 
-        responses.forEach((response) => {
-          if (response) {
-            const { id } = response!.data as any;
+          responses.forEach((response) => {
+            if (response) {
+              const { id } = response!.data as any;
 
-            const queryKeysOne = shouldUpdateCurrentResource ? [helpersQueryKeys.getOne(variables.resource, id)] : [];
+              const queryKeysOne = [helpersQueryKeys.getOne(variables.resource, id)];
 
-            extraResources.forEach((extResource) => {
-              queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
-            });
+              extraResources.forEach((extResource) => {
+                queryKeysOne.push(helpersQueryKeys.getOne(extResource, id));
+              });
 
-            addItemToQueryCache({
-              data: response,
-              queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
-            });
-          }
-        });
+              addItemToQueryCache({
+                data: response,
+                queryKeysOne: queryKeysOne.map((item) => ([...item, {}])),
+              });
+            }
+          });
 
-        addItemsToListQueryCache({
-          data: responses.map((response) => (response?.data || {})),
-          cacheAddItemTo,
-          queryKeysInfiniteList,
-          queryKeysList,
-        });
+          addItemsToListQueryCache({
+            data: responses.map((response) => (response?.data || {})),
+            cacheAddItemTo,
+            queryKeysInfiniteList: [
+              ...(shouldUpdateCurrentResource && [helpersQueryKeys.getInfiniteList(variables.resource)]),
+              ...queryKeysInfiniteList,
+            ],
+            queryKeysList: [
+              ...(shouldUpdateCurrentResource && [helpersQueryKeys.getList(variables.resource)]),
+              ...queryKeysList,
+            ],
+          });
+        }
 
         if (shouldInvalidateCache) {
           invalidateQueries({

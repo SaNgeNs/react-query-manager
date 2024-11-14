@@ -135,14 +135,14 @@ const useUpdateBase = <
       return (type === 'many' ? result : result[0]) as any;
     },
     onSuccess: (...rest) => {
-      const variables = rest[1];
-
-      const extraResources = variables.extraResources ? [
-        ...extraResourcesProps,
-        ...variables.extraResources,
-      ] : extraResourcesProps;
-
       if (shouldInvalidateCache) {
+        const variables = rest[1];
+
+        const extraResources = variables.extraResources ? [
+          ...extraResourcesProps,
+          ...variables.extraResources,
+        ] : extraResourcesProps;
+
         const ids = type === 'many'
           ? (variables as MutateBaseVariables<TPath, TFormData, 'many', TExtraData>).ids
           : [(variables as MutateBaseVariables<TPath, TFormData, 'one', TExtraData>).id];
