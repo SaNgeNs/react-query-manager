@@ -1,6 +1,20 @@
 export function isEqual(data1: unknown, data2: unknown): boolean {
-  if (typeof data1 !== typeof data2) {
+  if (typeof data1 !== typeof data2 || Object.prototype.toString.call(data1) !== Object.prototype.toString.call(data2)) {
     return false;
+  }
+
+  if (Array.isArray(data1) && Array.isArray(data2)) {
+    if (data1.length !== data2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < data1.length; i++) {
+      if (data1[i] !== data2[i] && !isEqual(data1[i], data2[i])) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   if (data1 instanceof Object && data2 instanceof Object) {
@@ -16,20 +30,6 @@ export function isEqual(data1: unknown, data2: unknown): boolean {
       const value2 = (data2 as Record<string, unknown>)[key];
 
       if (value1 !== value2 && !isEqual(value1, value2)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  if (Array.isArray(data1) && Array.isArray(data2)) {
-    if (data1.length !== data2.length) {
-      return false;
-    }
-
-    for (let i = 0; i < data1.length; i++) {
-      if (data1[i] !== data2[i] && !isEqual(data1[i], data2[i])) {
         return false;
       }
     }

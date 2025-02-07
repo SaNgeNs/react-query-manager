@@ -5,7 +5,7 @@
  * @return The string with leading and trailing slashes removed.
  */
 export function removeFirstAndLastSlash(path: string): string {
-  return path
-    .replace(/^\/+/, '')
-    .replace(/\/+$/, '');
+  return typeof path === 'string'
+    ? path.replace(/^\/+/, '').replace(/\/+$/, '')
+    : '';
 }

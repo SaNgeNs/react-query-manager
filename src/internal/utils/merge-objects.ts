@@ -5,7 +5,7 @@
  * @returns True if the value can be converted to a number, otherwise false.
  */
 function isCanConvertToNumber(value: any): boolean {
-  return !Number.isNaN(Number(value));
+  return ['number', 'string'].includes(typeof value);
 }
 
 /**
