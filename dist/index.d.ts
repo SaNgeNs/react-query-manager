@@ -4,6 +4,7 @@ export * from '@tanstack/react-query';
 import * as react_hot_toast from 'react-hot-toast';
 import { ToasterProps, Toast } from 'react-hot-toast';
 import React, { ReactNode } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import * as react_hot_toast_headless from 'react-hot-toast/headless';
 import { Renderable, ToastPosition } from 'react-hot-toast/headless';
@@ -1402,8 +1403,8 @@ type ReactQueryDevtoolsProps = React.ComponentProps<typeof ReactQueryDevtools>;
  */
 declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrailingSlash, apiAuthorization, apiHeaders, apiOnSuccess, apiOnError, isDevTools, devToolsOptions, toast: toastProps, }: {
     children: ReactNode;
-    config?: QueryClientConfig;
     apiUrl: string;
+    config?: QueryClientConfig;
     apiClient?: ApiClient;
     apiAuthorization?: () => string;
     apiHeaders?: () => ApiProps['headers'];
@@ -1417,7 +1418,7 @@ declare function RQWrapper({ children, config, apiUrl, apiClient, apiEnsureTrail
         CustomContent?: ToastCustomContent;
         CustomUndoContent?: ToastCustomUndoContent;
     };
-}): React.JSX.Element;
+}): react_jsx_runtime.JSX.Element;
 
 /** @notExported */
 interface ToastBarProps {
@@ -1436,16 +1437,16 @@ interface ToastBarProps {
  *
  * See the [documentation](https://react-hot-toast.com/docs/toast) for more details.
  */
-declare const toast: ((message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, opts?: Partial<Pick<react_hot_toast_headless.Toast, "position" | "id" | "className" | "style" | "icon" | "duration" | "ariaProps" | "iconTheme">> | undefined) => string) & {
+declare const toast: ((message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, opts?: Partial<Pick<react_hot_toast_headless.Toast, "position" | "id" | "className" | "style" | "icon" | "duration" | "ariaProps" | "iconTheme" | "removeDelay">> | undefined) => string) & {
     error: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     success: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     loading: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     custom: (message: Renderable | react_hot_toast_headless.ValueFunction<Renderable, react_hot_toast_headless.Toast>, options?: react_hot_toast_headless.ToastOptions) => string;
     dismiss(toastId?: string): void;
-    promise<T>(promise: Promise<T>, msgs: {
+    promise<T>(promise: Promise<T> | (() => Promise<T>), msgs: {
         loading: Renderable;
-        success: react_hot_toast_headless.ValueOrFunction<Renderable, T>;
-        error: react_hot_toast_headless.ValueOrFunction<Renderable, any>;
+        success?: react_hot_toast_headless.ValueOrFunction<Renderable, T>;
+        error?: react_hot_toast_headless.ValueOrFunction<Renderable, any>;
     }, opts?: react_hot_toast_headless.DefaultToastOptions): Promise<T>;
 };
 /**
