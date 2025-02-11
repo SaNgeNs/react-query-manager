@@ -11,7 +11,8 @@ import { useRQWrapperContext } from '../components/RQWrapper';
 import { getUrlFromResource } from '../utils/get-url-from-resource';
 import { CustomError } from '../utils/custom-error';
 import {
-  addItemsToListQueryCache, addItemToQueryCache, helpersQueryKeys, invalidateQueries,
+  addItemsToListQueryCache, addItemToQueryCache,
+  helpersQueryKeys, invalidateQueries,
 } from '../utils/queries';
 
 /** @notExported */

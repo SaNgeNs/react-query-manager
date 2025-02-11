@@ -118,8 +118,8 @@ export function RQWrapper({
   toast: toastProps,
 }: {
   children: ReactNode;
-  config?: QueryClientConfig;
   apiUrl: string;
+  config?: QueryClientConfig;
   apiClient?: ApiClient;
   apiAuthorization?: () => string;
   apiHeaders?: () => ApiProps['headers'];
