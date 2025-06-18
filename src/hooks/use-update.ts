@@ -28,6 +28,7 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
+    transformCacheData?: (data: TFormData) => Record<string, any>;
   } : {
     id: string | number;
     data: TFormData;
@@ -35,6 +36,7 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
+    transformCacheData?: (data: TFormData) => Record<string, any>;
   }
 )
 
@@ -207,8 +209,12 @@ const useUpdateBase = <
         ...queryKeysInfiniteList,
       ]);
 
+      const transformedCacheData = variables?.transformCacheData
+        ? variables.transformCacheData(variables.data)
+        : undefined;
+
       updateItemsFromQueryCache({
-        data: variables.data as any,
+        data: transformedCacheData || variables.data as any,
         ids,
         queryKeysOne,
         queryKeysList,

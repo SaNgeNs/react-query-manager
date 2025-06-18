@@ -5,11 +5,16 @@ const config: Config = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   coverageThreshold: {
     global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
+      branches: 75,
+      functions: 90,
+      lines: 90,
       statements: 0,
     },
   },

@@ -47,7 +47,7 @@ function ToastWrapper({
   );
 
   return (
-    <div data-toast-id={id} ref={ref} className={className} style={style}>
+    <div data-toast-id={id} data-testid="toast-wrapper" ref={ref} className={className} style={style}>
       {children}
     </div>
   );

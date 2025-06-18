@@ -675,6 +675,7 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
+    transformCacheData?: (data: TFormData) => Record<string, any>;
 } : {
     id: string | number;
     data: TFormData;
@@ -682,6 +683,7 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     apiClientParams?: Partial<ApiProps>;
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
+    transformCacheData?: (data: TFormData) => Record<string, any>;
 });
 /** @notExported */
 type UpdateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (Omit<MutateBaseVariables<TPath, TFormData, TType, TExtraData>, 'resource'> & {
@@ -762,6 +764,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: undefined;
@@ -772,6 +775,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         error: null;
         isError: false;
@@ -792,6 +796,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: undefined;
@@ -803,6 +808,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         isError: true;
         isIdle: false;
@@ -822,6 +828,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -833,6 +840,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         isError: false;
         isIdle: false;
@@ -852,6 +860,7 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "one", TExtraData>) => Promise<void>;
@@ -919,6 +928,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: undefined;
@@ -929,6 +939,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         error: null;
         isError: false;
@@ -949,6 +960,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: undefined;
@@ -960,6 +972,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         isError: true;
         isIdle: false;
@@ -979,6 +992,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -990,6 +1004,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         };
         isError: false;
         isIdle: false;
@@ -1009,6 +1024,7 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             apiClientParams?: Partial<ApiProps>;
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
+            transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "many", TExtraData>) => Promise<void>;
