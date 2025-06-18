@@ -1,7 +1,7 @@
 {
   "name": "react-query-manager",
   "author": "SaNgeNs",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "This is a library to simplify the work with @tanstack/react-query. It offers unified style for keys in the cache, ability to cancel a request. automatic cache refresh after mutation.",
   "source": "src/index.ts",
   "main": "dist/index.js",
