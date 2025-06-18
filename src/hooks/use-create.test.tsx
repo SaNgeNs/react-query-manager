@@ -204,7 +204,9 @@ describe('useCreate', () => {
   });
 
   it('should handle shouldUpdateCurrentResource: false', async () => {
-    apiClientMock.mockResolvedValue({ data: { id: 1, name: 'John Doe' } });
+    const response = { data: { id: 1, name: 'John Doe' } };
+
+    apiClientMock.mockResolvedValue(response);
 
     const { result } = renderHook(() => useCreate({
       resourcePath: 'users/{id}/messages',
@@ -219,7 +221,16 @@ describe('useCreate', () => {
     });
 
     await waitFor(() => expect(apiClientMock).toHaveBeenCalledTimes(1));
-    expect(addItemToQueryCache).not.toHaveBeenCalled();
-    expect(addItemsToListQueryCache).not.toHaveBeenCalled();
+
+    expect(addItemToQueryCache).toHaveBeenCalledWith({
+      data: response,
+      queryKeysOne: [],
+    });
+    expect(addItemsToListQueryCache).toHaveBeenCalledWith({
+      data: [response.data],
+      cacheAddItemTo: 'start',
+      queryKeysInfiniteList: [],
+      queryKeysList: [],
+    });
   });
 });
