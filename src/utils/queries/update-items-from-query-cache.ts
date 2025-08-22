@@ -19,6 +19,7 @@ import { getQueryClient } from '../../internal/query-client';
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
  * @param params.queryKeysList - Cache keys for list queries that should be updated.
  * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ * @param params.overwriteOnTypeMismatch - If true, allows merging of properties even if their types mismatch between target and source.
  *
  * @example
  * updateItemsFromQueryCache({
@@ -36,12 +37,16 @@ export const updateItemsFromQueryCache = <TData = any>({
   queryKeysOne,
   queryKeysList,
   queryKeysInfiniteList,
+  overwriteOnTypeMismatch,
+  overwriteOnTypeMismatchKeys,
 }: {
   data: OnlyObject;
   ids: (string | number)[];
   queryKeysOne?: [QueryOneKey<''>[0], ...any[]][];
   queryKeysList?: [QueryListKey<''>[0], ...any[]][];
   queryKeysInfiniteList?: [QueryInfiniteListKey<''>[0], ...any[]][];
+  overwriteOnTypeMismatch?: boolean;
+  overwriteOnTypeMismatchKeys?: string[];
 }) => {
   const queryClient = getQueryClient();
 
@@ -52,7 +57,7 @@ export const updateItemsFromQueryCache = <TData = any>({
       ...page,
       data: page.data.map((item: any) => {
         return ids.some((id) => String(id) === String(item.id))
-          ? mergeObjects(item, data)
+          ? mergeObjects(item, data, { overwriteOnTypeMismatch, overwriteOnTypeMismatchKeys })
           : item;
       }),
     };
@@ -67,7 +72,7 @@ export const updateItemsFromQueryCache = <TData = any>({
             return old;
           }
 
-          return { ...old, data: mergeObjects(old.data, data) };
+          return { ...old, data: mergeObjects(old.data, data, { overwriteOnTypeMismatch, overwriteOnTypeMismatchKeys }) };
         },
       );
     });

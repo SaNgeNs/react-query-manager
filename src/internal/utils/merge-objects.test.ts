@@ -38,6 +38,33 @@ describe('mergeObjects', () => {
     expect(result).toEqual(expected);
   });
 
+  it('should allow null in target to be overwritten by any value from source', () => {
+    const target = { id: 1, name: 'Test', value: null };
+    const source = { value: 'Updated', other: 'Ignored' };
+    const expected = { id: 1, name: 'Test', value: 'Updated' };
+
+    const result = mergeObjects(target, source, { overwriteOnTypeMismatch: true });
+    expect(result).toEqual(expected);
+  });
+
+  it('should allow non-null in target to be overwritten by null from source', () => {
+    const target = { id: 1, name: 'Test', value: 'Name', value2: 'Name2' };
+    const source = { value: null, other: 'Ignored', value2: null };
+    const expected = { id: 1, name: 'Test', value: null, value2: null };
+
+    const result = mergeObjects(target, source, { overwriteOnTypeMismatch: true });
+    expect(result).toEqual(expected);
+  });
+
+  it('should allow non-null in target to be overwritten by null from source if key is in overwriteOnTypeMismatchKeys', () => {
+    const target = { id: 1, name: 'Test', value: 'Name', value2: 'Name2' };
+    const source = { value: null, other: 'Ignored', value2: null };
+    const expected = { id: 1, name: 'Test', value: null, value2: 'Name2' };
+
+    const result = mergeObjects(target, source, { overwriteOnTypeMismatchKeys: ['value'] });
+    expect(result).toEqual(expected);
+  });
+
   it('should only merge fields present in target object', () => {
     const target = { id: 1, name: 'test' };
     const source = { id: 2, name: 'new name', other: 'other value' };

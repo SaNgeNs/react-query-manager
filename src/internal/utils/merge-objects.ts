@@ -26,6 +26,9 @@ function isCanNumber(value1: any, value2: any): boolean {
  * @template TData - The type of the target object.
  * @param target - The target object that will be merged into.
  * @param source - The source object containing values to merge.
+ * @param options.overwriteOnTypeMismatch - If true, allows merging of properties even if their types mismatch between target and source.
+ * @param options.overwriteOnTypeMismatchKeys - An array of keys for which type mismatch should be ignored.
+ *
  * Only properties that exist in the target object and have matching types will be merged.
  *
  * @returns A new object with the merged values from the target and source objects.
@@ -36,7 +39,10 @@ function isCanNumber(value1: any, value2: any): boolean {
  * const result = mergeObjects(target, source);
  * ---> result: { id: '1', name: 'Test 2' }
  */
-export function mergeObjects<TData extends object>(target: TData, source: any): TData {
+export function mergeObjects<TData extends object>(target: TData, source: any, options?: {
+  overwriteOnTypeMismatch?: boolean;
+  overwriteOnTypeMismatchKeys?: string[];
+}): TData {
   const result: any = { ...target };
 
   if (target instanceof Object && source instanceof Object) {
@@ -53,7 +59,7 @@ export function mergeObjects<TData extends object>(target: TData, source: any): 
 
         const canConvertToNumber = isCanNumber(targetValue, sourceValue);
 
-        if (isSameType || canConvertToNumber) {
+        if (isSameType || canConvertToNumber || options?.overwriteOnTypeMismatch || options?.overwriteOnTypeMismatchKeys?.includes(key)) {
           if (typeof targetValue === 'object' && targetValue !== null && !Array.isArray(targetValue)) {
             result[key] = mergeObjects(targetValue, sourceValue as typeof targetValue);
           } else {

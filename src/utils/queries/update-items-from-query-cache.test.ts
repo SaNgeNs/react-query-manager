@@ -87,7 +87,10 @@ describe('updateItemsFromQueryCache', () => {
       status: 200,
       statusText: 'ok',
     });
-    expect(mergeObjects).toHaveBeenCalledWith(existingData, data);
+    expect(mergeObjects).toHaveBeenCalledWith(existingData, data, {
+      overwriteOnTypeMismatch: undefined,
+      overwriteOnTypeMismatchKeys: undefined,
+    });
   });
 
   it('should handle empty ids array', () => {

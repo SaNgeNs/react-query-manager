@@ -676,6 +676,8 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
     transformCacheData?: (data: TFormData) => Record<string, any>;
+    cacheOverwriteOnTypeMismatch?: boolean;
+    cacheOverwriteOnTypeMismatchKeys?: string[];
 } : {
     id: string | number;
     data: TFormData;
@@ -684,6 +686,8 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
     transformCacheData?: (data: TFormData) => Record<string, any>;
+    cacheOverwriteOnTypeMismatch?: boolean;
+    cacheOverwriteOnTypeMismatchKeys?: string[];
 });
 /** @notExported */
 type UpdateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (Omit<MutateBaseVariables<TPath, TFormData, TType, TExtraData>, 'resource'> & {
@@ -765,6 +769,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: undefined;
@@ -776,6 +782,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         error: null;
         isError: false;
@@ -797,6 +805,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: undefined;
@@ -809,6 +819,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         isError: true;
         isIdle: false;
@@ -829,6 +841,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>;
@@ -841,6 +855,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         isError: false;
         isIdle: false;
@@ -861,6 +877,8 @@ declare const useUpdateOne: <TPath extends string, TData = any, TFormData = Only
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "one", TExtraData>) => Promise<void>;
@@ -929,6 +947,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: undefined;
@@ -940,6 +960,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         error: null;
         isError: false;
@@ -961,6 +983,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: undefined;
@@ -973,6 +997,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         isError: true;
         isIdle: false;
@@ -993,6 +1019,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     } | {
         data: QueryResponse<TData>[];
@@ -1005,6 +1033,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         };
         isError: false;
         isIdle: false;
@@ -1025,6 +1055,8 @@ declare const useUpdateMany: <TPath extends string, TData = any, TFormData = Onl
             extraData?: TExtraData | undefined;
             extraResources?: Resource<any>[];
             transformCacheData?: ((data: TFormData) => Record<string, any>) | undefined;
+            cacheOverwriteOnTypeMismatch?: boolean;
+            cacheOverwriteOnTypeMismatchKeys?: string[];
         }, unknown>;
     };
     update: ({ resourceParams, undoMessage, ...variables }: UpdateBaseVariables<TPath, TFormData, "many", TExtraData>) => Promise<void>;
@@ -1755,6 +1787,7 @@ declare const removeQueries: ({ queryKeys, }: {
  * @param params.queryKeysOne - Cache keys for single queries that should be updated.
  * @param params.queryKeysList - Cache keys for list queries that should be updated.
  * @param params.queryKeysInfiniteList - Cache keys for infinite list queries that should be updated.
+ * @param params.overwriteOnTypeMismatch - If true, allows merging of properties even if their types mismatch between target and source.
  *
  * @example
  * updateItemsFromQueryCache({
@@ -1766,12 +1799,14 @@ declare const removeQueries: ({ queryKeys, }: {
  *   queryKeysInfiniteList: [['get-infinite-list', 'posts', {}]]
  * });
  */
-declare const updateItemsFromQueryCache: <TData = any>({ data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, }: {
+declare const updateItemsFromQueryCache: <TData = any>({ data, ids, queryKeysOne, queryKeysList, queryKeysInfiniteList, overwriteOnTypeMismatch, overwriteOnTypeMismatchKeys, }: {
     data: OnlyObject;
     ids: (string | number)[];
     queryKeysOne?: [QueryOneKey<"">[0], ...any[]][];
     queryKeysList?: [QueryListKey<"">[0], ...any[]][];
     queryKeysInfiniteList?: [QueryInfiniteListKey<"">[0], ...any[]][];
+    overwriteOnTypeMismatch?: boolean;
+    overwriteOnTypeMismatchKeys?: string[];
 }) => void;
 
 export { type ApiClient, type ApiProps, CustomError, type ExtractParams, type FetcherResponse, type Headers, type MutateDataKey, type MutateKey, type MutateMode, type MutateTypes, type MutationMode, type OnlyObject, type PathParams, type QueryDataKey, type QueryInfiniteListKey, type QueryInfinitePagination, type QueryListKey, type QueryOneKey, type QueryResponse, RQWrapper, type RQWrapperContextProps, type Resource, type TakeFirstKeys, ToastBar, type ToastCustomContent, type ToastCustomUndoContent, type ToastProps, type UndoTypes, type UseInfiniteQueryProps, type UseMutateProps, type UseQueryProps, addItemToQueryCache, addItemsToListQueryCache, deleteItemsFromQueryCache, fetcher, getUrlFromResource, helpersQueryKeys, invalidateMatchingQueries, invalidateQueries, removeMatchingQueries, removeQueries, resolveToastValue, toast, updateItemsFromQueryCache, useCreate, useDataMutate, useDataQuery, useDeleteMany, useDeleteOne, useGetInfiniteList, useGetList, useGetOne, useRQWrapperContext, useUpdateMany, useUpdateOne };

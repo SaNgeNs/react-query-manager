@@ -29,6 +29,8 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
     transformCacheData?: (data: TFormData) => Record<string, any>;
+    cacheOverwriteOnTypeMismatch?: boolean;
+    cacheOverwriteOnTypeMismatchKeys?: string[];
   } : {
     id: string | number;
     data: TFormData;
@@ -37,6 +39,8 @@ type MutateBaseVariables<TPath extends string, TFormData, TType, TExtraData> = (
     extraData?: TExtraData;
     extraResources?: Resource<any>[];
     transformCacheData?: (data: TFormData) => Record<string, any>;
+    cacheOverwriteOnTypeMismatch?: boolean;
+    cacheOverwriteOnTypeMismatchKeys?: string[];
   }
 )
 
@@ -219,6 +223,8 @@ const useUpdateBase = <
         queryKeysOne,
         queryKeysList,
         queryKeysInfiniteList,
+        overwriteOnTypeMismatch: variables.cacheOverwriteOnTypeMismatch,
+        overwriteOnTypeMismatchKeys: variables.cacheOverwriteOnTypeMismatchKeys,
       });
     }
 
